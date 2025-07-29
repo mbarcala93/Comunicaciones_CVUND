@@ -167,10 +167,23 @@ page[size="A4"] {
   vertical-align: top;
 }
 
+.etiqueta_tabla {
+  font-size: 75%;
+  font-weight: bold;
+  margin: 0 0 5px 0;
+  vertical-align: middle;
+}
+
 .valor {
   font-size: 75%;
   margin: 0 0 5px 0;
   vertical-align: top;
+}
+
+.valor_tabla {
+  font-size: 75%;
+  margin: 0 0 5px 0;
+  vertical-align: middle;
 }
 
 br.largo {
@@ -234,6 +247,9 @@ br.largo {
 .grid_columna1_3 {
   grid-template-columns: 1fr 3fr;
 }
+.grid_columna9 {
+  grid-template-columns: (1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr);
+}
 
 .grid_columna_observaciones {
   margin: 0 10px 0 10px;
@@ -250,6 +266,10 @@ br.largo {
 
 .contenido_sub_bloque.grid_columna2 {
   grid-template-columns: 39% 60%;
+}
+
+.contenido_sub_bloque.grid_columna9 {
+  grid-template-columns: 1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr;
 }
 
 .verde {
@@ -363,3 +383,10 @@ table.celda_ancha > tbody > tr > td {
   text-align: center;
   font-weight: bold;  
 }
+
+.grid_fila2 {
+    display: grid;
+    /* grid-template-rows: ; /* Alturas específicas */
+    gap: 10px;
+  }
+  

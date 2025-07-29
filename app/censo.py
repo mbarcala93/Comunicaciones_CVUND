@@ -2013,10 +2013,11 @@ def _informe_inspeccion(usuario, id_insp):
     supervisor = cur.fetchone()
 
     cur.execute("""
-                SELECT c.*, p.nombre AS 'provincia'
+                SELECT c.*, p.nombre AS 'provincia', e.nombre AS 'nome_EDAR'
                 FROM censo c
                 LEFT JOIN concellos co ON co.cod_ine = c.cod_concello
                 LEFT JOIN provincias p ON p.id = co.id_provincia
+                LEFT JOIN edar e ON e.cod_edar = c.sistema
                 WHERE c.id=?""", (inspeccion['id_industria'],))
     censo = cur.fetchone()
 

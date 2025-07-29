@@ -61,7 +61,7 @@
             <div class="info_pag derecha">
                 <br>
                 <br>
-                <span class="derecha">Código da inspección {{inspeccion.cod_inspeccion}}</span>
+                <span class="valor">Código da inspección {{inspeccion.cod_inspeccion}}</span>
             </div>
         </div>
 	</div>
@@ -226,7 +226,7 @@
 
                 <div class="contenido_sub_bloque grid_columna">
                     <div class="columna">
-                        <span class="valor">Augas de Galicia solicita inspección do vertido á rede de saneamento de industrias potencialmente contaminadoras da auga no caso de EDAR con recepción histórica de vertidos de orixe industrial. A EDAR de XXX ({{censo.sistema}}) ten un histórico de analíticas e incidencias de explotación que a sitúan en prioridade alta. Entre outras, {{censo.razon_social}} figura como empresa que verte á rede que remata na EDAR de {{censo.sistema}} e é potencialmente xeradora dun efluente de elevada carga. Decídese analizar os parámetros que son analizados no vertido da EDAR, agás os parámetros microbiolóxicos e exclúense outros parámetros, como graxas e aceites, por non ter constancia de que causen problemas nin na EDAR nin nos bombeos da rede de saneamento. {{inspeccion.justificacion_muestras}}</span><br class="largo">
+                        <span class="valor">Augas de Galicia solicita inspección do vertido á rede de saneamento de industrias potencialmente contaminadoras da auga no caso de EDAR con recepción histórica de vertidos de orixe industrial. A EDAR de {{censo.nome_EDAR}} ({{censo.sistema}}) ten un histórico de analíticas e incidencias de explotación que a sitúan en prioridade alta. Entre outras, {{censo.razon_social}} figura como empresa que verte á rede que remata na EDAR de {{censo.sistema}} e é potencialmente xeradora dun efluente de elevada carga. Decídese analizar os parámetros que son analizados no vertido da EDAR, agás os parámetros microbiolóxicos e exclúense outros parámetros, como graxas e aceites, por non ter constancia de que causen problemas nin na EDAR nin nos bombeos da rede de saneamento. {{inspeccion.justificacion_muestras}}</span><br class="largo">
                     </div>
                 </div> 
 
@@ -337,22 +337,103 @@
             <div class="info_pag derecha">
                 <br>
                 <br>
-                <span class="derecha">Código da planificación de inspección PA-{{inspeccion.cod_inspeccion}}</span>
+                <span class="valor">Código da inspección {{inspeccion.cod_inspeccion}}</span>
             </div>
         </div>
     </div>
     <div class="pagina">
         <div class="bloque">
             <div class="rotulo">
-				C.- DATOS MOSTRAXE
+				D.- IDENTIFICACIÓN DO INSPECTOR
 			</div>
+            
+            <style>
+                table {
+                border-collapse: collapse; /* Elimina bordes dobles */
+                width: 100%;
+                margin: 0px auto;
+                border: 1px solid #000; /* Borde externo de la tabla */
+                }
+                td {
+                border: 1px solid #000; /* Borde interno de celdas */
+                padding: 10px 10px;
+                }
+                td:nth-child(1) {
+                width: 15%; /* Ancho fijo para columna 1 */
+                }
+                td:nth-child(2) {
+                width: 20%; /* Ancho fijo para columna 2 */
+                }
+            </style>
+            <div class="contenido_bloque grid_columna">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td rowspan="2" class="etiqueta_tabla">Firma<br>(nome, apelidos e DNI)</td>
+                            <td rowspan="2" width: 25%></td>
+                            <td class="etiqueta_tabla">Enderezo</td>
+                            <td class="valor_tabla">Rúa Dublín 4, Baixo D, Santiago de Compostela (A Coruña)</td>
+                        </tr>
+                        <tr>
+                            <td class="etiqueta_tabla">Organismo</td>
+                            <td class="valor_tabla">Cuartazona Ingeniería, S.L.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="rotulo">
+				E.- RESULTADO DAS MEDICIÓNS IN SITU E ANÁLISES DE LABORATORIO
+			</div>
+            <div class="contenido_bloque grid_columna1">
+                <span class="etiqueta">Resultados dos parámetros medidos in situ polo equipo inspector</span>
+            </div>
             <div class="contenido_bloque grid_columna3">
-                <div class="contenido_sub_bloque grid_columna2">
+                <div class="contenido_sub_bloque grid_columna3">
                     <div class="columna">
-                        <span class="etiqueta">Tipo de inspección:</span><br class="largo">
+                        <span class="etiqueta">pH</span><br class="largo">
+                    </div>
+                    <div class="contenido_sub_bloque grid_fila2">
+                    <div class="columna">
+                        <span class="valor">Medición </span><br class="largo">
                     </div>
                     <div class="columna">
-                        <span class="valor">{% if inspeccion.tipo_inspeccion == 0 %}Contacto inicial{% elif inspeccion.tipo_inspeccion == 1 %}Avaliación inicial{% elif inspeccion.tipo_inspeccion == 2 %}Control{% else %}-{% endif %}</span><br class="largo">
+                        <span class="etiqueta">Valor obtido</span><br class="largo">
+                    </div>
+                    </div>
+                </div>
+
+                <div class="contenido_sub_bloque grid_columna3">
+                    <div class="columna">
+                        <span class="etiqueta">Condutividade a 25ºC (µS/cm)</span><br class="largo">
+                    </div>
+                    <div class="columna">
+                        <span class="valor">Medición</span><br class="largo">
+                    </div>
+                    <div class="columna">
+                        <span class="etiqueta">Valor obtido</span><br class="largo">
+                    </div>
+                </div> 
+                <div class="contenido_sub_bloque grid_columna3">
+                    <div class="columna">
+                        <span class="etiqueta">Temperatura (ºC)</span><br class="largo">
+                    </div>
+                    <div class="columna">
+                        <span class="valor">Medición</span><br class="largo">
+                    </div>
+                    <div class="columna">
+                        <span class="etiqueta">Valor obtido</span><br class="largo">
+                    </div>
+                </div>                  
+            </div>         
+            
+            <div class="contenido_bloque grid_columna2">
+                <div class="contenido_sub_bloque grid_columna2">
+                    <div class="columna">
+                        <span class="etiqueta">Firma (nome, apelidos e DNI):</span><br class="largo">
+                    </div>
+                    <div class="columna">
+                        <span class="valor"></span><br class="largo">
                     </div>
                 </div>
                 <div class="contenido_sub_bloque grid_columna2">
