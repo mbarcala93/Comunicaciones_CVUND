@@ -1,0 +1,111 @@
+{% extends "html/base.html" %}
+	{% block titulo %}<title>{{resultados.titulo}} - {{resultados.app}}</title>{% endblock %}
+	{% block scripts %}
+	<script src="{{url_for('static', filename='/js/verificacion.js')}}" crossorigin=""></script>
+	{% endblock %}
+	{% block scripts2 %}
+	<link rel="stylesheet" href="{{url_for('static', filename='/css/verificacion.css')}}">
+	{% endblock %}
+	{% block nome_paxina %}<span id="nome_paxina" alt="{{resultados.titulo}}">Páxina de {{resultados.titulo}}</span>{% endblock %}
+	{% block todo %}
+	<div id="todo" class="grid_container grid_indice zurdo">
+		<div id="formulario" class="panel ficha">
+
+			<div class='grid_container grbot grid_botonera1'>
+				<div class='boton panel bot boton-1 {% if ajuste.parametro == "pH" %}pulsado{% endif %}' onclick='editaInput("pH", 1, this, "");muestraPatrones("pH");muestraContadorPatrones(3)'>pH</div>
+				<div class='boton panel bot boton-1 {% if ajuste.parametro == "condutividade" %}pulsado{% endif %}' onclick='editaInput("condutividade", 1, this, "");muestraPatrones("condutividade");muestraContadorPatrones(1)'>Condutividade</div>
+			</div>
+			<input id='valor-1' type='text' class='ficha_ valor val invisible valor-1' name='parametro' value='{% if ajuste.parametro %}{{ajuste.parametro}}{% endif %}'><br class='val valor valor-1 invisible'>
+
+			<div id='datos_sondas' class='grid_container grbot grid_botonera1  {% if not ajuste.id_sonda %}invisible{% endif %}'>
+				{% for sonda in sondas %}
+				<div id="sonda{{sonda.id}}" class='boton panel bot boton-1b {% if ajuste.id_sonda == sonda.id %}pulsado{% else %}invisible{% endif %} sonda sonda{{sonda.parametro}}'>
+					<span>{{sonda.codigo}}</span>
+					<span class="datos_patron">{{sonda.n_serie}}</span>
+				</div>
+				{% endfor %}
+			</div>
+			<input id='valor-1b' type='text' class='ficha_ valor val invisible valor-1b' name='id_sonda' value='{% if ajuste.id_sonda %}{{ajuste.id_sonda}}{% endif %}'><br class='val valor valor-1b invisible'>
+
+			<span class="clicable patrones invisible" onclick="muestraPatronesAjuste()">Patróns de verificación
+				<span class="material-icons patron_ajuste">expand_more</span>
+				<span class="material-icons patron_ajuste invisible2">expand_less</span>
+			</span>
+			<br>
+
+			<div class="patrones linea"></div>
+			<h4>Patróns</h4>
+
+			<div id="" class='grid_container grbot grid_botonera1 {% if not ajuste.id_patrones %}invisible{% endif %} patrones'>
+				<span id="contador_patrones" class="patrones invisible editado">
+					<span id="patrones_marcados"></span> de <span id="patrones_necesarios"></span>
+				</span>
+					{% for patron in patrones %}
+					<div class='boton panel bot boton-2 patron{{patron.id}}
+											{% if patron.caducado == 1 %}incorrecto{% elif patron.caducado == 2 %}gris{% endif %} {{patron.parametro}}
+											{% if patron.id not in ajuste.id_patrones %}invisible{% endif %}
+											{% if patron.verificacion %}patron_ajuste invisible2{% endif %}
+											{% if patron.id in ajuste.id_patrones %}pulsado{% endif %}'
+						{% if patron.caducado != 1 %}
+							onclick='editaInputSeparador("{{patron.id}}", 2, this, "");actualizaContadorPatrones();'
+						{% endif %}>
+						<span>
+							{% if patron.caducado == 1 %}<div class="material-icons derecha" onclick="retirarPatron({{patron.id}})">delete</div>{% endif %}	
+							<span class="titulo">{{patron.valor_nominal | numero_bonito }}</span> <span>{{patron.unidades}}</span>
+						</span>
+						<div class="grid_container grid_botonera2">
+							<div class="">
+								<span class="datos_patron">{{patron.marca}}</span><br>
+								<span class="datos_patron">{{patron.modelo}}</span><br>
+							</div>
+							<div class="">
+								<span class="datos_patron">{{patron.lote}}</span><br>
+								<span class="datos_patron caducidad {% if patron.caducado == 2 %}cercana{% endif %}">{{patron.caducidad}}</span>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+			</div>
+			<input id='valor-2' type='text' class='ficha_ valor val invisible valor-2' name='id_patrones' value='{% if ajuste.id_patrones %}{{ajuste.id_patrones}}{% endif %}'><br class='val valor valor-2 invisible'>
+
+
+			{% for sonda in sondas %}
+			{% for requisito in sonda.requisitos_ajuste if requisito != "n_patrons" %}
+
+			<div class="requisitos_sonda requisitos_sonda{{sonda.id}} invisible">
+				<span id="etiqueta-3-{{sonda.id}}-{{loop.index}}" class="etiqueta etiq">{{requisito}}<br></span>
+				<input id="valor-3-{{sonda.id}}-{{loop.index}}" type="text" class="ficha_ valor val" name="requisitosæ{{requisito}}" onkeyup="$(this).addClass('editado'); sustituyePuntoDecimal(this);" value="{{ajuste.resultado[requisito]}}"><br class="val valor invisible">
+				<div class="grid_container grbot grid_botonera3">
+					<div class="boton panel bot boton-3-{{sonda.id}}-{{loop.index}}" onclick="anadeInput('3-{{sonda.id}}-{{loop.index}}', this)">1</div>
+					<div class="boton panel bot boton-3-{{sonda.id}}-{{loop.index}}" onclick="anadeInput('3-{{sonda.id}}-{{loop.index}}', this)">2</div>
+					<div class="boton panel bot boton-3-{{sonda.id}}-{{loop.index}}" onclick="anadeInput('3-{{sonda.id}}-{{loop.index}}', this)">3</div>
+					<div class="boton panel bot boton-3-{{sonda.id}}-{{loop.index}}" onclick="anadeInput('3-{{sonda.id}}-{{loop.index}}', this)">4</div>
+					<div class="boton panel bot boton-3-{{sonda.id}}-{{loop.index}}" onclick="anadeInput('3-{{sonda.id}}-{{loop.index}}', this)">5</div>
+					<div class="boton panel bot boton-3-{{sonda.id}}-{{loop.index}}" onclick="anadeInput('3-{{sonda.id}}-{{loop.index}}', this)">6</div>
+					<div class="boton panel bot boton-3-{{sonda.id}}-{{loop.index}}" onclick="anadeInput('3-{{sonda.id}}-{{loop.index}}', this)">7</div>
+					<div class="boton panel bot boton-3-{{sonda.id}}-{{loop.index}}" onclick="anadeInput('3-{{sonda.id}}-{{loop.index}}', this)">8</div>
+					<div class="boton panel bot boton-3-{{sonda.id}}-{{loop.index}}" onclick="anadeInput('3-{{sonda.id}}-{{loop.index}}', this)">9</div>
+					<div class="boton panel bot boton-3-{{sonda.id}}-{{loop.index}}" onclick="anadeInput('3-{{sonda.id}}-{{loop.index}}', this)">.</div>
+					<div class="boton panel bot boton-3-{{sonda.id}}-{{loop.index}}" onclick="anadeInput('3-{{sonda.id}}-{{loop.index}}', this)">0</div>
+					<div class="boton panel bot boton-3-{{sonda.id}}-{{loop.index}}" onclick="$('#valor-3-{{sonda.id}}-{{loop.index}}').val($('#valor-3-{{sonda.id}}-{{loop.index}}').val().substring(0,$('#valor-3-{{sonda.id}}-{{loop.index}}').val().length -1));pulsarFeedBack(this)"><span class="material-icons">backspace</span></div>
+				</div>
+			</div>{% endfor %}
+			{% endfor %}
+			<input id="valor-3" type="text" class="ficha_ valor val invisible" name="resultado" onkeyup="" value="{% if ajuste.resultado %}{{ajuste.resulado}}{% endif %}"><br class="val valor invisible">
+
+			<span id="" onclick="actualizaVerificacion({{ajuste.id}}, 1, 0)" class="izquierda boton_upload boton panel aceptar invisible"><span class="material-icons">save</span> Gardar</span>
+			<span id="" onclick="actualizaVerificacion({{ajuste.id}}, 1, 1)" class="izquierda boton_upload boton panel finalizar invisible"><span class="material-icons">picture_as_pdf</span> Finalizar</span>
+			<div id="opciones_finalizado" class="invisible">
+				<span id="aptitud">Axuste APTO <span class="material-icons verde">check_circle</span></span>
+				<div class="grid_container grbot botonera_opciones">
+					<div class="boton opciones panel bot" onclick="nuevaVerificacion(1, 1)"><span class="material-icons">add_circle_outline</span> Novo axuste</div>
+					<div class="boton opciones panel bot" onclick="window.location = '/verificaciones';"><span class="material-icons">arrow_back</span> Volver a listado</div>
+					<div id='ver_informe' class="boton opciones panel bot" onclick=""><span class="material-icons">verified</span> Ver informe</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endblock %}
+
+	{% block menuLat %}{% include resultados.menu %}{% endblock %}

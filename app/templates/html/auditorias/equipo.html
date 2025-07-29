@@ -1,0 +1,178 @@
+{% extends "html/base.html" %}
+{% block titulo %}<title>Auditorías EDAR</title>{% endblock %}
+{% block scripts %}
+<script src="static/js/auditorias/auditorias.js" crossorigin=""></script>
+<script src="static/js/auditorias/equipo.js" crossorigin=""></script>
+<script src="static/js/auditorias/motores.js" crossorigin=""></script>
+<script language="javascript" type="text/javascript" src="static/js/compressor.min.js"></script>
+{% endblock %}
+{% block scripts2 %}
+<link rel="stylesheet" href="static/css/auditorias.css">
+{% endblock %}
+{% block nome_paxina %}{% endblock %}
+{% block cabecera %}
+<div class="derecha clicable" onclick="">
+    <span id="navega0" class="material-icons" onclick="navegaEquipo({{equipo.id}}, {{equipo.id_tratamiento}}, 0)">navigate_before</span>
+    <span id="navega1" class="material-icons" onclick="navegaEquipo({{equipo.id}}, {{equipo.id_tratamiento}}, 1)">navigate_next</span>
+</div>
+{% endblock %}
+{% block todo %}
+<div id="todo" class="grid_container grid_equipo zurdo">
+    <div id="ficha_equipo" class="panel">
+        <div id="foto_principal" class="foto">
+            <img src="/static_p/fotos_audit/{{foto_portada.ruta if foto_portada.ruta else 'sin_foto.png'}}" class="primeraFoto" alt="Foto">
+        </div>
+        
+        <h2 id="denominacion_tipo" class="editarEquipo">{{equipo.denominacion}} {% if equipo.tipo %}{{equipo.tipo}}{% endif %}</h2>
+        <input id="denominacion" name="denominacion" type="text" class="editarEquipo invisible titulo" value="{{equipo.denominacion if equipo.denominacion}}" onkeyup="editaEquipo(this)" autocomplete="off" bbdd="{{equipo.denominacion if equipo.denominacion}}">
+        <input id="tipo" name="tipo" type="text" class="editarEquipo invisible titulo" value="{{equipo.tipo if equipo.tipo}}" onkeyup="editaEquipo(this)" autocomplete="off" bbdd="{{equipo.tipo if equipo.tipo}}">
+
+        {% if session.ambito in ['admin', 'galicia'] %}
+        <span id="" onclick="cargar_subir_fotos()" class="material-icons derecha boton_subir_foto">add_a_photo</span>
+        <span id="" onclick="cargar_subir_fotos()" class="material-icons derecha boton_subir_foto invisible">no_photography</span>
+        {% endif %}
+        <span id="botonCargarFotos" onclick="cargar_fotos({{equipo.id}})" class="material-icons boton_carga_fotos derecha">image</span>
+        <span id="botonOcultarFotos" onclick="cargar_fotos({{equipo.id}})" class="material-icons boton_carga_fotos derecha invisible">image_not_supported</span>
+        {% if session.ambito in ['admin', 'galicia'] %}
+        <span id="botonRevisiones{{equipo.id}}" onclick="verRevisiones({{equipo.id}}, '')" class="material-icons derecha">note_alt</span>
+        <a id="" href="/ficha-{{equipo.id}}" target="_blank" class="material-icons derecha noDecorado">print</a>
+        <span id="botonEditar" onclick="modoEdicion('Equipo')" class="material-icons derecha">edit</span>
+        <span id="botonEditar" onclick="borraEquipo({{equipo.id}})" class="material-icons derecha invisible editarEquipo">delete</span>{% endif %}
+
+        <div id="cod_equipo_instalacion" class="codigo_equipo editarEquipo">{{equipo.cod_equipo_instalacion if equipo.cod_equipo_instalacion}}</div>
+        <input name=cod_equipo_instalacion class="invisible editarEquipo" type="text" value="{{equipo.cod_equipo_instalacion if equipo.cod_equipo_instalacion}}" onkeyup="editaEquipo(this)" autocomplete="off">
+        <br class="editarEquipo invisible">
+        
+        <div id="cod_equipo" class="codigo_equipo editarEquipo">{{equipo.cod_equipo if equipo.cod_equipo}}</div>
+        <input name=cod_equipo class="invisible editarEquipo" type="text" value="{{equipo.cod_equipo if equipo.cod_equipo}}" onkeyup="editaEquipo(this)" autocomplete="off">
+        <br class="editarEquipo invisible">
+
+        <div id="posicion" class="editarEquipo">{{equipo.posicion if equipo.posicion}}</div>
+        <input name=posicion class="invisible editarEquipo" type="text" value="{{equipo.posicion if equipo.posicion}}" onkeyup="editaEquipo(this)" autocomplete="off">
+        
+        <div class="subirCambiosEquipo invisible">
+            <div class="boton_upload{{equipo.id}} clicable boton panel aceptar boton_medio_grid guardar" onclick="actualizaDatosEquipo({{equipo.id}})">
+                <span class="material-icons">check</span> Confirmar cambios
+            </div>
+              
+            <div class="boton_upload{{equipo.id}} clicable boton panel cancelar boton_medio_grid" onclick="cancelaActualizaDatosEquipo()">
+                <span class="material-icons">cancel</span> Cancelar cambios
+            </div>
+        </div>
+
+
+        <br>
+        <a href="/equipos-{{equipo.id_tratamiento}}" class="noDecorado">
+            <span class="material-icons alineado">apps</span>
+            <i>{{resultados.tratamiento}}</i>
+        </a>
+        {% if session.ambito in ['admin', 'galicia'] %}
+        <div id="tipo_prueba" onclick="muestraTiposPruebas()">
+            <span class="material-icons alineado">settings</span>
+            <span id="titulo_prueba" class="clicable">{{equipo.titulo}}</span>
+        </div>
+        <div id="tipos_pruebas" class="invisible grid_container grid_botonera2">
+            {% for prueba in tipos_pruebas%}
+            <div id="prueba{{prueba.id}}" class="panel boton prueba {{'pulsado' if prueba.titulo == equipo.titulo}}" onclick="cambiaTipoPrueba({{equipo.id}}, {{prueba.id}}, this)">{{prueba.titulo}}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="linea"></div>
+        <span id="guardar{{equipo.id}}" onclick="guardaCambios({{equipo.id}})" class="material-icons derecha invisible guardar">save</span>
+        <span id="check" class="invisible derecha">
+            <span class="material-icons check">check_circle</span>
+        </span>
+
+        <div id="panel_subir_fotos" class="fotos invisible">
+            
+            Seleccione unha foto:<br>
+            <input id="file_foto{{equipo.id}}" class="imagenComprimir valor" name="file" type="file" accept="image/*" onchange="comprimirFoto({{equipo.id}}, this)" multiple="true" autocomplete="off"/>
+            <span id="check_foto{{equipo.id}}" class="invisible derecha">
+                <span class="material-icons check">check_circle</span>
+            </span>
+            <span id="cargando_foto{{equipo.id}}" class="invisible">Comprimindo foto...</span>
+            <div class="linea"></div>
+        </div>
+        
+        {% include 'html/auditorias/panel_equipo.html' %}
+        
+        <div class="linea"></div>
+        {% if session.ambito in ['admin', 'galicia'] %}
+        <span class="material-icons derecha" onclick="nuevoMotor({{equipo.id}})">add_circle_outline</span>{% endif %}
+        Motores:
+        <div id="botones_motores">
+            {% for motor in motores %}
+            {% include 'html/auditorias/boton_motor.html' %}
+            {% endfor %}
+        </div>
+        <div id="lista_auditorias">
+            {% for auditoria in auditorias %}
+            {% if loop.first %}
+            <div class="linea"></div>
+            Auditoría{{'s' if auditorias | length > 1 }}:
+            {% endif %}
+            <div id="" class="boton panel filtro_auditoria{{auditoria.id}} filtros_auditoria apilado {{'pulsado' if session.id_auditoria == auditoria.id}}" onclick="cambiaFiltroAuditoria({{auditoria.id}}, 1)" auditoria="{{auditoria.id}}">{{auditoria.fecha | fecha_hora_bonita("%B - %Y")}}</div>
+            {% endfor %}
+        </div>
+
+    </div>
+    <div id="segunda_columna">
+        <div id="mas_fotos" class="panel invisible">
+            <span id="sin_fotos" class="invisible">Aínda non hai fotos asociadas e este equipo nesta auditoria.</span>
+            <div id="" class=" grid_container grid_fotos fotos matriz_fotos">
+            </div>
+        </div>
+
+        <div id="motores"></div>
+        <div id="revisiones_medicion" class="panel formulario">{% for revision in revisiones if revision.tiene_medicion %}{% if loop.first %}<h3>Medicións</h3>{% endif %}<div class="{{'invisible' if session.id_auditoria != revision.id_auditoria}} revision revision{{revision.id_auditoria}}"><span class="etiqueta">{{revision.actividad}}</span><input id="revision_medicion{{revision.id}}" class="revisiones_medicion" type="text" name="{{revision.id}}" value="{{revision.medicion if revision.medicion}}" onkeyup="hay_Cambio('', {{equipo.id}})" autocomplete="off"></div>{% endfor %}</div>
+
+        {% if session.ambito in ['admin', 'galicia'] %}
+        <div id="revisiones_{{equipo.id}}" class="revisiones panel {{'invisible' if not session.id_auditoria}}">
+            <span id="verRevisiones_{{equipo.id}}" class="material-icons derecha alineado" onclick="verRevisionesDisponibles({{equipo.id}}, '')">add_circle_outline</span>
+            <h2>Revisións equipo</h2>
+            <div id="revisiones_disponibles_{{equipo.id}}" class="invisible ">
+                <span>Seleccione as revisións por tipo...</span>
+                <div id="botones_grupo_rev{{equipo.id}}" class="grid_container grid_rev_disp"></div>
+
+                <span>Ou seleccione individualmente as revisións dispoñibles...</span>
+                <div id="botones_rev_disp_{{equipo.id}}" class="grid_container grid_rev_disp"></div>
+                <div id="muestra_rev_ocultas_{{equipo.id}}" onclick="muestraRevOcultas({{equipo.id}})" class="invisible clicable muestra_rev_ocultas">
+                    <span class="material-icons oculta_rev_disp{{equipo.id}} alineado">visibility</span>
+                    <span class="material-icons invisible oculta_rev_disp{{equipo.id}} alineado">visibility_off</span> Revisións infrecuentes...
+                </div>
+                <div id="botones_rev_disp_oc_{{equipo.id}}" class="grid_container grid_rev_disp invisible oculta_rev_disp{{equipo.id}}"></div>
+
+                <div class="boton_upload{{equipo.id}} clicable boton panel aceptar boton_medio_grid" onclick="asignaRevisiones({{equipo.id}})">
+                    <span class="material-icons">check</span> Confirmar cambios
+                </div>
+                  
+                <div class="boton_upload{{equipo.id}} clicable boton panel cancelar boton_medio_grid" onclick="cancelaAsignaRevisiones({{equipo.id}})">
+                    <span class="material-icons">cancel</span> Cancelar cambios
+                </div>
+                
+            </div>
+
+            <div id="botones_rev_asig_{{equipo.id}}">
+                {% for revision in revisiones %}
+                    {% include 'html/auditorias/boton_revision.html' %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    
+</div>
+{% endblock %}
+{% block menuLat %}{% include 'html/auditorias/menu_lateral.html' %}{% endblock %}
+{% block mapa %}
+{% if session.ambito not in ['admin', 'galicia'] and equipo.id_tipo_prueba != 3 %}
+<script>
+    $( document ).ready(function() {
+        $(".editable_equipo")
+            .prop("disabled", true)
+            .attr("onclick", "");
+    });
+</script>
+{% endif %}
+{% endblock %}

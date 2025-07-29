@@ -1,0 +1,237 @@
+{% import 'html/auditorias/macros.html' as macros %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="robots" content="noindex">
+  <title>Fichas equipos {{resultados.cod_EDAR if resultados.cod_EDAR }}</title>
+	<link rel="stylesheet" href="static/css/leaflet.css" crossorigin=""/>
+	<link rel="icon" href="{{url_for('static', filename='/images/CZ_FAV.png')}}" type="image/png"/>
+	<script src="static/js/leaflet.js" crossorigin=""></script>
+	<link rel="stylesheet" href="{{url_for('static', filename='/css/estilo_imprimir.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='/css/auditorias_imprimir.css')}}">
+	<script type="text/javascript">const mq = window.matchMedia( "(min-width: 968px)" );</script>
+</head>
+
+
+<body>
+	{% for equipo in equipos %}
+	<div id="" class="pagina">
+		{% include 'html/auditorias/cabecera_imprimir.html' %}
+		<div class="bloque">
+			{% if equipo.rotulo %}{{ macros.rotulo("Ficha de control de " ~ equipo.rotulo) }}
+			{% else %}{{ macros.rotulo("Ficha de control") }}{% endif %}
+		</div>
+
+		<div class="bloque">
+			<div class="contenido_bloque grid_columna2">
+				<div class="">
+					{{ macros.contenido_sub_bloque("Tipo de proba", equipo.titulo) }}
+					{{ macros.contenido_sub_bloque("Tipo", equipo.tipo) }}
+					{{ macros.contenido_sub_bloque("Posición", equipo.posicion) }}
+					{{ macros.contenido_sub_bloque("Marca", equipo.marca) }}
+				</div>
+				<div class="">
+					<!-- {% for revision in revisiones if revision.id_equipo == equipo.id %}
+					{% if loop.first %}
+					{{ macros.contenido_sub_bloque("Data", revision.fecha) }}
+					{% endif %}{% endfor %} -->
+					{{ macros.contenido_sub_bloque("Elemento", equipo.denominacion) }}
+					{{ macros.contenido_sub_bloque("Identificador", equipo.cod_equipo_instalacion) }}
+					{{ macros.contenido_sub_bloque("Nº serie", equipo.num_serie) }}
+					{{ macros.contenido_sub_bloque("Modelo", equipo.modelo) }}
+				</div>
+			</div>
+			
+		</div>
+
+		<div class="bloque">
+			{{ macros.rotulo("Avaliación estado xeral") }}
+			<div class="grid_container grid_columna2">
+				<div class="contenido_bloque grid_columna1">
+					<div class="">
+						{{ macros.etiqueta_bloque("Comprobacións") }} <br>
+						{% for revision in revisiones if revision.id_equipo == equipo.id and revision.estado not in [0,3] %}
+						{% if revision.actividad in ['Corrosión', 'Limpeza', 'Pintura', 'Funcionamento', 'Estado xeral', 'Vibracións'] %}
+						{{ macros.linea_revision(revision.actividad, revision.estado) }}
+						{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+				
+				<div class="contenido_bloque grid_columna1">
+					<div class="">
+						{% set counter = {'counter1': 0,} %}
+						{{ macros.etiqueta_bloque("Comprobacións específicas") }} <br>
+						{% for revision in revisiones if revision.id_equipo == equipo.id and revision.estado not in [0,3] %}
+						{% if revision.actividad not in ['Corrosión', 'Limpeza', 'Pintura', 'Funcionamento', 'Estado xeral', 'Vibracións'] and not revision.medicion %}
+						{{ macros.linea_revision(revision.actividad, revision.estado) }}
+						{{ macros.increment(counter, 'counter1') }}
+						{% endif %}
+						{% endfor %}
+
+						{% for revision in revisiones if revision.id_equipo == equipo.id and revision.estado not in [0,3] %}
+						{% if loop.first %}<br>{% endif %}
+						{% if revision.medicion %}
+						{{ macros.linea_revision_medicion(revision) }}
+						{{ macros.increment(counter, 'counter1') }}
+						{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div> 
+		<div class="bloque">
+			<div class="grid_columna_observaciones">
+				{{ macros.etiqueta_bloque("Observacións") }}
+				{% for observacion in observaciones if observacion.id_equipo == equipo.id %}
+				{{ macros.valor_bloque(observacion.observacion) }}
+				{% endfor %}
+			</div>
+		</div>
+		{% if counter["counter1"] <= 11 %}
+			<div class="bloque">
+				{{ macros.rotulo("Reportaxe fotográfica") }}
+				<div class="reportaje_fotográfico">
+					<div class="contenido_bloque contenedor_fotos grid_columna3">
+						{% for foto in fotos if foto.id_equipo == equipo.id %}
+						{% if loop.index < 7 %}
+						<div class="contenedor_foto">
+							<img class="foto" src="/static_p/fotos_audit/tn/{{foto.ruta}}" alt="Foto">
+						</div>
+						{% endif %}{% endfor %}
+					</div>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+	{% if counter["counter1"] > 11 %}
+		<div class="saltopagina"></div>
+		<div id="" class="pagina">
+			{% include 'html/auditorias/cabecera_imprimir.html' %}
+			<div class="bloque">
+				{% if equipo.rotulo %}{{ macros.rotulo("Ficha de control de " ~ equipo.rotulo) }}
+				{% else %}{{ macros.rotulo("Ficha de control") }}{% endif %}
+			</div>
+
+			<div class="bloque">
+				<div class="contenido_bloque grid_columna2">
+					<div class="">
+						{{ macros.contenido_sub_bloque("Tipo de proba", equipo.titulo) }}
+						{{ macros.contenido_sub_bloque("Tipo", equipo.tipo) }}
+						{{ macros.contenido_sub_bloque("Posición", equipo.posicion) }}
+						{{ macros.contenido_sub_bloque("Marca", equipo.marca) }}
+					</div>
+					<div class="">
+						<!-- {% for revision in revisiones if revision.id_equipo == equipo.id %}
+						{% if loop.first %}
+						{{ macros.contenido_sub_bloque("Data", revision.fecha) }}
+						{% endif %}{% endfor %} -->
+						{{ macros.contenido_sub_bloque("Elemento", equipo.denominacion) }}
+						{{ macros.contenido_sub_bloque("Identificador", equipo.cod_equipo_instalacion) }}
+						{{ macros.contenido_sub_bloque("Nº serie", equipo.num_serie) }}
+						{{ macros.contenido_sub_bloque("Modelo", equipo.modelo) }}
+					</div>
+				</div>
+				
+			</div>
+			<div class="bloque">
+				{{ macros.rotulo("Reportaxe fotográfica") }}
+				<div class="reportaje_fotográfico">
+					<div class="contenido_bloque contenedor_fotos grid_columna3">
+						{% for foto in fotos if foto.id_equipo == equipo.id %}
+						{% if loop.index < 7 %}
+						<div class="contenedor_foto">
+							<img class="foto" src="/static_p/fotos_audit/tn/{{foto.ruta}}" alt="Foto">
+						</div>
+						{% endif %}{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+	{% for motor in motores if motor.id_equipo == equipo.id %}
+	{% if loop.first %}
+	<div class="saltopagina"></div>
+	<div id="" class="pagina">
+	{% include 'html/auditorias/cabecera_imprimir.html' %}
+	{{ macros.rotulo("Probas motores - ", equipo.denominacion) }}
+	{% endif %}		
+		<div class="bloque">
+			<div class="contenido_bloque grid_columna2">
+				<div class="">
+					{{ macros.contenido_sub_bloque("Tipo de proba", "Eléctricas") }}
+					{{ macros.contenido_sub_bloque("Marca", motor.marca) }}
+					{{ macros.contenido_sub_bloque("Modelo", motor.modelo) }}
+					{{ macros.contenido_sub_bloque("cos(φ)", motor.cosfi) }}
+				</div>
+				<div class="">
+					{{ macros.contenido_sub_bloque("Motor", motor.denominacion) }}
+					{{ macros.contenido_sub_bloque("Potencia (kW)", motor.potencia) }}
+					{{ macros.contenido_sub_bloque("Tensión", motor.tension) }}
+					{{ macros.contenido_sub_bloque("Intensidade nominal (A)", motor.int_nominal) }}
+					
+
+				</div>
+			</div>
+		</div>
+
+		<div class="bloque">
+			{{ macros.rotulo("Avaliación estado xeral motor") }}
+			<div class="contenido_bloque grid_columna1_3">
+				<div class="">
+					{{ macros.etiqueta_bloque("Comprobacións") }}
+				</div>
+				<div class="">
+					{% for revision in revisiones_motores if revision.id_motor == motor.id and revision.estado not in [0,3] and not revision.medicion %}
+					
+					{{ macros.linea_revision(revision.actividad, revision.estado) }}
+					
+					{% endfor %}
+
+					{% for revision in revisiones_motores if revision.id_motor == motor.id and revision.estado not in [3] and revision.medicion %}
+					{% if loop.first %}<br>{% endif %}
+					
+					{{ macros.linea_revision_medicion(revision) }}
+					
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+		<div class="grid_columna_observaciones">
+			{{ macros.etiqueta_bloque("Observacións") }}
+			{% for observacion in observaciones_motores if observacion.id_motor == motor.id %}
+			{{ macros.valor_bloque(observacion.observacion) }}
+			{% endfor %}
+		</div>
+
+		<div class="reportaje_fotográfico">
+			{{ macros.rotulo("Reportaxe fotográfica") }}
+			<div class="contenido_bloque contenedor_fotos grid_columna3">
+				{% for foto in fotos_motores if foto.id_motor == motor.id %}
+				{% if loop.index < 7 %}
+				<div class="contenedor_foto">
+					<img class="foto" src="/static_p/fotos_audit/tn/{{foto.ruta}}" alt="Foto">
+				</div>
+				{% endif %}{% endfor %}
+			</div>
+		</div>
+		{% if not loop.last %}
+	</div>
+	<div class="saltopagina"></div>
+	<div id="" class="pagina">
+		{% include 'html/auditorias/cabecera_imprimir.html' %}
+		{{ macros.rotulo("Probas motores - ", equipo.denominacion) }}
+		{% endif %}
+	{% if loop.last %}</div>{% endif %}
+	{% endfor %}
+	{% if not loop.last %}
+	<div class="saltopagina"></div>
+	{% endif %}
+		
+</body>
+{% endfor %}
+
+

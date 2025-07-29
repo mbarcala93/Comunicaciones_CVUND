@@ -1,0 +1,61 @@
+{% macro rotulo(texto, texto2="") %}
+<div class="rotulo">
+    {{texto}} {{texto2}}
+</div>
+{% endmacro %}
+
+{% macro etiqueta_bloque(etiqueta, es_etiqueta="etiqueta") %}
+<div class="columna">
+    <span class="{{es_etiqueta}}">{{etiqueta}}</span>
+</div>
+{% endmacro %}
+
+{% macro valor_bloque(valor, valor2) %}
+<div class="columna">
+    <span class="valor">{{ valor if valor else '-'}} {{valor2}}</span>
+</div>
+{% endmacro %}
+
+{% macro contenido_sub_bloque(etiqueta, valor, valor2="") %}
+<div class="contenido_sub_bloque grid_columna2">
+    {{ etiqueta_bloque(etiqueta) }}
+    {{ valor_bloque(valor, valor2) }}
+</div>
+{% endmacro %}
+
+{% macro linea_revision(actividad, estado) %}
+<div class="contenido_sub_bloque grid_columna3_revision">
+    {{ etiqueta_bloque(actividad) }}
+    <div class="columna centrada">
+        <span class="material-icons {{'verde' if estado == 1 }}{{'rojo' if estado == 2 }}{{'amarillo' if estado == 0 }}">
+            {{ 'verified' if estado == 1 }}
+            {{ 'dangerous' if estado == 2 }}
+            {{ 'warning' if estado == 0 }} 
+        </span>
+    </div>
+    <div></div>
+    
+</div>
+{% endmacro %}
+
+{% macro linea_revision_medicion(revision) %}
+<div class="contenido_sub_bloque grid_columna3_revision">
+    {{ etiqueta_bloque(revision.actividad) }}
+    <div class="columna centrada">
+        <span class="material-icons {{'verde' if revision.estado == 1 }}{{'rojo' if revision.estado == 2 }}{{'amarillo' if revision.estado == 0 }}">
+            {{ 'verified' if revision.estado == 1 }}
+            {{ 'dangerous' if revision.estado == 2 }}
+            {{ 'warning' if revision.estado == 0 }} 
+        </span>
+    </div>
+    <div class="columna valor_centrado">
+        <span class="{{'verde' if revision.estado == 1 }}{{'rojo' if revision.estado == 2 }}{{'amarillo' if revision.estado == 0 }}">
+            {{revision.medicion}}
+        </span>
+    </div>    
+</div>
+{% endmacro %}
+
+{% macro increment(dct, key, inc=1)%}
+    {% if dct.update({key: dct[key] + inc}) %} {% endif %}
+{% endmacro %}

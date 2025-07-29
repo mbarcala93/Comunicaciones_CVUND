@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="robots" content="noindex">
+
+	{% block titulo %}{% endblock %}
+	<link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='/images/CZ_FAV.png')}}" />
+	<link rel="icon" href="{{url_for('static', filename='/images/CZ_FAV.png')}}" type="image/png"/>
+	<script src="{{url_for('static', filename='/js/jquery-3.5.1.min.js')}}"></script>
+	{% block scripts %}{% endblock %}
+	<script type="text/javascript" src="{{url_for('static', filename='/js/func_general.js')}}"></script>
+	<script>var token{% if session.TOKEN %} = '{{session.TOKEN}}'{% endif %};</script>
+	<!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+	<link rel="stylesheet" href="{{url_for('static', filename='/css/estilo.css')}}">
+	{% block scripts2 %}{% endblock %}
+</head>
+<body>
+	<header class="cabecera">
+		<div class="encabezado" style="">
+					<div class="izquierda">
+						<a href="/"><img id="logoCZ" src="{{url_for('static', filename='/images/logoCZ.svg')}}" alt="Galicia"></a>
+					</div>
+					<div class="nome_proxecto">
+						<span id='titulo_app'>iRedes</span>
+					</div>
+					{% if mareas %}
+					<div class="derecha clicable mareas" onclick="alternaMarea()">
+						<span id="actual" class="marea">{{mareas.actual}} m</span>
+						<span id="maxima" class="invisible marea">{{mareas.maxima}} m</span>
+						<span id="tiempo_maxima" class="invisible marea">{{mareas.tiempo_maxima}} min</span>
+						<span id="porcentaje" class="invisible marea">{{mareas.porcentaje}} %</span>
+					</div>
+					{% endif %}
+					{% block cabecera %}{% endblock %}
+		</div>
+	</header>
+	{% block todo %}{% endblock %}
+
+	{% block menuLat %}{% endblock %}
+
+	{% block mapa %}{% endblock %}
+</body>

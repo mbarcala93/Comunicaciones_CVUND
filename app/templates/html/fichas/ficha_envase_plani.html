@@ -1,0 +1,17 @@
+<div id="elem_envase{{envase.id}}" class="elem_envase grid_container grid_envases grid{{elemento.id}}">
+    <span class="editar{{elemento.id}}">
+        {% if envase.material %}{{envase.material}}{% else %}-{% endif %}
+      </span>
+      <input id="valor{{elemento.id}}-22-{{envase.id}}" type="text" class="ficha_ val{{elemento.id}} valor envase editar{{elemento.id}} invisible i_boton hermano{{envase.id}}" onkeyup="editarInput(this, {{elemento.id}}, 1)" name="material" value="{% if envase.material %}{{envase.material}}{% else %}{% endif %}" placeholder="Material"><br class="val{{elemento.id}} valor invisible">
+
+    <span style="text-align:middle;" class="editar{{elemento.id}}">
+      {% if envase.volumen %}{{envase.volumen | numero_bonito}}{% else %}-{% endif %}
+    </span>
+    <input id="valor{{elemento.id}}-23-{{envase.id}}" type="text" class="ficha_ val{{elemento.id}} valor envase editar{{elemento.id}} invisible i_boton hermano{{envase.id}}" onkeyup="editarInput(this, {{elemento.id}}, 1); sustituyePuntoDecimal(this);" name="volumen" value="{% if envase.volumen %}{{envase.volumen}}{% else %}{% endif %}" placeholder="Volumen"><br class="val{{elemento.id}} valor invisible">
+    <span class="editar{{elemento.id}}">
+      {% if envase.num_envases %}{{envase.num_envases}}{% else %}-{% endif %}
+    </span>
+    <input id="valor{{elemento.id}}-24-{{envase.id}}" type="text" class="ficha_ val{{elemento.id}} valor envase editar{{elemento.id}} invisible i_boton hermano{{envase.id}}" onkeyup="editarInput(this, {{elemento.id}}, 1)" name="num_envases" value="{% if envase.num_envases %}{{envase.num_envases}}{% else %}{% endif %}" placeholder="Nº envases"><br class="val{{elemento.id}} valor invisible">
+
+    <span id="valor{{elemento.id}}-25-{{envase.id}}" onclick="eliminaEnvase({{envase.id}},{{elemento.id}})" class="material-icons editar{{elemento.id}} invisible circulo_eliminar_envase hermano{{envase.id}}">remove_circle_outline</span>
+</div>

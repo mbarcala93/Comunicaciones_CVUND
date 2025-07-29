@@ -1,0 +1,74 @@
+{% extends "html/base.html" %}
+	{% block titulo %}<title>Inicio - iRedes</title>{% endblock %}
+	{% block scripts %}
+	<link rel="stylesheet" href="static/css/leaflet.css" crossorigin=""/>
+	<script src="static/js/leaflet.js" crossorigin=""></script>
+	<script src="static/js/proj4.js" crossorigin=""></script>
+	<script src="static/js/menu.js" crossorigin=""></script>
+	<link rel="stylesheet" href="static/css/indice.css">
+	{% endblock %}
+	{% block nome_paxina %}<span id="nome_paxina" alt="Inicio">Páxina de inicio</span>{% endblock %}
+	{% block todo %}
+	<div id="todo" class="grid_container grid_indice zurdo">
+		<div class="submenu_concello panel benvida_concello grid11R_33R">
+			<h2>Benvido/a a iRedes</h2>
+				iRedes (inspección de Redes) é a
+				ferramenta colaborativa creada por Cuartazona para recoller e proporcionar
+				información das redes de saneamento de Galicia.
+
+			<div class="linea"></div>
+			{% if resultados.ambito == "admin" %}Como usuario administrador, vostede poderá:
+			<ul>
+				<li>
+					<a href="/permisos" class="noDecorado"><i class="material-icons negro">supervised_user_circle</i> Xestionar os permisos dos usuarios da aplicación. (pendente)</a>
+				</li>
+				<li>
+					<a href="/cambios" class="noDecorado"><i class="material-icons negro">restore</i> Supervisar os cambios realizados na plataforma. (proximamente)</a>
+				</li>
+				<li>
+					<a href="/estatisticas" class="noDecorado"><i class="material-icons negro">insert_chart</i> Supervisar estatísticas xerais. (hai que esperar un cacho)</a>
+				</li>
+				<li>
+					<a href="/verificaciones" class="noDecorado"><i class="material-icons negro">verified</i> Verificación pH e condutividade</a>
+				</li>
+				<li>
+					<a href="static_p/Acreditacion_Inspectores.pdf" class="noDecorado" target="_blank"><i class="material-icons negro">badge</i> Acreditación inspectores</a>
+				</li>
+				<li>
+					<a href="/auditorias_EDAR" class="noDecorado"><i class="material-icons negro">search</i> Auditorías EDAR</a>
+				</li>
+				<li>
+					<a href="/laboratorio" class="noDecorado"><i class="material-icons negro">science</i> Importación datos laboratorio ✨ Novo!✨</a>
+				</li>
+			</ul>
+			<div class="linea"></div>
+			{% else %}
+			Pode acceder a:
+			<ul>		
+				<li>
+					<a href="/auditorias_EDAR" class="noDecorado"><i class="material-icons negro">search</i> Auditorías EDAR</a>
+				</li>
+				
+			</ul>
+			{% endif %}
+			<div id="logoutUsuario" class="">
+				<a href="/logout" class="noDecorado clicable"><i class="material-icons negro">exit_to_app</i> <span id="nome_sesion" alt="Pechar sesión {{resultados.usuario | upper}}">Pechar sesión{% if resultados.usuario %} de {{resultados.usuario | upper}}{% endif %}</a>
+			</div>
+		</div>
+		<div class="submenu_concello panel mapa derecha grid23 grid13R">
+			<div class="busqueda">
+				<span id="busca_concellos" class="editar" onclick=""><i class="material-icons noClicable">search</i></span>
+				 <!-- <apartado id="busca_concellos_texto" class="texto_menu" onclick="modoEdicion()"></apartado> -->
+				 <input id="textoBuscar" class="editar" type="text" placeholder="Buscar edar ou concello" onkeyup="muestraBuscados()">
+			</div>
+			<div id="mapid" class="mapa_pequeno abaixo"></div>
+		</div>
+	</div>
+	{% endblock %}
+
+	{% block menuLat %}{% include "html/menu_lateral.html" %}{% endblock %}
+
+	{% block mapa %}
+	<script src="static/js/mapa_base.js" crossorigin=""></script>
+	<script>{%include "js/mapa_menu.js" %}</script>
+	{% endblock %}

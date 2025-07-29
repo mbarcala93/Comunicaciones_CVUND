@@ -1,0 +1,50 @@
+{% extends "html/base.html" %}
+{% block titulo %}<title>{{resultados.titulo}} - iRedes</title>{% endblock %}
+{% block scripts %}
+<script src="static/js/usuarios.js" crossorigin=""></script>
+{% endblock %}
+{% block scripts2 %}
+	<link rel="stylesheet" href="static/css/usuarios.css">
+{% endblock %}
+{% block nome_paxina %}
+<span id="nome_paxina" alt="Verificación">Xestión de usuarios</span>{% endblock %}
+{% block todo %}
+<div id="todo" class="grid_container grid_indice zurdo">
+    <div class="panel">
+        <span id="boton_nuevo_usuario" onclick="nuevoUsuario()" class="derecha material-icons">add</span>
+        <h2>Listaxe de usuarios</h2>
+
+        <span class="grid_container contenedor_filtros">
+            <span id="filtros" class="grid_container">
+              <input id="filtro_general" type="text" class="ficha_ val filtro_general" value=""
+                oninput="filtrarRegistros(this,'lista_usuarios','formulario',objetoFiltroUsuarios)" placeholder="Buscar" />
+              <input id="filtro_nombre_completo" type="text" class="ficha_ val filtro_combinado invisible" value=""
+                oninput="filtrarRegistrosAvanzado(objetoFiltroUsuarios,'filtros','lista_usuarios', 'formulario', listaIdsUsuarios)"
+                placeholder="Nombre" />
+                <input id="filtro_correo" type="text" class="ficha_ val filtro_combinado invisible" value=""
+                oninput="filtrarRegistrosAvanzado(objetoFiltroUsuarios,'filtros','lista_usuarios', 'formulario', listaIdsUsuarios)"
+                placeholder="Correo" />
+              <input id="filtro_organizacion" type="text" class="ficha_ val filtro_combinado invisible" value=""
+                oninput="filtrarRegistrosAvanzado(objetoFiltroUsuarios,'filtros','lista_usuarios', 'formulario', listaIdsUsuarios)"
+                placeholder="Organización" list="organizaciones"/>
+            </span>
+            <span class="material-icons clicable" style="text-align: right"
+              onClick="cambioFiltro('lista_usuarios')">tune</span>
+          </span>
+
+        <div id="lista_usuarios">
+        {% for usuario in usuarios %}
+            {% include "html/usuarios/panel_usuario.html" %}
+        {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block menuLat %}{% include resultados.menu %}{% endblock %}
+
+{% block mapa %}
+<script>
+    {% include "js/filtros_usuarios.js" %}
+</script>
+{% endblock %}

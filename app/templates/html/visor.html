@@ -1,0 +1,74 @@
+{% extends "html/base.html" %}
+	{% block titulo %}<title>Visor iRedes - {{resultados.titulo}}</title>{% endblock %}
+	{% block scripts %}
+	<link rel="stylesheet" href="static/css/leaflet.css" crossorigin=""/>
+	<script src="static/js/leaflet.js" crossorigin=""></script>
+	<script language="javascript" type="text/javascript" src="static/js/compress.js"></script>
+	<script src="static/js/proj4.js" crossorigin=""></script>
+	<script src="static/js/visor.js" crossorigin=""></script>
+	<script src="static/js/{{resultados.mapa}}.js" crossorigin=""></script>
+	{% endblock %}
+	{% block scripts2 %}
+	<link rel="stylesheet" href="static/css/visor.css">
+	{% endblock %}
+	{% block nome_paxina %}{% endblock %}
+	{% block todo %}
+	<div id="todo" class="grid_container grid_visor zurdo">
+		<div id="contenedor_ficha_elemento" class="grid12 grid1lineR"></div>
+		<div id="contenedor_ficha_inspecciones" class="grid12"></div>
+		<div id="mapid" class="panel visor">
+			<span id="amplia_mapa" class="material-icons boton_amplia_mapa sobre_mapa {% if resultados.diestro %}izquierda{% else %}derecha{% endif %} invisible" onclick="boton_amplia_mapa(1)" >unfold_more</span>
+			<span id="reduce_mapa" class="material-icons boton_amplia_mapa sobre_mapa {% if resultados.diestro %}izquierda{% else %}derecha{% endif %} invisible" onclick="boton_amplia_mapa(0)" >unfold_less</span>
+		</div>
+		<div class="panel grid_tabla invisible"></div>
+	</div>
+	<datalist id="inspectores">
+		{% for inspector in inspectores %}
+		<option name="{{inspector.usuario}}" valor="{{inspector.usuario}}">
+			{{inspector.usuario}}
+		</option>
+		{% endfor %}
+	  </datalist> 
+	<datalist id="usuarios">
+		{% for usuario in usuarios %}
+		<option name="{{usuario.nif}} - {{usuario.nombre_completo}}" valor="{{usuario.id}}">
+			{{usuario.nif}} - {{usuario.nombre_completo}}
+		</option>
+		{% endfor %}
+	  </datalist> 
+	  <datalist id="organismos">
+		{% for organismo in organismos %}
+		<option name="{{organismo.denominacion}}" valor="{{organismo.id}}">
+			{{organismo.denominacion}}
+		</option>
+		{% endfor %}
+	  </datalist>
+	  <datalist id="docs_norm">
+		{% for doc_norm in docs_norm %}
+		<option name="{{doc_norm.titulo}}" valor="{{doc_norm.id}}">
+			{{doc_norm.titulo}}
+		</option>
+		{% endfor %}
+	  </datalist>
+	  <datalist id="parametros">
+		{% for parametro in parametros %}
+		<option name="{{parametro.etiqueta}}" valor="{{parametro.id}}">
+			{{parametro.etiqueta}}
+		</option>
+		{% endfor %}
+	  </datalist>
+	  <datalist id="sondas">
+		{% for sonda in sondas %}
+		<option name="{{sonda.codigo}} - {{sonda.parametro}}" valor="{{sonda.id}}">
+			{{sonda.codigo}} - {{sonda.parametro}}
+		</option>
+		{% endfor %}
+	  </datalist>
+	{% endblock %}
+	{% block menuLat %}{% include resultados.menu %}{% endblock %}
+	{% block mapa %}
+	<script src="static/js/mapa_base.js" crossorigin=""></script>
+	<script>{%include "js/mapa_" + resultados.mapa + ".js" %}</script>
+	<script>{%include "js/mapa_visor.js" %}</script>
+	<script src="static/js/geoposicionamiento.js" crossorigin=""></script>
+	{% endblock %}

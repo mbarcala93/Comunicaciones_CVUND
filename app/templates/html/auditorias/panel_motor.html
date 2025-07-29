@@ -1,0 +1,114 @@
+<div id="panel_motor{{motor.id}}" class="panel">
+    {% if session.ambito in ['admin', 'galicia'] %}
+    <span id="" onclick="cargar_subir_fotos('Motor', {{motor.id}})" class="material-icons derecha boton_subir_fotoMotor{{motor.id}}">add_a_photo</span>
+    <span id="" onclick="cargar_subir_fotos('Motor', {{motor.id}})" class="material-icons derecha boton_subir_fotoMotor{{motor.id}} invisible">no_photography</span>
+    {% endif %}
+    <span id="botonCargarFotos{{motor.id}}Motor" onclick="cargar_fotosMotor({{motor.id}})" class="material-icons boton_carga_fotos{{motor.id}}Motor derecha">image</span>
+    <span id="botonOcultarFotos{{motor.id}}Motor" onclick="cargar_fotosMotor({{motor.id}})" class="material-icons boton_carga_fotos{{motor.id}}Motor derecha invisible">image_not_supported</span>
+    <span id="botonOcultarFicha{{motor.id}}Motor" onclick="ocultarFichaMotor()" class="material-icons derecha invisible">visibility_off</span>
+    <span id="botonRevisiones{{motor.id}}Motor" onclick="verRevisiones({{motor.id}}, 'Motor')" class="material-icons derecha">note_alt</span>
+    {% if session.ambito in ['admin', 'galicia'] %}
+    <span id="botonEditar{{motor.id}}Motor" onclick="modoEdicion('Motor{{motor.id}}')" class="material-icons derecha">edit</span>
+    <span id="botonBorrar{{motor.id}}Motor" onclick="borraMotor({{motor.id}})" class="material-icons derecha invisible editarMotor{{motor.id}}">delete</span>
+    {% endif %}
+
+    <h2 class="enlinea">Motor </h2><h2 id="denominacion_label_Motor{{motor.id}}" class="editarMotor{{motor.id}} enlinea">{{motor.denominacion}}</h2>
+    <input id="denominacion_Motor{{motor.id}}" name="denominacion" type="text" class="editarMotor{{motor.id}} invisible tituloMotor" value="{{motor.denominacion if motor.denominacion}}" onkeyup="editaMotor(this)" autocomplete="off">
+
+    <div class="subirCambiosMotor{{motor.id}} invisible">
+        <div class="boton_upload{{motor.id}} clicable boton panel aceptar boton_medio_grid guardar" onclick="actualizaDatosMotor({{motor.id}})">
+            <span class="material-icons">check</span> Confirmar cambios
+        </div>
+          
+        <div class="boton_upload{{motor.id}} clicable boton panel cancelar boton_medio_grid" onclick="cancelaActualizaDatosMotor({{motor.id}})">
+            <span class="material-icons">cancel</span> Cancelar cambios
+        </div>
+    </div>
+
+    <div id="panel_subir_fotosMotor{{motor.id}}" class="fotos invisible">
+        Seleccione unha foto: 
+        <span id="check_foto{{motor.id}}Motor" class="invisible">
+            <span class="material-icons check">check_circle</span>
+        </span>
+        <span id="cargando_foto{{motor.id}}Motor" class="invisible">Comprimindo foto...</span>
+        <br>
+        <input id="file_foto{{motor.id}}Motor" class="imagenComprimir valor" name="file" type="file" accept="image/*" onchange="comprimirFoto({{motor.id}}, this, 'Motor')" multiple="true" autocomplete="off"/>
+        <div class="linea"></div>
+    </div>
+
+    <span class="grid_container grid_2D1M formulario">
+        <div>
+            <span class="etiqueta">Marca</span>
+            <input id="marcaMotor{{motor.id}}" tabindex="1" class="datosMotor{{motor.id}}" type="text" name="marca" value="{{motor.marca if motor.marca}}" onkeyup="hay_Cambio('Motor', {{motor.id}})" autocomplete="off">
+            <!-- <span class="etiqueta">Nº serie</span>
+            <input id="num_serieMotor{{motor.id}}" tabindex="3" class="datosMotor{{motor.id}}" type="text" name="num_serie" value="{{motor.num_serie if motor.num_serie}}" onkeyup="hay_Cambio('Motor{{motor.id}}')" autocomplete="off"> -->
+            <span class="etiqueta">Potencia (kW)</span>
+            <input id="potenciaMotor{{motor.id}}" tabindex="3" class="datosMotor{{motor.id}}" type="text" name="potencia" value="{{motor.potencia if motor.potencia}}" onkeyup="hay_Cambio('Motor', {{motor.id}})" autocomplete="off">
+            <span class="etiqueta">Intensidad nominal (A)</span>
+            <input id="int_nominalMotor{{motor.id}}" tabindex="5" class="datosMotor{{motor.id}}" type="text" name="int_nominal" value="{{motor.int_nominal if motor.int_nominal}}" onkeyup="hay_Cambio('Motor', {{motor.id}})" autocomplete="off">
+        </div>
+        <div>
+            <span class="etiqueta">Modelo</span>
+            <input id="modeloMotor{{motor.id}}" tabindex="2" class="datosMotor{{motor.id}}" type="text" name="modelo" value="{{motor.modelo if motor.modelo}}" onkeyup="hay_Cambio('Motor', {{motor.id}})" autocomplete="off">
+            <span class="etiqueta">cos(φ)</span>
+            <input id="cosfiMotor{{motor.id}}" tabindex="4" class="datosMotor{{motor.id}}" type="text" name="cosfi" value="{{motor.cosfi if motor.cosfi}}" onkeyup="hay_Cambio('Motor', {{motor.id}})" autocomplete="off">
+            <span class="etiqueta">Tensión (V)</span>
+            <input id="tensionMotor{{motor.id}}" tabindex="6" class="datosMotor{{motor.id}}" type="text" name="tension" value="{{motor.tension if motor.tension}}" onkeyup="hay_Cambio('Motor', {{motor.id}})" autocomplete="off">
+        </div>
+        
+        
+        {% for observacion in observaciones %}
+        <div class="{{'invisible' if session.id_auditoria != observacion.id_auditoria}} revision revisionMotor{{motor.id}} revision{{observacion.id_auditoria}}">
+            <span class="etiqueta">Observacións</span>
+            <textarea name="" id="observacionMotor{{observacion.id}}" class="observacionMotor{{motor.id}}" onkeyup="hay_Cambio('Motor', {{motor.id}})">{{observacion.observacion if observacion.observacion}}</textarea>
+        </div>
+        {% endfor %}
+    </span>
+    
+    <div id="fotos_{{motor.id}}Motor" class="invisible matriz_fotos grid_container grid_fotos fotos matriz_fotos">
+        <span class="material-icons derecha">close</span>
+    </div>
+    <div id="revisiones_{{motor.id}}Motor" class="{{'invisible' if not session.id_auditoria}}">
+        <div class="linea"></div>
+        {% if session.ambito in ['admin', 'galicia'] %}
+        <span id="verRevisiones_{{motor.id}}Motor" class="material-icons derecha alineado" onclick="verRevisionesDisponibles({{motor.id}}, 'Motor')">add_circle_outline</span>
+        {% endif %}
+        <h4>Revisións motor</h4>
+        <div id="revisiones_disponibles_{{motor.id}}Motor" class="invisible ">
+            
+            <span>Seleccione as revisións por tipo...</span>
+            <div id="botones_grupo_rev{{motor.id}}Motor" class="grid_container grid_rev_disp"></div>
+
+            <span>Ou seleccione individualmente as revisións dispoñibles...</span>
+            <div id="botones_rev_disp_{{motor.id}}Motor" class="grid_container grid_rev_disp">
+                
+            </div>
+            <div class="boton_upload{{motor.id}}Motor clicable boton panel aceptar boton_medio_grid" onclick="asignaRevisionesMotor({{motor.id}})">
+                <span class="material-icons">check</span> Confirmar cambios
+            </div>
+              
+            <div class="boton_upload{{motor.id}}Motor clicable boton panel cancelar boton_medio_grid" onclick="cancelaAsignaRevisionesMotor({{motor.id}})">
+                <span class="material-icons">cancel</span> Cancelar cambios
+            </div>
+        
+        </div>
+    {% if not revisiones_motor %}<span id="sen_revisions{{motor.id}}" onclick="verRevisionesDisponibles({{motor.id}}, 'Motor')" class="clicable">Aínda non hai revisións. Engada unha...</span>{% endif %}
+    <div id="medicionesMotor{{motor.id}}" class="grid_container grid_2D1M formulario">
+        {% for revision in revisiones_motor if revision.tiene_medicion %}
+        <div id="" class="">{% include 'html/auditorias/input_medicion_revision.html' %}</div>{% endfor %}
+    </div>    
+    <div id="botones_rev_asig_{{motor.id}}Motor">
+        {% for revision in revisiones_motor %}
+        {% include 'html/auditorias/boton_revision.html' %}
+        {% endfor %}
+    </div>
+        
+    </div>
+
+
+    <span id="guardarMotor{{motor.id}}" onclick="guardaCambiosMotor({{motor.id}})" class="invisible clicable guardar"><span class="material-icons alineado">save</span> Gardar cambios motor</span>
+    <span id="checkMotor{{motor.id}}" class="invisible">
+        <span class="material-icons alineado check">check_circle</span> Cambios gardados correctamente
+    </span>
+    
+</div>

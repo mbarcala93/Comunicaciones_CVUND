@@ -1,0 +1,42 @@
+<div id="tabla_filtro" class="">
+  <span onclick="ocultaTabla()" class="material-icons derecha">visibility_off</span>
+  <span class="derecha">
+    <span id="filtro_JS">{{industrias | length}} empresas</span> 
+    <span class="tag tipo0 filtra_tipo" onclick="muestraIndustriaTipoInspeccion(0, this)">contacto</span>
+    <span class="tag tipo1 filtra_tipo" onclick="muestraIndustriaTipoInspeccion(1, this)">avaliación</span>
+    <span class="tag tipo2 filtra_tipo" onclick="muestraIndustriaTipoInspeccion(2, this)">control</span>
+    <span id="busca_concellos" class="editar" onclick=""><i class="material-icons noClicable">search</i></span>
+    <!-- <apartado id="busca_concellos_texto" class="texto_menu" onclick="modoEdicion()"></apartado> -->
+    <input id="textoBuscar" class="editar derecha" type="text" placeholder="Filtra nome ou referencia" onkeyup="muestraIndustriasBuscadas()">
+  </span>
+  <h4>Industrias atopadas</h4>
+  <span class="material-icons" onclick="descargaFiltro('{{sistema}}')">cloud_download</span>
+  <a id="descargaCSV" class="invisible noDecorado"></a>
+  <i>{{filtros}}</i>
+  <table>
+    <tr>
+      <th>id</th>
+      <th>Referencia</th>
+      <th>Nome industria</th>
+    </tr>
+    {% for industria in industrias %}
+    <tr onclick="centraIndustria({{industria.id}})">
+      <td style="text-align:center">{{industria.id}}</td>
+      <td style="text-align:center">{{industria.sistema}}_{{industria.cod_industria}}</td>
+      <td style="width: 100%">{{industria.nome_industria}}
+        {% if industria.recomendase_contacto_inicial %}
+          <span class="derecha material-icons">tour</span>
+        {% endif %}
+        {% for num in numero_inspecciones_tipo %}{% if num.id_industria == industria.id %}
+          <span class="tag tipo{% if not num.tipo_inspeccion %}0{% else %}{{num.tipo_inspeccion}}{% endif %} derecha">{{num.num_tipo}}</span>
+        {% endif %}{% endfor %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<script type="text/javascript">
+
+
+</script>

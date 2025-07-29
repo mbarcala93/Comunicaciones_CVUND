@@ -1,0 +1,195 @@
+{% extends "html/base.html" %}
+{% import 'html/macros.html' as macros %}
+	{% block titulo %}<title>{{resultados.titulo}} - iRedes</title>{% endblock %}
+	{% block scripts %}
+	<script src="{{url_for('static', filename='/js/verificacion.js')}}" crossorigin=""></script>
+	{% endblock %}
+	{% block scripts2 %}
+	<link rel="stylesheet" href="{{url_for('static', filename='/css/'+resultados.pagina+'.css')}}">
+	{% endblock %}
+	{% block nome_paxina %}<span id="nome_paxina" alt="Verificación">Páxina de verificacións</span>{% endblock %}
+	{% block todo %}
+	<div id="todo" class="grid_container grid_indice zurdo">
+		<div id="formulario" class="panel ficha">
+
+			<div class='grid_container grbot grid_botonera1'>
+				<div class='boton panel bot boton-1 {% if verificacion.parametro == "pH" %}pulsado{% endif %}' onclick='editaInput("pH", 1, this, "");muestraPatrones("pH")'>pH</div>
+				<div class='boton panel bot boton-1 {% if verificacion.parametro == "condutividade" %}pulsado{% endif %}' onclick='editaInput("condutividade", 1, this, "");muestraPatrones("condutividade")'>Condutividade</div>
+				<div class='boton panel bot boton-1 {% if verificacion.parametro == "temperatura" %}pulsado{% endif %}' onclick='editaInput("temperatura", 1, this, "");muestraPatrones("Verif_temperatura")'>Temperatura</div>
+			</div>
+			<input id='valor-1' type='text' class='ficha_ valor val invisible valor-1' name='parametro' value='{% if verificacion.parametro %}{{verificacion.parametro}}{% endif %}'><br class='val valor valor-1 invisible'>
+
+			<div id='datos_sondas' class='grid_container grbot grid_botonera1  {% if not verificacion.id_sonda %}invisible{% endif %}'>
+				{% for sonda in sondas %}
+				<div id="sonda{{sonda.id}}" class='boton panel bot boton-1b {% if verificacion.id_sonda == sonda.id %}pulsado{% else %}invisible{% endif %} sonda sonda{{sonda.parametro}}'>
+					<span>{{sonda.codigo}}</span>
+					<span class="datos_patron">{{sonda.n_serie}}</span>
+				</div>
+				{% endfor %}
+			</div>
+			<input id='valor-1b' type='text' class='ficha_ valor val invisible valor-1b' name='id_sonda' value='{% if verificacion.id_sonda %}{{verificacion.id_sonda}}{% endif %}'><br class='val valor valor-1b invisible'>
+
+			<span class="clicable patrones invisible" onclick="muestraPatronesAjuste()">Patróns de axuste
+				<span class="material-icons patron_ajuste">expand_more</span>
+				<span class="material-icons patron_ajuste invisible2">expand_less</span>
+			</span>
+			<br>
+
+			<div class="patrones linea"></div>
+			<h4>Patrón 1</h4>
+
+			<div id="" class='grid_container grbot grid_botonera1 {% if not verificacion.id_patron_1 %}invisible{% endif %} patrones'>
+					{% for patron in patrones %}
+					<div class='boton panel bot boton-2 patron{{patron.id}} {{patron.parametro}}
+											{% if patron.caducado == 1 %}incorrecto{% elif patron.caducado == 2 %}gris{% endif %}
+											{% if verificacion.id_patron_1 != patron.id %}invisible{% endif %}
+											{% if not patron.verificacion %}patron_ajuste invisible2{% endif %}
+											{% if verificacion.id_patron_1 == patron.id %}pulsado{% endif %}'
+							{% if patron.caducado != 1 %}
+								onclick='editaInput({{patron.id}}, 2, this, ""); ocultaOtrosPatrones({{patron.id}}, 2, this)'
+							{% endif %}>
+						<span>
+							{% if patron.caducado == 1 %}<div class="material-icons derecha" onclick="retirarPatron({{patron.id}})">delete</div>{% endif %}
+							<span class="titulo">{{patron.valor_nominal | numero_bonito }}</span> <span>{{patron.unidades}}</span>
+						</span>
+						<div class="grid_container grid_botonera2">
+							<div class="">
+								<span class="datos_patron">{{patron.marca}}</span><br>
+								<span class="datos_patron">{{patron.modelo}}</span><br>
+							</div>
+							<div class="">
+								<span class="datos_patron">{{patron.lote}}</span><br>
+								<span class="datos_patron caducidad {% if patron.caducado == 2 %}cercana{% endif %}">{{patron.caducidad}}</span>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+					
+					<div class='patronTemp1 Verif_temperatura'>
+						{{ macros.input_boton_numerico("Medición patrón 1", "Temp1", "medicion_patron1", verificacion.medicion_patron1) }}
+					</div>
+					
+			</div>
+			<input id='valor-2' type='text' class='ficha_ valor val invisible valor-2' name='id_patron_1' value='{% if verificacion.id_patron_1 %}{{verificacion.id_patron_1}}{% endif %}'><br class='val valor valor-2 invisible'>
+
+			<span id="etiqueta-3" class="etiqueta etiq">Medición 1<br></span>
+	    <input id="valor-3" type="text" class="ficha_ valor val" name="medicion_1" onkeyup="$(this).addClass('editado'); sustituyePuntoDecimal(this);$('.boton_upload').removeClass('invisible');" value="{% if verificacion.medicion_1 %}{{verificacion.medicion_1}}{% endif %}"><br class="val valor invisible">
+	    <div class="grid_container grbot grid_botonera3">
+	      <div class="boton panel bot boton-3" onclick="anadeInput(3, this)">1</div>
+				<div class="boton panel bot boton-3" onclick="anadeInput(3, this)">2</div>
+				<div class="boton panel bot boton-3" onclick="anadeInput(3, this)">3</div>
+				<div class="boton panel bot boton-3" onclick="anadeInput(3, this)">4</div>
+				<div class="boton panel bot boton-3" onclick="anadeInput(3, this)">5</div>
+				<div class="boton panel bot boton-3" onclick="anadeInput(3, this)">6</div>
+				<div class="boton panel bot boton-3" onclick="anadeInput(3, this)">7</div>
+				<div class="boton panel bot boton-3" onclick="anadeInput(3, this)">8</div>
+				<div class="boton panel bot boton-3" onclick="anadeInput(3, this)">9</div>
+				<div class="boton panel bot boton-3" onclick="anadeInput(3, this);sustituyePuntoDecimal('#valor-3');">.</div>
+				<div class="boton panel bot boton-3" onclick="anadeInput(3, this)">0</div>
+				<div class="boton panel bot boton-3" onclick="$('#valor-3').val($('#valor-3').val().substring(0,$('#valor-3').val().length -1));pulsarFeedBack(this)"><span class="material-icons">backspace</span></div>
+	    </div>
+
+			<span id="etiqueta-4" class="etiqueta etiq 	{% if not verificacion.temperatura_1 %}invisible{% endif %} temperatura">Temperatura 1<br></span>
+			<input id="valor-4" type="text" class="ficha_ valor val {% if not verificacion.temperatura_1 %}invisible{% endif %} temperatura" name="temperatura_1" onkeyup="$(this).addClass('editado'); sustituyePuntoDecimal(this);$('.boton_upload').removeClass('invisible');" value="{% if verificacion.temperatura_1 %}{{verificacion.temperatura_1}}{% endif %}"><br class="val valor invisible">
+			<div class="grid_container grbot grid_botonera3 {% if not verificacion.temperatura_1 %}invisible{% endif %} temperatura">
+				<div class="boton panel bot boton-4" onclick="anadeInput(4, this)">1</div>
+				<div class="boton panel bot boton-4" onclick="anadeInput(4, this)">2</div>
+				<div class="boton panel bot boton-4" onclick="anadeInput(4, this)">3</div>
+				<div class="boton panel bot boton-4" onclick="anadeInput(4, this)">4</div>
+				<div class="boton panel bot boton-4" onclick="anadeInput(4, this)">5</div>
+				<div class="boton panel bot boton-4" onclick="anadeInput(4, this)">6</div>
+				<div class="boton panel bot boton-4" onclick="anadeInput(4, this)">7</div>
+				<div class="boton panel bot boton-4" onclick="anadeInput(4, this)">8</div>
+				<div class="boton panel bot boton-4" onclick="anadeInput(4, this)">9</div>
+				<div class="boton panel bot boton-4" onclick="anadeInput(4, this);sustituyePuntoDecimal('#valor-4')">.</div>
+				<div class="boton panel bot boton-4" onclick="anadeInput(4, this)">0</div>
+				<div class="boton panel bot boton-4" onclick="$('#valor-4').val($('#valor-4').val().substring(0,$('#valor-4').val().length -1));pulsarFeedBack(this)"><span class="material-icons">backspace</span></div>
+			</div>
+
+			<div class="linea"></div>
+
+			<h4>Patrón 2</h4>
+
+			<div id="" class='grid_container grbot grid_botonera1 {% if not verificacion.id_patron_2 %}invisible{% endif %} patrones'>
+					{% for patron in patrones %}
+					<div class='boton panel bot boton-5 patron{{patron.id}}
+											{% if patron.caducado == 1 %}incorrecto{% elif patron.caducado == 2 %}gris{% endif %} {{patron.parametro}}
+											{% if verificacion.id_patron_2 != patron.id %}invisible{% endif %}
+											{% if not patron.verificacion %}patron_ajuste invisible2{% endif %}
+											{% if verificacion.id_patron_2 == patron.id %}pulsado{% endif %}'
+							 {% if patron.caducado != 1 %}
+							 	onclick='editaInput({{patron.id}}, 5, this, ""); ocultaOtrosPatrones({{patron.id}}, 5, this)'
+							{% endif %}>
+
+						<span>
+							{% if patron.caducado == 1 %}<div class="material-icons derecha" onclick="retirarPatron({{patron.id}})">delete</div>{% endif %}
+							<span class="titulo">{{patron.valor_nominal | numero_bonito }}</span> <span>{{patron.unidades}}</span>
+						</span>
+						<div class="grid_container grid_botonera2">
+							<div class="">
+								<span class="datos_patron">{{patron.marca}}</span><br>
+								<span class="datos_patron">{{patron.modelo}}</span><br>
+							</div>
+							<div class="">
+								<span class="datos_patron">{{patron.lote}}</span><br>
+								<span class="datos_patron caducidad {% if patron.caducado == 2 %}cercana{% endif %}">{{patron.caducidad}}</span>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+					<div class='patronTemp2 Verif_temperatura'>
+						{{ macros.input_boton_numerico("Medición patrón 2", "Temp2", "medicion_patron2", verificacion.medicion_patron2) }}
+					</div>
+			</div>
+			<input id='valor-5' type='text' class='ficha_ valor val invisible valor-5' name='id_patron_2' value='{% if verificacion.id_patron_2 %}{{verificacion.id_patron_2}}{% endif %}'><br class='val valor valor-5 invisible'>
+
+			<span id="etiqueta-6" class="etiqueta etiq">Medición 2<br></span>
+			<input id="valor-6" type="text" class="ficha_ valor val" name="medicion_2" onkeyup="$(this).addClass('editado'); sustituyePuntoDecimal(this);$('.boton_upload').removeClass('invisible');" value="{% if verificacion.medicion_2 %}{{verificacion.medicion_2}}{% endif %}"><br class="val valor invisible">
+			<div class="grid_container grbot grid_botonera3">
+				<div class="boton panel bot boton-6" onclick="anadeInput(6, this)">1</div>
+				<div class="boton panel bot boton-6" onclick="anadeInput(6, this)">2</div>
+				<div class="boton panel bot boton-6" onclick="anadeInput(6, this)">3</div>
+				<div class="boton panel bot boton-6" onclick="anadeInput(6, this)">4</div>
+				<div class="boton panel bot boton-6" onclick="anadeInput(6, this)">5</div>
+				<div class="boton panel bot boton-6" onclick="anadeInput(6, this)">6</div>
+				<div class="boton panel bot boton-6" onclick="anadeInput(6, this)">7</div>
+				<div class="boton panel bot boton-6" onclick="anadeInput(6, this)">8</div>
+				<div class="boton panel bot boton-6" onclick="anadeInput(6, this)">9</div>
+				<div class="boton panel bot boton-6" onclick="anadeInput(6, this);sustituyePuntoDecimal('#valor-6')">.</div>
+				<div class="boton panel bot boton-6" onclick="anadeInput(6, this)">0</div>
+				<div class="boton panel bot boton-6" onclick="$('#valor-6').val($('#valor-6').val().substring(0,$('#valor-6').val().length -1));pulsarFeedBack(this)"><span class="material-icons">backspace</span></div>
+			</div>
+
+			<span id="etiqueta-7" class="etiqueta etiq {% if not verificacion.temperatura_2 %}invisible{% endif %} temperatura">Temperatura 2<br></span>
+			<input id="valor-7" type="text" class="ficha_ valor val {% if not verificacion.temperatura_2 %}invisible{% endif %} temperatura" name="temperatura_2" onkeyup="$(this).addClass('editado'); sustituyePuntoDecimal(this);$('.boton_upload').removeClass('invisible');" value="{% if verificacion.temperatura_2 %}{{verificacion.temperatura_2}}{% endif %}"><br class="val valor invisible">
+			<div class="grid_container grbot grid_botonera3 {% if not verificacion.temperatura_2 %}invisible{% endif %} temperatura">
+				<div class="boton panel bot boton-7" onclick="anadeInput(7, this)">1</div>
+				<div class="boton panel bot boton-7" onclick="anadeInput(7, this)">2</div>
+				<div class="boton panel bot boton-7" onclick="anadeInput(7, this)">3</div>
+				<div class="boton panel bot boton-7" onclick="anadeInput(7, this)">4</div>
+				<div class="boton panel bot boton-7" onclick="anadeInput(7, this)">5</div>
+				<div class="boton panel bot boton-7" onclick="anadeInput(7, this)">6</div>
+				<div class="boton panel bot boton-7" onclick="anadeInput(7, this)">7</div>
+				<div class="boton panel bot boton-7" onclick="anadeInput(7, this)">8</div>
+				<div class="boton panel bot boton-7" onclick="anadeInput(7, this)">9</div>
+				<div class="boton panel bot boton-7" onclick="anadeInput(7, this);sustituyePuntoDecimal('#valor-7')">.</div>
+				<div class="boton panel bot boton-7" onclick="anadeInput(7, this)">0</div>
+				<div class="boton panel bot boton-7" onclick="$('#valor-7').val($('#valor-7').val().substring(0,$('#valor-7').val().length -1));pulsarFeedBack(this)"><span class="material-icons">backspace</span></div>
+			</div>
+
+			<span id="" onclick="actualizaVerificacion({{verificacion.id}}, 0, 0)" class="izquierda boton_upload boton panel aceptar invisible"><span class="material-icons">save</span> Gardar</span>
+			<span id="" onclick="actualizaVerificacion({{verificacion.id}}, 0, 1)" class="izquierda boton_upload boton panel finalizar invisible"><span class="material-icons">picture_as_pdf</span> Finalizar</span>
+			<div id="opciones_finalizado" class="invisible">
+				<span id="aptitud">Verificación APTA <span class="material-icons verde">check_circle</span></span>
+				<div class="grid_container grbot botonera_opciones">
+					<div class="boton opciones panel bot" onclick="nuevaVerificacion(0, 1)"><span class="material-icons">add_circle_outline</span> Nova verificación</div>
+					<div class="boton opciones panel bot" onclick="window.location = '/verificaciones';"><span class="material-icons">arrow_back</span> Volver a listado</div>
+					<div id='ver_informe' class="boton opciones panel bot" onclick=""><span class="material-icons">verified</span> Ver informe</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endblock %}
+
+	{% block menuLat %}{% include resultados.menu %}{% endblock %}

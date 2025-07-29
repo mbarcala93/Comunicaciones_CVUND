@@ -1,0 +1,20 @@
+<div id="elem_parametro{{parametro.id}}" class="elem_parametro grid_container grid_analiticas grid{{elemento.id}}">
+  <span id="textoActual{{elemento.id}}-22-{{parametro.id}}" class="texto editar{{elemento.id}}">{{ parametro.etiqueta if parametro.etiqueta else '-' }}</span>
+  <input id="valorActual{{elemento.id}}-22-{{parametro.id}}vinculado" type="text" class="val{{elemento.id}} valor parametro invisible" onkeyup="" name="id_param" value="{{parametro.id_param if parametro.id_param}}">
+  <input id="seleccionActual{{elemento.id}}-22-{{parametro.id}}" type="text" class="ficha_ val{{elemento.id}} valor vinculado editar{{elemento.id}} invisible i_boton hermano{{parametro.id}}" oninput="editaInputLista(this)" value="{{ parametro.etiqueta if parametro.etiqueta }}" placeholder="Etiqueta" list="parametros"/><br class="val{{elemento.id}} valor invisible">
+  <span style="text-align:middle;" class="editar{{elemento.id}}">
+    {% if parametro.valor %}{{parametro.valor | numero_bonito}}{% else %}-{% endif %}
+  </span>
+  <input id="valor{{elemento.id}}-23-{{parametro.id}}" type="text" class="ficha_ val{{elemento.id}} valor parametro editar{{elemento.id}} invisible i_boton hermano{{parametro.id}}" onkeyup="editarInput(this, {{elemento.id}}, 1); sustituyePuntoDecimal(this);" name="valor" value="{% if parametro.valor %}{{parametro.valor}}{% else %}{% endif %}" placeholder="Valor"><br class="val{{elemento.id}} valor invisible">
+  <span class="editar{{elemento.id}}">
+    {% if parametro.unidades %}{{parametro.unidades}}{% else %}-{% endif %}
+  </span>
+  <input id="valor{{elemento.id}}-24-{{parametro.id}}" type="text" class="ficha_ val{{elemento.id}} valor parametro editar{{elemento.id}} invisible i_boton hermano{{parametro.id}}" onkeyup="editarInput(this, {{elemento.id}}, 1)" name="unidades" value="{% if parametro.unidades %}{{parametro.unidades}}{% else %}{% endif %}" placeholder="Unidades"><br class="val{{elemento.id}} valor invisible">
+
+  <input id="valor{{elemento.id}}-24bis-{{parametro.id}}" type="text" class="ficha_ val{{elemento.id}} valor parametro editar{{elemento.id}} invisible i_boton hermano{{parametro.id}}" onkeyup="editarInput(this, {{elemento.id}}, 1)" name="incertidumbre" value="{% if parametro.incertidumbre %}{{parametro.incertidumbre}}{% else %}{% endif %}" placeholder="Incertidumbre"><br class="val{{elemento.id}} valor invisible">
+
+  {% if estado_insp %}
+  <div class="hermano{{parametro.id}} ocupa_grid editar{{elemento.id}} invisible2"></div>
+  <span id="valor{{elemento.id}}-25-{{parametro.id}}" onclick="eliminaParametro({{parametro.id}},{{elemento.id}})" class="material-icons editar{{elemento.id}} invisible circulo_eliminar_parametro hermano{{parametro.id}}">remove_circle_outline</span>
+  {% endif %}
+</div>

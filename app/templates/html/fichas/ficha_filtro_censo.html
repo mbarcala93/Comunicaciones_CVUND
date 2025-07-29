@@ -1,0 +1,79 @@
+<div id="ficha_filtro" class="">
+  <div class="panel ficha">
+    <span class="derecha material-icons" onclick='filtra("{{sistema}}")'>table_chart</span>
+    <div id="formulario">
+      <h4>Censo</h4>
+      <span id='' class='etiqueta etiq'>Inspector censo<br></span>
+      <div class='grid_container grbot grid_botonera2'>
+        {% for inspector in inspectores %}
+        <div class='boton panel bot {% if diccionarios_filtro[0].censoæinspector_censo_prelim == inspector %}correcto{% elif diccionarios_filtro[1].censoæinspector_censo_prelim == inspector %}incorrecto{% endif %}' onclick='alternaInput("{{inspector}}", "1_{{loop.index}}", this, "");filtra("{{sistema}}")'>{{inspector}}</div>
+        <input id='valor-1_{{loop.index}}' class="invisible filtro" type="text" name="censoæinspector_censo_prelim" value="{{inpsector}}">
+        {% endfor %}
+      </div>
+      <span id='' class='etiqueta etiq'>Prioridade<br></span>
+      <div class='grid_container grbot grid_botonera2'>
+        <div class='boton panel bot {% if "1" | string in diccionarios_filtro[0].censoæprioridade_censo_prelim %}correcto{% elif "1" | string in diccionarios_filtro[1].censoæprioridade_censo_prelim %}incorrecto{% endif %}' onclick='alternaInput(1, "2_1", this, "");filtra("{{sistema}}")'>Alta</div>
+        <div class='boton panel bot {% if "2" | string in diccionarios_filtro[0].censoæprioridade_censo_prelim %}correcto{% elif "2" | string in diccionarios_filtro[1].censoæprioridade_censo_prelim %}incorrecto{% endif %}' onclick='alternaInput(2, "2_2", this, "");filtra("{{sistema}}")'>Media</div>
+        <div class='boton panel bot {% if "3" | string in diccionarios_filtro[0].censoæprioridade_censo_prelim %}correcto{% elif "3" | string in diccionarios_filtro[1].censoæprioridade_censo_prelim %}incorrecto{% endif %}' onclick='alternaInput(3, "2_3", this, "");filtra("{{sistema}}")'>Baixa</div>
+        <div class='boton panel bot {% if "4" | string in diccionarios_filtro[0].censoæprioridade_censo_prelim %}correcto{% elif "4" | string in diccionarios_filtro[1].censoæprioridade_censo_prelim %}incorrecto{% endif %}' onclick='alternaInput(4, "2_4", this, "");filtra("{{sistema}}")'>Moi baixa</div>
+        <div class='boton panel bot {% if "5" | string in diccionarios_filtro[0].censoæprioridade_censo_prelim %}correcto{% elif "5" | string in diccionarios_filtro[1].censoæprioridade_censo_prelim %}incorrecto{% endif %}' onclick='alternaInput(5, "2_5", this, "");filtra("{{sistema}}")'>Descoñecida</div>
+        <input id='valor-2_1' class="invisible filtro {% if '1' | string in diccionarios_filtro[0].censoæprioridade_censo_prelim %}correcto{% elif '1' | string in diccionarios_filtro[1].censoæprioridade_censo_prelim %}incorrecto{% endif %}" type="text" name="censoæprioridade_censo_prelim" value="1">
+        <input id='valor-2_2' class="invisible filtro {% if '2' | string in diccionarios_filtro[0].censoæprioridade_censo_prelim %}correcto{% elif '2' | string in diccionarios_filtro[1].censoæprioridade_censo_prelim %}incorrecto{% endif %}" type="text" name="censoæprioridade_censo_prelim" value="2">
+        <input id='valor-2_3' class="invisible filtro {% if '3' | string in diccionarios_filtro[0].censoæprioridade_censo_prelim %}correcto{% elif '3' | string in diccionarios_filtro[1].censoæprioridade_censo_prelim %}incorrecto{% endif %}" type="text" name="censoæprioridade_censo_prelim" value="3">
+        <input id='valor-2_4' class="invisible filtro {% if '4' | string in diccionarios_filtro[0].censoæprioridade_censo_prelim %}correcto{% elif '4' | string in diccionarios_filtro[1].censoæprioridade_censo_prelim %}incorrecto{% endif %}" type="text" name="censoæprioridade_censo_prelim" value="4">
+        <input id='valor-2_5' class="invisible filtro {% if '5' | string in diccionarios_filtro[0].censoæprioridade_censo_prelim %}correcto{% elif '5' | string in diccionarios_filtro[1].censoæprioridade_censo_prelim %}incorrecto{% endif %}" type="text" name="censoæprioridade_censo_prelim" value="5">
+      </div>
+
+      <span id='' class='etiqueta etiq'>Recomendacións<br></span>
+      <div class="">
+        <div class='boton panel bot {% if diccionarios_filtro[0].censoærecomendase_contacto_inicial == "1" %}correcto{% elif diccionarios_filtro[1].censoærecomendase_contacto_inicial == "1" %}incorrecto{% endif %}' onclick='alternaInput(1, 3, this, "");filtra("{{sistema}}")'>Recoméndase contacto</div>
+        <input id='valor-3' class='invisible filtro {% if diccionarios_filtro[0].censoærecomendase_contacto_inicial == "1" %}correcto{% elif diccionarios_filtro[1].censoærecomendase_contacto_inicial == "1" %}incorrecto{% endif %}' type="text" name="censoærecomendase_contacto_inicial" value="1">
+      </div><br>
+
+      <!-- <span id='' class='etiqueta etiq'>Recomendación avaliación inicial<br></span> -->
+      <div class="">
+        <div class='boton panel bot {% if diccionarios_filtro[0].censoærecomendase_inspeccion_inicial == "1" %}correcto{% elif diccionarios_filtro[1].censoærecomendase_inspeccion_inicial == "1" %}incorrecto{% endif %}' onclick='alternaInput(1, "3b", this, "");filtra("{{sistema}}")'>Recoméndase avaliación</div>
+        <input id='valor-3b' class='invisible filtro {% if diccionarios_filtro[0].censoærecomendase_inspeccion_inicial == "1" %}correcto{% elif diccionarios_filtro[1].censoærecomendase_inspeccion_inicial == "1" %}incorrecto{% endif %}' type="text" name="censoærecomendase_inspeccion_inicial" value="1">
+      </div><br>
+
+      <!-- <span id='' class='etiqueta etiq'>Recomendación control<br></span> -->
+      <div class="">
+        <div class='boton panel bot {% if diccionarios_filtro[0].censoærecomendase_control == "1" %}correcto{% elif diccionarios_filtro[1].censoærecomendase_control == "1" %}incorrecto{% endif %}' onclick='alternaInput(1, "3c", this, "");filtra("{{sistema}}")'>Recoméndase control</div>
+        <input id='valor-3c' class='invisible filtro {% if diccionarios_filtro[0].censoærecomendase_control == "1" %}correcto{% elif diccionarios_filtro[1].censoærecomendase_control == "1" %}incorrecto{% endif %}' type="text" name="censoærecomendase_control" value="1">
+      </div>
+
+      <span id='' class='etiqueta etiq'>Tramitación PV<br></span>
+      <div class='grid_container grbot grid_botonera2'>
+        <div class='boton panel bot {% if diccionarios_filtro[0].censoæsolicitude_permiso == "1" %}correcto{% elif diccionarios_filtro[1].censoæsolicitude_permiso == "1" %}incorrecto{% endif %}' onclick='alternaInput(1, 4, this, "");filtra("{{sistema}}")'>Solicitude PV</div>
+        <input id='valor-4' class='invisible filtro {% if diccionarios_filtro[0].censoæsolicitude_permiso == "1" %}correcto{% elif diccionarios_filtro[1].censoæsolicitude_permiso == "1" %}incorrecto{% endif %}' type="text" name="censoæsolicitude_permiso" value="1">
+        <div class='boton panel bot {% if diccionarios_filtro[0].censoæinforme_augas == "1" %}correcto{% elif diccionarios_filtro[1].censoæinforme_augas == "1" %}incorrecto{% endif %}' onclick='alternaInput(1, 5, this, "");filtra("{{sistema}}")'>Informe Augas</div>
+        <input id='valor-5' class='invisible filtro {% if diccionarios_filtro[0].censoæinforme_augas == "1" %}correcto{% elif diccionarios_filtro[1].censoæinforme_augas == "1" %}incorrecto{% endif %}' type="text" name="censoæinforme_augas" value="1">
+        <div class='boton panel bot {% if diccionarios_filtro[0].censoæper_con == "1" %}correcto{% elif diccionarios_filtro[1].censoæper_con == "1" %}incorrecto{% endif %}' onclick='alternaInput(1, 6, this, "");filtra("{{sistema}}")'>Permiso concendido</div>
+        <input id='valor-6' class='invisible filtro {% if diccionarios_filtro[0].censoæper_con == "1" %}correcto{% elif diccionarios_filtro[1].censoæper_con == "1" %}incorrecto{% endif %}' type="text" name="censoæper_con" value="1">
+        <div class='boton panel bot {% if diccionarios_filtro[0].censoærequire_PV == "1" %}correcto{% elif diccionarios_filtro[1].censoærequire_PV == "1" %}incorrecto{% endif %}' onclick='alternaInput(1, 7, this, "");filtra("{{sistema}}")'>Require PV</div>
+        <input id='valor-7' class='invisible filtro {% if diccionarios_filtro[0].censoærequire_PV == "1" %}correcto{% elif diccionarios_filtro[1].censoærequire_PV == "1" %}incorrecto{% endif %}' type="text" name="censoærequire_PV" value="1">
+      </div>
+
+      <!-- <h4>Categorías</h4> -->
+      {% for categoria, listado in categorias.items() %}
+      <span class="expande{{categoria}} derecha material-icons invisible" onclick="expandir('{{categoria}}')">expand_less</span>
+      <span class="expande{{categoria}} derecha material-icons" onclick="expandir('{{categoria}}')">expand_more</span>
+      <span id='' class='etiqueta etiq' onclick="expandir('{{categoria}}')">{{categoria}}</span><br>
+        <div class="grid_container grid_botonera1 expande{{categoria}} invisible">
+          {% for elemento in listado %}
+          <div class='boton panel bot {% if elemento | string in diccionarios_filtro[0]["censoæ" + categoria] %}correcto{% elif elemento | string in diccionarios_filtro[1]["censoæ" + categoria] %}incorrecto{% endif %}' onclick='alternaInput("{{elemento}}", "8_{{categoria}}_{{loop.index}}", this, "");filtra("{{sistema}}")'>{{elemento}}</div><br>
+          <input id='valor-8_{{categoria}}_{{loop.index}}' class='invisible filtro {% if elemento in diccionarios_filtro[0]["censoæ"+categoria] %}correcto{% elif elemento in diccionarios_filtro[1]["censoæ" + categoria] %}incorrecto{% endif %}' type="text" name="censoæ{{categoria}}" value="{{elemento}}">
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="linea"></div>
+    {% include "html/fichas/ficha_filtro_inspecciones.html" %}
+
+  </div>
+</div>
+
+<script type="text/javascript">
+
+
+</script>

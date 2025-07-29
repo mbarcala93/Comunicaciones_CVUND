@@ -1,0 +1,238 @@
+{% extends "html/imprimir/base_imprimir.html" %}
+	{% block titulo %}<title>Verificacion {{verificacion.parametro}}</title>{% endblock %}
+	{% block scripts %}
+
+	{% endblock %}
+	{% block scripts2 %}
+	<style>
+		@font-face {
+	    font-family: 'etelka_light_proregular';
+	    src: url('{{resultados.ruta_static}}/tipos/etelka-light-pro_16165-webfont.woff2') format('woff2'),
+	         url('{{resultados.ruta_static}}/tipos/etelka-light-pro_16165-webfont.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+
+	@font-face {
+	   font-family: 'Material Icons';
+	   font-style: normal;
+	   font-weight: 400;
+	   src: url({{resultados.ruta_static}}/tipos/MaterialIcons-Regular.woff2) format('woff2'),
+	        url({{resultados.ruta_static}}/static/tipos/MaterialIcons-Regular.ttf) format('truetype');
+	}
+	</style>
+	{% endblock %}
+	{% block nome_paxina %}<span id="nome_paxina" alt="Verificación">Páxina de verificacións</span>{% endblock %}
+
+	{% block logo_izquierda %}
+	<svg version="1.1" id="logoCZ" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 317.74 89" style="enable-background:new 0 0 317.74 89;" xml:space="preserve">
+	<style type="text/css">
+		.st0{fill:#00B2E3;}
+		.st1{fill:#003764;}
+	</style>
+	<g>
+		<g>
+			<g>
+				<path class="st0" d="M252.74,54.83c0.36,0.27,0.85,0.27,1.22,0l20.02-14.5c0.23-0.12,0.41-0.36,0.5-0.61l-0.01-30.39     c0.14-0.43-0.01-0.9-0.38-1.17c-0.19-0.13-0.4-0.2-0.62-0.19c-0.21,0-0.42,0.06-0.6,0.2l-20.01,14.49     c-0.24,0.13-0.42,0.36-0.51,0.62v30.38C252.22,54.1,252.38,54.57,252.74,54.83z"/>
+				<path class="st0" d="M255.35,57.14c0.14,0.43,0.54,0.73,1,0.73l31.11,0.04c0.23,0,0.48-0.11,0.67-0.25l20.18-14.35     c0.37-0.26,0.53-0.73,0.39-1.17c-0.13-0.43-0.54-0.73-0.99-0.73l-31.09-0.04h-0.02c-0.23,0-0.48,0.1-0.67,0.25l-20.18,14.35     C255.37,56.24,255.21,56.71,255.35,57.14z"/>
+			</g>
+			<path class="st0" d="M299.73,15.33h-13.23c-0.48,0-0.87,0.39-0.87,0.87v13.23c0,0.48,0.39,0.87,0.87,0.87h13.23    c0.48,0,0.88-0.39,0.88-0.87V16.2C300.61,15.72,300.22,15.33,299.73,15.33z"/>
+		</g>
+		<g>
+			<path class="st0" d="M145.42,66.47v10.35h-1.07V66.47H145.42z"/>
+			<path class="st0" d="M151.11,76.82h-1.07V66.47h1.45c0.88,1.31,1.79,2.74,2.73,4.29c0.85,1.42,1.71,2.91,2.57,4.47v-8.76h1.08    v10.35h-1.28c-1.67-3.11-3.5-6.2-5.49-9.27V76.82z"/>
+			<path class="st0" d="M168.78,72.13h-2.7v-0.86h3.77v5.42c-0.37,0.12-0.88,0.21-1.53,0.27c-0.54,0.05-1.09,0.07-1.63,0.07    c-1.66,0-2.85-0.39-3.56-1.16c-0.78-0.83-1.17-2.27-1.17-4.32c0-2.04,0.39-3.45,1.17-4.25c0.69-0.72,1.88-1.08,3.56-1.08    c1.03,0,1.99,0.13,2.9,0.4l-0.34,0.94c-0.67-0.26-1.52-0.39-2.54-0.39c-0.7,0-1.26,0.05-1.66,0.15c-0.47,0.12-0.85,0.32-1.11,0.61    c-0.55,0.59-0.82,1.8-0.82,3.62c0,1.83,0.27,3.06,0.82,3.68c0.48,0.56,1.41,0.85,2.78,0.85c0.38,0,0.77-0.03,1.17-0.09    c0.36-0.04,0.66-0.09,0.91-0.16V72.13z"/>
+			<path class="st0" d="M181.28,66.47v0.89h-6.01v3.47h4.26v0.89h-4.26v4.2h6.01v0.89h-7.08V66.47H181.28z"/>
+			<path class="st0" d="M185.96,76.82h-1.07V66.47h1.45c0.88,1.31,1.79,2.74,2.73,4.29c0.85,1.42,1.71,2.91,2.57,4.47v-8.76h1.08    v10.35h-1.28c-1.67-3.11-3.5-6.2-5.49-9.27V76.82z"/>
+			<path class="st0" d="M198.43,66.47v10.35h-1.07V66.47H198.43z"/>
+			<path class="st0" d="M210.13,66.47v0.89h-6.01v3.47h4.26v0.89h-4.26v4.2h6.01v0.89h-7.08V66.47H210.13z"/>
+			<path class="st0" d="M218.36,66.47c1.07,0,1.85,0.3,2.33,0.91c0.41,0.5,0.61,1.19,0.61,2.09c0,0.81-0.21,1.45-0.64,1.92    c-0.51,0.54-1.29,0.82-2.35,0.82c0.36,0.12,0.86,0.59,1.5,1.43c0.6,0.77,1.31,1.84,2.12,3.19h-1.34c-1.7-2.99-2.96-4.49-3.79-4.49    h-2v4.49h-1.07V66.47H218.36z M214.81,67.36v4.04h3.47c1.22,0,1.83-0.65,1.83-1.95c0-1.4-0.58-2.09-1.75-2.09H214.81z"/>
+			<path class="st0" d="M226.96,63.81h1.37l-2.36,1.92h-0.99L226.96,63.81z M225.4,66.47v10.35h1.07V66.47H225.4z"/>
+			<path class="st0" d="M238.2,76.82c-0.13-0.33-0.23-0.58-0.31-0.76l-0.94-2.44h-5.05c-0.4,1.14-0.75,2.2-1.07,3.19h-1.05    c0.61-1.79,1.23-3.52,1.86-5.18c0.67-1.77,1.36-3.49,2.05-5.17h1.83c0.62,1.84,1.26,3.64,1.92,5.4c0.35,0.93,0.68,1.8,1.01,2.61    c0.34,0.86,0.66,1.64,0.96,2.33H238.2z M234.34,67.3c-0.21,0.51-0.39,0.97-0.55,1.37c-0.2,0.49-0.38,0.95-0.54,1.37    c-0.39,0.98-0.73,1.88-1.03,2.7h4.4c-0.64-1.77-1.26-3.58-1.86-5.43H234.34z"/>
+		</g>
+		<g>
+			<path class="st1" d="M11.5,35.09c1.63-1.7,4.42-2.55,8.38-2.55c2.42,0,4.69,0.31,6.82,0.94l-0.81,2.27    c-1.56-0.63-3.55-0.94-5.97-0.94c-1.65,0-2.96,0.11-3.91,0.35c-1.12,0.28-1.99,0.76-2.62,1.43c-1.28,1.37-1.92,4.2-1.92,8.49    c0,4.29,0.64,7.16,1.92,8.63c1.14,1.3,3.32,1.96,6.53,1.96c2.4,0,4.39-0.3,5.97-0.91L26.7,57c-2.07,0.65-4.35,0.98-6.82,0.98    c-3.91,0-6.71-0.91-8.38-2.72c-1.84-1.96-2.76-5.35-2.76-10.17C8.74,40.29,9.66,36.96,11.5,35.09z"/>
+			<path class="st1" d="M50.28,49.03c0,3.49-0.84,5.91-2.52,7.23c-0.79,0.63-1.82,1.08-3.07,1.36c-1.12,0.23-2.53,0.35-4.23,0.35    c-1.68,0-3.07-0.12-4.19-0.35c-1.26-0.28-2.29-0.73-3.07-1.36c-1.7-1.33-2.55-3.74-2.55-7.23v-15.9h2.55v15.93    c0,2.68,0.61,4.51,1.85,5.48c1.02,0.82,2.84,1.22,5.45,1.22c2.59,0,4.41-0.42,5.45-1.26c1.21-1,1.82-2.82,1.82-5.45V33.14h2.52    V49.03z"/>
+			<path class="st1" d="M91.09,33.14c2.51,0,4.34,0.71,5.48,2.13c0.96,1.16,1.43,2.81,1.43,4.93c0,1.91-0.5,3.41-1.5,4.51    c-1.19,1.28-3.03,1.92-5.52,1.92c0.84,0.28,2.02,1.4,3.53,3.35c1.42,1.82,3.09,4.32,5,7.51h-3.14    c-4.01-7.03-6.98-10.55-8.91-10.55h-4.72v10.55h-2.52V33.14H91.09z M82.74,35.23v9.5h8.18c2.87,0,4.29-1.53,4.29-4.58    c0-3.28-1.37-4.93-4.12-4.93H82.74z"/>
+			<path class="st1" d="M111.49,57.49h-2.55V35.23h-8.46v-2.09h19.43v2.09h-8.42V57.49z"/>
+			<path class="st1" d="M138.5,52c-0.77-1.91-1.56-3.96-2.37-6.15c-1.54-4.15-3.04-8.39-4.51-12.72h-4.29    c-1.63,3.94-3.24,7.99-4.82,12.16c-1.47,3.91-2.92,7.98-4.37,12.19h2.48c0.75-2.33,6.49-18.02,6.95-19.18    c0.37-0.93,0.8-2,1.29-3.21h1.01c1.4,4.36,7.34,20.61,7.34,20.61c0.19,0.42,0.43,1.02,0.73,1.78h2.83    C140.05,55.86,139.29,54.03,138.5,52z"/>
+			<path class="st1" d="M74,52c-0.77-1.91-1.56-3.96-2.38-6.15c-1.54-4.15-3.04-8.39-4.51-12.72h-4.3    c-1.63,3.94-3.24,7.99-4.82,12.16c-1.47,3.91-2.92,7.98-4.37,12.19h2.48c0.74-2.33,6.48-18.02,6.95-19.18    c0.37-0.93,0.8-2,1.29-3.21h1.02c1.4,4.36,7.34,20.61,7.34,20.61c0.19,0.42,0.43,1.02,0.73,1.78h2.83    C75.55,55.86,74.79,54.03,74,52z"/>
+			<path class="st1" d="M237.94,52c-0.77-1.91-1.56-3.96-2.38-6.15c-1.54-4.15-3.04-8.39-4.51-12.72h-4.3    c-1.63,3.94-3.24,7.99-4.82,12.16c-1.46,3.91-2.92,7.98-4.37,12.19h2.48c0.75-2.33,6.49-18.02,6.95-19.18    c0.38-0.93,0.81-2,1.3-3.21h1.01c1.39,4.36,7.33,20.61,7.33,20.61c0.18,0.42,0.43,1.02,0.74,1.78h2.83    C239.48,55.86,238.73,54.03,237.94,52z"/>
+			<path class="st1" d="M144.56,56.48c2.8-3.47,5.54-6.99,8.25-10.55c2.84-3.75,5.44-7.31,7.79-10.69h-14.71v-2.09h18.35v0.91    c-2.49,3.68-5.13,7.37-7.9,11.07c-2.7,3.61-5.4,7.03-8.1,10.27h15.37v2.1h-19.04V56.48z"/>
+			<path class="st1" d="M170,55.36c-1.79-1.91-2.69-5.3-2.69-10.17c0-4.8,0.9-8.15,2.69-10.06c1.63-1.72,4.41-2.58,8.35-2.58    c3.93,0,6.73,0.86,8.38,2.58c1.79,1.91,2.69,5.27,2.69,10.06c0,4.87-0.9,8.26-2.69,10.17c-1.63,1.75-4.43,2.62-8.38,2.62    C174.41,57.98,171.63,57.1,170,55.36z M171.88,36.6c-1.23,1.44-1.85,4.33-1.85,8.66c0,4.15,0.62,6.96,1.85,8.46    c1.15,1.37,3.3,2.06,6.47,2.06c3.21,0,5.4-0.69,6.57-2.06c1.23-1.49,1.85-4.31,1.85-8.46c0-4.33-0.62-7.22-1.85-8.66    c-1.12-1.28-3.3-1.92-6.57-1.92C175.13,34.67,172.98,35.32,171.88,36.6z"/>
+			<path class="st1" d="M197.67,57.49h-2.51V33.14h3.42c2.07,3.07,4.22,6.44,6.43,10.1c2,3.33,4.02,6.84,6.04,10.52V33.14h2.55v24.35    h-3.01c-3.94-7.31-8.25-14.58-12.93-21.8V57.49z"/>
+		</g>
+	</g>
+	</svg>
+	{% endblock %}
+
+	{% block titulo_encabezado %}<div id=''>RE01-ITV0{% if verificacion.parametro == 'pH' %}1{% elif verificacion.parametro == 'condutividade' %}2{% else %}3{% endif %} Folla de verificación de medidores de {{verificacion.parametro}}</div>{% endblock %}
+	{% block logo_derecha %}<div style="text-align: right; margin-top:15px;">Edición: 03<br>07/06/2022</div>{% endblock %}
+
+	{% block todo %}
+	<div class="pie_pagina">
+		<span id="num_pax1" class="num_pag">Verificación {{verificacion.parametro}} | {{verificacion.fecha_fin}} | Páxina </span>
+	</div>
+	<div id="todo" class="grid_container grid_indice zurdo">
+		<div id="" class="pagina">
+			<div class="grid_container grid_columna2">
+				<div class="">
+					{% for sonda in sondas %}
+					{% if verificacion.id_sonda == sonda.id %}
+					<span class="etiqueta">Sonda</span>
+					<span class="">{{sonda.codigo}}</span><br>
+					<span class="etiqueta">Nº serie</span>
+					<span class="">{{sonda.n_serie}}</span><br>
+					<span class="etiqueta">Incerteza</span>
+					<span class="">{% if sonda.incertidumbre_porcentual %}{{(sonda.incertidumbre * 100) | numero_bonito }} %{% else %}{{sonda.incertidumbre  | numero_bonito}}{% endif %}</span><br>
+					{%endif %}
+					{% endfor %}
+				</div>
+				<div class="">
+					<span class="etiqueta">Inicio</span>
+					<span class="">{{verificacion.fecha_inicio}}</span><br>
+
+					<span class="etiqueta">Fin</span>
+					<span class="">{{verificacion.fecha_fin}}</span><br>
+				</div>
+			</div>
+
+			<div class="patrones linea"></div>
+
+			<div class="grid_container grid_columna2">
+				<div class="">
+					<h3>Patrón 1</h3>
+					<div class="grid_container grid_columna2">
+						
+						{% for patron in patrones %}{% if patron.id == verificacion.id_patron_1 or (patron.parametro == 'temperatura' and verificacion.parametro == 'temperatura') %}
+						<div class="">
+							<span class="etiqueta">Marca</span><br>
+							<span class="">{{patron.marca}}</span>
+						</div>
+						<div class="">
+							<span class="etiqueta">Modelo</span><br>
+							<span class="">{{patron.modelo}}</span>
+						</div>
+						<div class="">
+							<span class="etiqueta">Lote</span><br>
+							<span class="">{{patron.lote}}</span>
+						</div>
+						{% if patron.valor_nominal %}
+						<div class="">
+							<span class="etiqueta">Valor nominal</span><br>
+							<span class="">{{patron.valor_nominal | numero_bonito}} {% if patron.unidades %}{{patron.unidades}}{% endif %}</span>
+						</div>
+						{% elif verificacion.medicion_patron1 %}
+						<div class="">
+							<span class="etiqueta">Valor medido</span><br>
+							<span class="">{{verificacion.medicion_patron1 | numero_bonito}} {% if patron.unidades %}{{patron.unidades}}{% endif %}</span>
+						</div>
+						{% endif %}
+						<div class="">
+							<span class="etiqueta">Medición</span><br>
+							<span class="grande">{{verificacion.medicion_1 | numero_bonito}} {% if patron.unidades %}{{patron.unidades}}{% endif %}</span>
+						</div>
+						<div class="">
+							{% if verificacion.temperatura_1%}
+							<span class="etiqueta">Temperatura</span><br>
+							<span class="">{{verificacion.temperatura_1 | numero_bonito}} ºC</span>
+						</div>
+						<div class="">
+							<span class="etiqueta">Valor patrón interpolado</span><br>
+							<span class="">{{verificacion.comprobacion.patron_1.valor_patron_interpolado | numero_bonito}} {% if patron.unidades %}{{patron.unidades}}{% endif %}</span>
+							{% endif %}
+						</div>
+						<div class="">
+							<span class="etiqueta">Diferencia</span><br>
+							<span class="">{{verificacion.comprobacion.patron_1.diferencia | numero_bonito}} {% if verificacion.comprobacion.patron_1.incertidumbre_porcentual %} %{% endif %}</span>
+							{% if verificacion.comprobacion.patron_1.valido%}
+							<span {% if resultados.archivo == "pdf" %}class="verde" style="font-weight: bold">OK{% else %}class="material-icons verde">check_circle{% endif %}</span>
+							{% else %}
+							<span {% if resultados.archivo == "pdf" %}class="rojo" style="font-weight: bold">KO{% else %}class="material-icons rojo">highlight_off{% endif %}</span>
+							{% endif %}
+						</div>
+						{% endif %}{% endfor %}
+					</div>
+				</div>
+
+				<div class="">
+					<h3>Patrón 2</h3>
+					<div class="grid_container grid_columna2">
+						{% for patron in patrones %}{% if patron.id == verificacion.id_patron_2 or (patron.parametro == 'temperatura' and verificacion.parametro == 'temperatura') %}
+						<div class="">
+							<span class="etiqueta">Marca</span><br>
+							<span class="">{{patron.marca}}</span>
+						</div>
+						<div class="">
+							<span class="etiqueta">Modelo</span><br>
+							<span class="">{{patron.modelo}}</span>
+						</div>
+						<div class="">
+							<span class="etiqueta">Lote</span><br>
+							<span class="">{{patron.lote}}</span>
+						</div>
+						{% if patron.valor_nominal %}
+						<div class="">
+							<span class="etiqueta">Valor nominal</span><br>
+							<span class="">{{patron.valor_nominal | numero_bonito}} {% if patron.unidades %}{{patron.unidades}}{% endif %}</span>
+						</div>
+						{% elif verificacion.medicion_patron2 %}
+						<div class="">
+							<span class="etiqueta">Valor medido</span><br>
+							<span class="">{{verificacion.medicion_patron2 | numero_bonito}} {% if patron.unidades %}{{patron.unidades}}{% endif %}</span>
+						</div>
+						{% endif %}
+						<div class="">
+							<span class="etiqueta">Medición</span><br>
+							<span class="grande">{{verificacion.medicion_2 | numero_bonito}} {% if patron.unidades %}{{patron.unidades}}{% endif %}</span>
+						</div>
+						<div class="">
+							{% if verificacion.temperatura_2%}
+							<span class="etiqueta">Temperatura</span><br>
+							<span class="">{{verificacion.temperatura_2 | numero_bonito}} ºC</span>
+						</div>
+						<div class="">
+							<span class="etiqueta">Valor patrón interpolado</span><br>
+							<span class="">{{verificacion.comprobacion.patron_2.valor_patron_interpolado | numero_bonito}} {% if patron.unidades %}{{patron.unidades}}{% endif %}</span>
+							{% endif %}
+						</div>
+						<div class="">
+							<span class="etiqueta">Diferencia</span><br>
+							<span class="">{{verificacion.comprobacion.patron_2.diferencia | numero_bonito}} {% if verificacion.comprobacion.patron_2.incertidumbre_porcentual %} %{% endif %}</span>
+							{% if verificacion.comprobacion.patron_2.valido %}
+							<span {% if resultados.archivo == "pdf" %}class="verde" style="font-weight: bold">OK{% else %}class="material-icons verde">check_circle{% endif %}</span>
+							{% else %}
+							<span {% if resultados.archivo == "pdf" %}class="rojo" style="font-weight: bold">KO{% else %}class="material-icons rojo">highlight_off{% endif %}</span>
+							{% endif %}
+						</div>
+						{% endif %}{% endfor %}
+					</div>
+				</div>
+			</div>
+			<div class="linea"></div>
+
+			<h3>Resultados da verificación</h3>
+			<span class="etiqueta">Criterio de aceptabilidade</span><br>
+			{% for sonda in sondas %}
+			{% if verificacion.id_sonda == sonda.id %}
+			<span class="">{% if sonda.incertidumbre_porcentual %}{{(sonda.incertidumbre * 100) | numero_bonito}} %{% else %}{{sonda.incertidumbre | numero_bonito}}{% endif %}</span><br>
+			{% endif %}{% endfor %}
+			<span class="etiqueta">Resultado da verificacion</span><br>
+			<span class="">{% if verificacion.comprobacion.patron_1.valido and verificacion.comprobacion.patron_2.valido %}APTO{% else %}NON APTO{% endif %}</span><br>
+
+			<span class="etiqueta">Observacións</span><br>
+			{% if verificacion.comprobacion.patron_1.valido == 1 and verificacion.comprobacion.patron_2.valido == 1 %}
+			 <span>Trala medición dos dous patrones descritos, obsérvase que a verificación é POSITIVA e o equipo considérase APTO para a realización da/s inspección/s.</span>
+			{% else %}
+			<span class="rojo">Trala medición dos dous patrones descritos, obsérvase que a verificación é NEGATIVA e o equipo considérase NON APTO para a realización da/s inspección/s.</span>
+			{% endif %}
+			{% if verificacion.observaciones %}{{verificacion.observaciones}}{% endif %}
+			<br>
+
+			<span class="etiqueta">Verificación realizada por </span>
+			<span class="">{{verificacion.inspector}}</span><br>
+
+
+		</div>
+	</div>
+	{% endblock %}

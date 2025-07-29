@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="robots" content="noindex">
+  <title>Ficha industria {{industria.sistema}}_{{industria.cod_industria}}</title>
+	<link rel="stylesheet" href="static/css/leaflet.css" crossorigin=""/>
+	<link rel="icon" href="{{url_for('static', filename='/images/CZ_FAV.png')}}" type="image/png"/>
+	<script src="static/js/leaflet.js" crossorigin=""></script>
+	<link rel="stylesheet" href="{{url_for('static', filename='/css/estilo_imprimir.css')}}">
+	<script type="text/javascript">const mq = window.matchMedia( "(min-width: 968px)" );</script>
+</head>
+
+
+<body>
+	<!-- <div class="pie_pagina">
+	<span id="num_pax1" class="num_pag"></span>
+</div> -->
+	<div class="cabecera">
+		<!-- <div class="encabezado" style=""> -->
+			<div id="logos">
+				<div class="izquierda">
+					<img id="logoXunta" src="{{url_for('static', filename='/images/logo_augas.png')}}" alt="augas">
+				</div>
+
+				<div class="derecha">
+					<img id="logoAT" src="{{url_for('static', filename='/images/logoCZ.svg')}}" alt="AT">
+				</div>
+			</div>
+			<div class="nome_proxecto">
+				<div>
+					Servizo de Apoio Técnico para o control de verteduras de usuarios non domésticos e para a supervisión e auditoría de redes de saneamento e estacións depuradoras de augas residuais.<br>
+					Clave: AUG-2023-0006
+				</div>
+			</div>
+		<!-- </div> -->
+		<div class="bloque">
+			<div class="rotulo">
+				REFERENCIA CENSO
+			</div>
+			<div class="contenido_bloque grid_columna3">
+				<div class="columna">
+					<span class="etiqueta">Referencia censo de vertedura:</span>
+					<span class="valor">{{industria.sistema}}_{{industria.cod_industria}}</span>
+				</div>
+				<div class="columna">
+					<span class="etiqueta">Código de vertedura:</span>
+					<span class="valor">{{industria.cod_industria}}</span>
+				</div>
+				<div class="columna">
+					<span class="etiqueta">Nome instalación:</span>
+					<span class="valor">{{industria.nome_industria}}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="" class="pagina">
+
+		<div class="bloque">
+			<div class="rotulo">
+				DATOS DE CONTACTO DA EMPRESA
+			</div>
+			<div class="contenido_bloque grid_columna2">
+				<div class="">
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Razón social da empresa:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.razon_social %}{{industria.razon_social}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">CIF/NIF:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.cif %}{{industria.cif}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Dirección:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.direccion %}{{industria.direccion}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Nome e cargo contacto:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.nome_interlocutor %}{{industria.nome_interlocutor}}{% else %}-{% endif %}{% if industria.cargo %}, {{industria.cargo}}{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">DNI persoa de contacto:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.dni %}{{industria.dni}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+
+				</div>
+
+				<div class="">
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Teléfono:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.telefono_1 %}{{industria.telefono_1}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<!-- <div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Tf2:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.telefono_2 %}{{industria.telefono_2}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div> -->
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">email:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.email %}{{industria.email}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Web:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.web %}{{industria.web}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Coord. X (UTM ETS89):</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if coordenadas.industria %}{{coordenadas.industria[0] | int }}{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Coord. Y (UTM ETS89):</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if coordenadas.industria %}{{coordenadas.industria[1] | int }}{% endif %}</span><br class="largo">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="contenido_bloque grid_columna2">
+				<div class="contenedor_foto">
+					<img id="foto_industria" src="/static_p/fotos/{% if not industria.ruta_foto %}sin_foto.png{% else %}{{industria.ruta_foto}}{% endif %}" alt="Foto">
+				</div>
+				<div id="mapid" class="mapa_pequeno"></div>
+			</div>
+		</div>
+
+		<div class="bloque">
+			<div class="rotulo">
+				DATOS ADMINISTRATIVOS ACERCA DA VERTEDURA
+			</div>
+			<div class="contenido_bloque grid_columna2">
+				<div class="">
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Concello:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.concello %}{{industria.concello}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Outras ent. administr.:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.outras_entidades_admin %}{{industria.outras_entidades_admin}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Sistema de saneamento:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.sistema %}{{industria.sistema}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Concello EDAR:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.cod_concello_sistema %}{{industria.cod_concello_sistema}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Actividade:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.actividade %}{{industria.actividade}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">CNAE:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.CNAE %}{{industria.CNAE}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Coord. X Punto Vertedura:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if coordenadas.PV %}{{coordenadas.PV[0] | int }}{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Coord. Y Punto Vertedura:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if coordenadas.PV %}{{coordenadas.PV[1] | int }}{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+				</div>
+
+				<div class="">
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Permiso Solicitado:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.solicitude_permiso %}Si{% else %}Non consta{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Informe Augas de Galicia:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.informe_augas %}Si{% else %}Non consta{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Permiso concedido:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.per_con %}Si{% else %}Non consta{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Observacións:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.observacions_pv %}{{industria.observacions_pv}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Doc. Normativo Local:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.doc_normativo %}{{industria.doc_normativo}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">D.N. Local adaptado a Decreto 141/2012:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.adaptado_decreto %}{{industria.adaptado_decreto}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="bloque">
+			<div class="rotulo">
+				PRIORIDADE SEGUNDO CENSO PRELIMINAR
+			</div>
+			<div class="contenido_bloque grid_columna2">
+				<div class="">
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Comentarios censo preliminar:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.comentario_prior_censo_prelim %}{{industria.comentario_prior_censo_prelim}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+				</div>
+				<div class="">
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Prioridade:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.prioridade_censo_prelim == 1 %}Alta{% elif industria.prioridade_censo_prelim == 2 %}Media{% elif industria.prioridade_censo_prelim == 3 %}Baixa{% elif industria.prioridade_censo_prelim == 4 %}Moi baixa{% else %}Descoñecida{% endif %}</span><br class="largo">
+						</div>
+					</div>
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Recoméndase insp. inicial</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.recomendase_contacto_inicial == 1 %}Si{% else %}Non{% endif %}</span><br class="largo">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% for inspeccion in inspecciones %}{% if inspeccion.tipo_inspeccion == 0 %}
+		<div class="bloque">
+			<div class="rotulo">
+				INSPECCIÓN CONTACTO INICIAL (Sen mostraxe)
+			</div>
+			<div class="contenido_bloque grid_columna2">
+				<div class="">
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Data:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if inspeccion.fecha %}{{inspeccion.fecha[6:8]}}/{{inspeccion.fecha[4:6]}}/{{inspeccion.fecha[0:4]}}{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Código de inspección:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if inspeccion.cod_inspeccion %}{{inspeccion.cod_inspeccion}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Nome e cargo de interlocutor:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if inspeccion.persona_presente %}{{inspeccion.persona_presente}}{% else %}-{% endif %}{% if inspeccion.cargo_persona_presente %}, {{inspeccion.cargo_persona_presente}}{% endif %}</span><br class="largo">
+						</div>
+					</div>
+					
+					
+				</div>
+				
+				<div class="">
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">DNI interlocutor:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if inspeccion.DNI_persona_presente %}{{industria.DNI_persona_presente}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+	
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Sistema de tratamento:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.tratamiento %}{{industria.tratamiento}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Prioridade revisada:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.prioridade == 1 %}Alta{% elif industria.prioridade == 2 %}Media{% elif industria.prioridade == 3 %}Baixa{% elif industria.prioridade == 4 %}Moi baixa{% else %}Descoñecida{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Recoméndase avaliación:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if industria.recomendase_inspeccion_inicial == 1 %}Si{% elif industria.recomendase_inspeccion_inicial == 0 %}Non{% endif %}</span><br class="largo">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="grid_columna_observaciones">
+				<div class="contenido_sub_bloque ">
+					<div class="columna">
+						<span class="etiqueta">Observado polo inspector:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{% if inspeccion.observado_inspector %}{{inspeccion.observado_inspector}}{% else %}-{% endif %}</span><br class="largo">
+					</div>
+				</div>
+	
+				<div class="contenido_sub_bloque ">
+					<div class="columna">
+						<span class="etiqueta">Manifestado polo inspeccionado:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">
+							{% if inspeccion.produccion_habitual %}Producción habitual: {{inspeccion.produccion_habitual}}. {% endif %}
+							{% if inspeccion.produccion_inspeccion %}Producción día da inspección: {{inspeccion.produccion_inspeccion}}<br>{% endif %}
+							{{inspeccion.manifestado_inspeccionado}}</span><br class="largo">
+					</div>
+				</div>
+
+			</div>
+
+
+
+		</div>{% endif %}{% endfor %}
+
+	</div>
+	{% for inspeccion in inspecciones %}{% if inspeccion.tipo_inspeccion != 0 %}
+	<div class=""></div>
+	<div class="hueco saltopagina">	</div>
+		<div class="cabecera">
+			<!-- <div class="encabezado" style=""> -->
+				<div id="logos">
+					<div class="izquierda">
+						<img id="logoXunta" src="{{url_for('static', filename='/images/logo_augas.png')}}" alt="augas">
+					</div>
+
+					<div class="derecha">
+						<img id="logoAT" src="{{url_for('static', filename='/images/logoCZ.svg')}}" alt="AT">
+					</div>
+				</div>
+				<div class="nome_proxecto">
+					<div>
+						Servizo de Apoio Técnico para o control de verteduras de usuarios non domésticos e para a supervisión e auditoría de redes de saneamento e estacións depuradoras de augas residuais.<br>
+						Clave: AUG-2023-0006
+					</div>
+				</div>
+			<!-- </div> -->
+			<div class="bloque">
+				<div class="rotulo">
+					REFERENCIA CENSO
+				</div>
+				<div class="contenido_bloque grid_columna3">
+					<div class="columna">
+						<span class="etiqueta">Referencia censo de vertedura:</span>
+						<span class="valor">{{industria.sistema}}_{{industria.cod_industria}}</span>
+					</div>
+					<div class="columna">
+						<span class="etiqueta">Código de vertedura:</span>
+						<span class="valor">{{industria.cod_industria}}</span>
+					</div>
+					<div class="columna">
+						<span class="etiqueta">Nome instalación:</span>
+						<span class="valor">{{industria.nome_industria}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="" class="pagina2">
+
+		<div class="bloque">
+			<div class="rotulo">
+				INSPECCIÓN AVALIACIÓN E CONTROL: I{{'%02d' %(loop.index-1)}}
+			</div>
+			<div class="contenido_bloque grid_columna2">
+				<div class="">
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Tipo de inspección:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if inspeccion.tipo_inspeccion == 0 %}Contacto inicial{% elif inspeccion.tipo_inspeccion == 1 %}Avaliación inicial{% elif inspeccion.tipo_inspeccion == 2 %}Control{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Código de inspección:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if inspeccion.cod_inspeccion %}{{inspeccion.cod_inspeccion}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Data de inspección:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if inspeccion.fecha %}{{inspeccion.fecha[6:8]}}/{{inspeccion.fecha[4:6]}}/{{inspeccion.fecha[0:4]}}{% endif %}</span><br class="largo">
+						</div>
+					</div>
+					
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Referencia rexistro notificación a interesado:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if inspeccion.ref_registro_envio %}{{inspeccion.ref_registro_envio}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Data envío resultados a canon:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if inspeccion.fecha_envio_canon %}{{inspeccion.fecha_envio_canon}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+				</div>
+				
+				
+				<div class="">
+					
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Nome e cargo interlocutor:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{{inspeccion.persona_presente}},
+								{% if inspeccion.cargo_persona_presente %}{{inspeccion.cargo_persona_presente}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+					
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">DNI interlocutor:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if inspeccion.DNI_persona_presente %}{{inspeccion.DNI_persona_presente}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+					
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Produción habitual (segundo inspeccionado):</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if inspeccion.produccion_habitual %}{{inspeccion.produccion_habitual}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+					
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Produción día da inspección (segundo inspeccionado):</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if inspeccion.produccion_inspeccion %}{{inspeccion.produccion_inspeccion}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>					
+				</div>	
+			</div>
+			<div class="grid_columna_observaciones">
+				<div class="contenido_sub_bloque ">
+					<div class="columna">
+						<span class="etiqueta">Observado inspector:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{% if inspeccion.observado_inspector %}{{inspeccion.observado_inspector}}{% else %}-{% endif %}</span><br class="largo">
+					</div>
+				</div>
+				
+				<div class="contenido_sub_bloque ">
+					<div class="columna">
+						<span class="etiqueta">Manifestado polo inspeccionado:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{% if inspeccion.manifestado_inspeccionado %}{{inspeccion.manifestado_inspeccionado}}{% else %}-{% endif %}</span><br class="largo">
+					</div>
+				</div>
+			</div>
+
+			{% for muestra in muestras if muestra.id_inspecciones_ind == inspeccion.id %}
+			{% if loop.index > 1 %}
+
+		</div></div>
+			<div class="hueco saltopagina">	</div>
+			<div class="cabecera">
+				<div id="logos">
+					<div class="izquierda">
+						<img id="logoXunta" src="{{url_for('static', filename='/images/logo_augas.png')}}" alt="augas">
+					</div>
+
+					<div class="derecha">
+						<img id="logoAT" src="{{url_for('static', filename='/images/logoCZ.svg')}}" alt="AT">
+					</div>
+				</div>
+				<div class="nome_proxecto">
+					<div>
+						Servizo de Apoio Técnico para o control de verteduras de usuarios non domésticos e para a supervisión e auditoría de redes de saneamento e estacións depuradoras de augas residuais.<br>
+						Clave: AUG-2023-0006
+					</div>
+				</div>
+			<!-- </div> -->
+			<div class="bloque">
+				<div class="rotulo">
+					REFERENCIA CENSO
+				</div>
+				<div class="contenido_bloque grid_columna3">
+					<div class="columna">
+						<span class="etiqueta">Referencia censo de vertedura:</span>
+						<span class="valor">{{industria.sistema}}_{{industria.cod_industria}}</span>
+					</div>
+					<div class="columna">
+						<span class="etiqueta">Código de vertedura:</span>
+						<span class="valor">{{industria.cod_industria}}</span>
+					</div>
+					<div class="columna">
+						<span class="etiqueta">Nome instalación:</span>
+						<span class="valor">{{industria.nome_industria}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="" class="pagina2">
+
+		<div class="bloque">
+			<div class="rotulo">
+				INSPECCIÓN AVALIACIÓN E CONTROL: I{{'%02d' %(loop.index-1)}} (continuación)
+			</div>
+
+			{% endif %}
+			<div class="contenido_bloque grid_columna2">
+
+				<div class="contenido_sub_bloque grid_columna2">
+					<div class="columna">
+						<span class="etiqueta">Código de mostra:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{% if muestra.cod_muestra %}{{muestra.cod_muestra}}{% else %}-{% endif %}</span><br class="largo">
+					</div>
+				</div>
+	
+				<div class="contenido_sub_bloque grid_columna2">
+					<div class="columna">
+						<span class="etiqueta">Data de fin de análise:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{% if muestra.fecha_resultados %}{{muestra.fecha_resultados[6:8]}}/{{muestra.fecha_resultados[4:6]}}/{{muestra.fecha_resultados[0:4]}}{% else %}-{% endif %}</span><br class="largo">
+					</div>
+				</div>
+				<div class="contenido_sub_bloque grid_columna2">
+					<div class="columna">
+						<span class="etiqueta">Data envío resultados a interesado:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{% if inspeccion.fecha_registro_AG %}{{inspeccion.fecha_registro_AG[6:8]}}/{{inspeccion.fecha_registro_AG[4:6]}}/{{inspeccion.fecha_registro_AG[0:4]}}{% else %}-{% endif %}</span><br class="largo">
+					</div>
+				</div>
+			</div>
+			<div class="contenido_bloque grid_columna2">
+				<div class="columna">
+					<span class="etiqueta">Resultados Analíticos:</span><br class="largo">
+				</div>	
+			</div>
+			<div class="contenido_bloque grid_columna_analiticas">
+
+				<div class="tabla_resultados valor">
+					<table>
+						<tr>
+							<th class="encabezado_tabla">Parámetro</th>{% for analitica in analiticas if analitica.id_muestra == muestra.id %}
+							<th>{{analitica.etiqueta}}</th>{% endfor %}
+						</tr>
+						<tr>
+							<td class="encabezado_tabla">Uds.</td>{% for analitica in analiticas if analitica.id_muestra == muestra.id %}
+							<td>{% if analitica.unidades %}{{analitica.unidades}}{% else %}-{% endif %}</td>{% endfor %}
+						</tr>
+						<tr>
+							<td class="encabezado_tabla">Resultado</td>{% for analitica in analiticas if analitica.id_muestra == muestra.id %}
+							<td>{{analitica.valor | replace('.', ',')}}</td>{% endfor %}
+						</tr>
+						<tr>
+							<td class="encabezado_tabla">Resultado (con incerteza)</td>{% for analitica in analiticas if analitica.id_muestra == muestra.id %}
+							<td>
+								{% if analitica.valor and analitica.incertidumbre and analitica.etiqueta != 'pH' %}{{'%0.2f'| format(analitica.valor_sin_incertidumbre) | replace('.', ',') }}
+								{% elif analitica.valor and analitica.incertidumbre and analitica.etiqueta == 'pH' %}{{'%0.2f - %0.2f'| format(analitica.valor - analitica.incertidumbre, analitica.valor + analitica.incertidumbre) | replace('.', ',') }}{% else %}-{% endif %}
+							</td>{% endfor %}
+						</tr>
+						<tr>
+							<td class="encabezado_tabla">Límites Ordenanza Local</td>{% for analitica in analiticas if analitica.id_muestra == muestra.id %}
+							<td>{% if analitica.etiqueta in cumplimiento.local %}{{cumplimiento.local[analitica.etiqueta][analitica.id_muestra][1]}}{% endif %}</td>{% endfor %}
+						</tr>
+						<tr>
+							<td class="encabezado_tabla">Conforme a Ordenanza</td>{% for analitica in analiticas if analitica.id_muestra == muestra.id %}
+							<td class="{% if analitica.etiqueta in cumplimiento.local %}{% if cumplimiento.local[analitica.etiqueta][analitica.id_muestra][0]=='NON CONFORME' %}rojo{% elif cumplimiento.local[analitica.etiqueta][analitica.id_muestra][0]=='CONFORME' %}verde{% else %}amarillo{% endif %}{% endif %}">
+								{% if analitica.etiqueta in cumplimiento.local %}{{cumplimiento.local[analitica.etiqueta][analitica.id_muestra][0]}}{% endif %}
+							</td>{% endfor %}
+						</tr>
+						<tr>
+							<td class="encabezado_tabla">Límites Decreto 141/2012</td>{% for analitica in analiticas if analitica.id_muestra == muestra.id %}
+							<td>{% if analitica.etiqueta in cumplimiento.decreto %}{{cumplimiento.decreto[analitica.etiqueta][analitica.id_muestra][1]}}{% endif %}</td>{% endfor %}
+						</tr>
+						<tr>
+							<td class="encabezado_tabla">Conforme a Decreto</td>{% for analitica in analiticas if analitica.id_muestra == muestra.id %}
+							<td class="{% if analitica.etiqueta in cumplimiento.decreto %}{% if cumplimiento.decreto[analitica.etiqueta][analitica.id_muestra][0]=='NON CONFORME' %}rojo{% elif cumplimiento.decreto[analitica.etiqueta][analitica.id_muestra][0]=='CONFORME' %}verde{% else %}amarillo{% endif %}{% endif %}">
+								{% if analitica.etiqueta in cumplimiento.decreto %}{{cumplimiento.decreto[analitica.etiqueta][analitica.id_muestra][0]}}{% endif %}
+							</td>{% endfor %}
+						</tr>
+					</table>
+
+				</div>
+
+			</div>
+			{% endfor %}
+			<div class="contenido_bloque grid_columna2">
+				<div class="contenido_sub_bloque grid_columna2">
+					<div class="columna">
+						<span class="etiqueta">Rango de caudal observado en mostraxe:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{% if inspeccion.q_estimado %}{{inspeccion.q_estimado}}{% else %}-{% endif %}</span><br class="largo">
+					</div>
+
+					<div class="columna">
+						<span class="etiqueta">Outros:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">
+							{% if inspeccion.turbidez == 0 %}Transparente. {% elif inspeccion.turbidez == 1 %}Lixeiramente turbio. {% elif inspeccion.turbidez == 2 %}Turbio. {% elif inspeccion.turbidez == 3 %}Moi turbio. {% endif %}
+							{% if inspeccion.otros %}{{inspeccion.otros}}{% endif %}</span><br class="largo">
+					</div>
+				</div>
+
+				<div class="contenido_sub_bloque grid_columna1 ">
+					<div class="tabla_evaluacion">
+						<table>
+							<tr>
+								<td class="cabecera_vertical" rowspan="0">AVALIACIÓN</td>
+								<td>RESULTADO ANALÍTICO CONFORME / NON CONFORME</td>
+								<td class="centrado {% if inspeccion.conforme == 0 %}rojo{% elif inspeccion.conforme == 1 %}verde{% else %}amarillo{% endif %}">
+									{% if inspeccion.conforme == 0 %}NON CONFORME{% elif inspeccion.conforme == 1 %}CONFORME{% else %}-{% endif %}</td>
+							</tr>
+							<tr>
+								<td>AVALIACIÓN DA AFECCIÓN DA VERTEDURA AO SISTEMA DE SANEAMENTO</td>
+								<td class="centrado {% if inspeccion.evaluacion_afeccion_sistema == 0 %}verde{% elif inspeccion.evaluacion_afeccion_sistema == 1 %}amarillo{% elif inspeccion.evaluacion_afeccion_sistema == 2 %}rojo{% else %}amarillo{% endif %}">
+									{% if inspeccion.evaluacion_afeccion_sistema == 0 %}LEVE{% elif inspeccion.evaluacion_afeccion_sistema == 1 %}MEDIA{% elif inspeccion.evaluacion_afeccion_sistema == 2 %}GRAVE{% else %}-{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<td>AVALIACIÓN DA XESTIÓN/TRATAMENTO DA VERTEDURA POR PARTE DE EMPRESA</td>
+								<td class="centrado {% if inspeccion.evaluacion_gestion_vertido == 2 %}verde{% elif inspeccion.evaluacion_gestion_vertido == 1 %}amarillo{% elif inspeccion.evaluacion_gestion_vertido == 0 %}rojo{% else %}amarillo{% endif %}">
+									{% if inspeccion.evaluacion_gestion_vertido == 2 %}ADECUADA{% elif inspeccion.evaluacion_gestion_vertido == 1 %}MELLORABLE{% elif inspeccion.evaluacion_gestion_vertido == 0 %}INADECUADA{% else %}-{% endif %}
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="grid_columna_observaciones">
+				<div class="columna">
+					<span class="etiqueta">Comentarios acerca de resultados analíticos e avaliación da vertedura:</span><br class="largo">
+				</div>
+				<div class="columna">
+					<span class="valor">{% if inspeccion.comentarios_evaluacion %}{{inspeccion.comentarios_evaluacion}}{% else %}-{% endif %}</span><br class="largo">
+				</div>
+			</div>
+
+		</div>
+
+		</div>
+		{% endif %}{% endfor %}
+		<div class="hueco saltopagina">	</div>
+			<div class="cabecera">
+				<!-- <div class="encabezado" style=""> -->
+					<div id="logos">
+						<div class="izquierda">
+							<img id="logoXunta" src="{{url_for('static', filename='/images/logo_augas.png')}}" alt="augas">
+						</div>
+
+						<div class="derecha">
+							<img id="logoAT" src="{{url_for('static', filename='/images/logoCZ.svg')}}" alt="AT">
+						</div>
+					</div>
+					<div class="nome_proxecto">
+						<div>
+							Servizo de Apoio Técnico para o control de verteduras de usuarios non domésticos e para a supervisión e auditoría de redes de saneamento e estacións depuradoras de augas residuais.<br>
+							Clave: AUG-2023-0006
+						</div>
+					</div>
+				<!-- </div> -->
+				<div class="bloque">
+					<div class="rotulo">
+						REFERENCIA CENSO
+					</div>
+					<div class="contenido_bloque grid_columna3">
+						<div class="columna">
+							<span class="etiqueta">Referencia censo de vertedura:</span>
+							<span class="valor">{{industria.sistema}}_{{industria.cod_industria}}</span>
+						</div>
+						<div class="columna">
+							<span class="etiqueta">Código de vertedura:</span>
+							<span class="valor">{{industria.cod_industria}}</span>
+						</div>
+						<div class="columna">
+							<span class="etiqueta">Nome instalación:</span>
+							<span class="valor">{{industria.nome_industria}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		<div class="pagina3">
+			<div class="tabla_resultados valor">
+				<div class="rotulo">
+					RESUMO RESULTADOS ANALÍTICOS {{industria.nome_industria | upper }}
+				</div>
+				<table class="celda_ancha">
+					{% for fila in tabla_resumen %}
+					<tr>
+						{% for celda in fila %}
+						<td class="{{celda[1]}}">{{celda[0] | numero_bonito}}</td>
+						{% endfor %}
+					</tr>
+					{% endfor %}
+				</table>
+
+			</div>
+
+		</div>
+
+	<script src="static/js/mapa_base.js" crossorigin=""></script>
+	<script>{%include "js/mapa_" + resultados.mapa + ".js" %}</script>
+</body>

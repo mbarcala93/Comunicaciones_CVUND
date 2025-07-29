@@ -1,0 +1,30 @@
+<a href="/instalacions-{{auditoria.cod_edar}}" class="noDecorado">
+    <div class="panel menu con_foto neutro {% if auditoria.antigua %}gris{% endif %}">
+      <div>
+        <img src="/static_p/fotos_audit/tn/{{auditoria.foto if auditoria.foto else 'sin_foto.png'}}" class="derecha foto_boton" alt="Foto {{auditoria.nombre}}">
+      </div>
+       <div id="texto{{auditoria.id}}-1" class="texto ">{{auditoria.nombre[:18]}}{{ ' ...' if auditoria.nombre | length > 18 }}</div>   
+       <div>{{auditoria.fecha |fecha_hora_bonita("%m/%Y")}}</div>
+    </div>
+</a>
+<div class="invisible panel">
+    <span class="material-icons derecha">delete</span>
+    <div id="etiqueta{{auditoria.id}}-1" class="">Nome</div>
+    <input id="valor{{auditoria.id}}-1" class="" type="text" name="nombre" value="{{auditoria.nombre}}" placeholder="Nome">
+    <div id="etiqueta{{auditoria.id}}-2" class="">Código</div>
+    <input id="valor{{auditoria.id}}-2" class="" type="text" name="cod_edar" value="{{auditoria.cod_edar}}" placeholder="Código">
+
+
+    <div class="invisible boton_upload{{auditoria.id}} clicable boton panel aceptar boton_medio_grid" onclick="actualizaInspeccionElemento({{auditoria.id}})">
+     <span class="material-icons">check</span> Confirmar cambios
+   </div>
+   
+   <div class="invisible boton_upload{{auditoria.id}} clicable boton panel cancelar boton_medio_grid" onclick="cancelaActualiza()">
+     <span class="material-icons">cancel</span> Cancelar cambios
+   </div>
+   
+   <div class="check_uploadInsp{{auditoria.id}} invisible boton_completo_grid">
+     <div class="linea"></div>
+     <span class="material-icons check">check_circle</span> Cambios actualizados correctamente
+   </div>
+</div>

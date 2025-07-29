@@ -1,0 +1,54 @@
+@media (min-width: 968px) {
+  .grid_tablas {
+    grid-template-columns: 49% 49%;
+  }
+}
+
+@media (max-width: 967px) {
+  .grid_tablas {
+    grid-template-columns: auto;
+  }
+  #tabla_ajustes, #tabla_verificaciones {
+    font-size: 85%;
+  }
+  .escritorio {
+    display: none;
+  }
+}
+
+
+table {
+  cursor: pointer;
+  border: 1px solid;
+  border-collapse: collapse;
+}
+
+table > tbody > tr > th {
+  padding: 5px;
+  border: 1px dotted #888;
+}
+
+table > tbody > tr > td {
+  padding: 5px;
+  border: 1px dotted #888;
+}
+.material-icons {
+  vertical-align: bottom;
+}
+
+.opciones {
+  margin: 0 0 5px 0
+}
+
+tr.resaltado {
+  background-color: rgba(0, 80, 120, 0.1);
+  border-radius: 5px;
+}
+
+tr.pendiente {
+  background-color: rgba(180, 180, 0, 0.1);
+  border-radius: 5px;
+}
+tr.antigua {
+  display: none;
+}

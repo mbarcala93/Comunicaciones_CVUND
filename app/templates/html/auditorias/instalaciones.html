@@ -1,0 +1,56 @@
+{% extends "html/base.html" %}
+{% block titulo %}<title>Auditorías EDAR</title>{% endblock %}
+{% block scripts %}
+<script src="static/js/auditorias/auditorias.js" crossorigin=""></script>
+<script src="static/js/auditorias/importar_equipos.js" crossorigin=""></script>
+{% endblock %}
+{% block scripts2 %}
+<link rel="stylesheet" href="static/css/auditorias.css">
+{% endblock %}
+{% block nome_paxina %}{% endblock %}
+{% block todo %}
+<div id="todo" class="grid_container zurdo">
+    <div class="panel">
+        {% if session.ambito in ['admin', 'galicia'] %}
+        <span class="material-icons derecha noDecorado alineado" onclick="modoEdicion()">edit</span>
+        <span class="material-icons derecha noDecorado alineado" onclick="nuevaInstalacion(&quot;{{request.path.split('-')[1]}}&quot;)">add_circle_outline</span>
+        <a href="/fichas-{{resultados.cod_EDAR}}" class="material-icons derecha noDecorado alineado">print</a>
+        <span class="material-icons derecha noDecorado alineado" onclick="formularioSubirEquipos()">upload</span>
+        <a href="/_genera_plantilla_importacion-sistema{{resultados.cod_EDAR}}" class="material-icons derecha noDecorado">download</a>
+        {% endif %}
+        <h3>Instalacións {{resultados.cod_EDAR}}</h3>
+        <span>Auditada</span>
+        {% for auditoria in auditorias %}
+        <span id="" class="filtro_auditoria{{auditoria.id}} clicable {{'decorado' if session.id_auditoria == auditoria.id}} filtros_auditoria" onclick="cambiaFiltroAuditoria({{auditoria.id}})">{{auditoria.fecha | fecha_hora_bonita("%B-%Y") }}</span>
+        <span id="equipos_check" class="check_upload invisible">
+            <span class="material-icons check">check_circle</span> Datos de equipos actualizados correctamente.
+          </span>
+        {{', ' if not loop.last}}
+        {% endfor %}
+    </div>
+    <div id="panel_importaciones" class="invisible panel">
+        Instruccións:<br>
+        <ul>
+            <li>Descargue a folla de cálculo cos datos dos equipos da EDAR. <a href="/_genera_plantilla_importacion-sistema{{resultados.cod_EDAR}}" class="material-icons noDecorado">download</a></li>
+            <li>Mofique a folla de cálculo para os equipos existentes e engada novas liñas para os novos equipos.</li>
+            <li>Cargue na aplicación a folla de cálculo.</li>
+        </ul>
+        Consideracións para cubrir a folla de cálculo:
+        <ul>
+            <li>Non modifique a columna "id"</li>
+            <li>Avaliaranse todas as liñas da folla "Equipos". Se a liña ten valor na columna "id", sobreescribiranse os datos do equipo correspondente na base da datos. Se a liña non ten valor na columna "id", crearase un equipo novo.</li>
+            <li>Elimine as liñas da folla de cálculo que non desexe que sexan actualizas.</li>
+        </ul>
+        <input id="archivo_datos" type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="cargaEquipos('{{resultados.cod_EDAR}}')"/>
+    </div>
+    <div id="listado_instalaciones">
+        {% for instalacion in instalaciones %}
+        {% include 'html/auditorias/panel_instalacion.html' %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+{% block menuLat %}{% include 'html/auditorias/menu_lateral.html' %}{% endblock %}
+{% block mapa %}
+
+{% endblock %}

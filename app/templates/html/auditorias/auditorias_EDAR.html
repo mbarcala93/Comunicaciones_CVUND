@@ -1,0 +1,46 @@
+{% extends "html/base.html" %}
+	{% block titulo %}<title>Auditorías EDAR</title>{% endblock %}
+	{% block scripts %}
+	<script src="static/js/auditorias/auditorias.js" crossorigin=""></script>
+	{% endblock %}
+	{% block scripts2 %}
+	<link rel="stylesheet" href="static/css/auditorias.css">
+	{% endblock %}
+	{% block nome_paxina %}{% endblock %}
+	{% block todo %}
+	<div id="todo" class="zurdo">
+		{% if session.ambito in ['admin', 'galicia'] %}
+		<div class="panel" >
+			<span id="" class="clicable seleccionar_EDAR" onclick="seleccionarEDAR()">
+				<span class="material-icons">add_circle_outline</span>
+				<span class="medio">Engadir auditoría</span>
+			</span>
+			<span id="" class="clicable seleccionar_EDAR invisible" onclick="seleccionarEDAR()">
+				<span class="material-icons">cancel</span>
+				<span class="medio">Cancelar</span>
+			</span>
+			<span id="" class="seleccionar_EDAR invisible">
+				<h3>Escolla unha EDAR:</h3>
+				<div class="grid_container grid_fotos">
+					{% for edar in edars %}
+						<div class="panel boton" onclick="nuevaAuditoria({{edar.id}})">
+							<span>{{edar.nombre}}</span><br>
+							<span>{{edar.cod_edar}}</span>
+						</div>
+					{% endfor %}
+				</div>
+			</span>
+			<!-- <span class="derecha material-icons" onclick="modoEdicion()">edit</span> -->
+		</div>
+		{% endif %}
+		<div id="listado_auditorias" class="grid_container grid_fotos">
+			{% for auditoria in auditorias %}
+			{% include 'html/auditorias/boton_auditoria.html' %}
+			{% endfor %}		
+		</div>
+	</div>
+	{% endblock %}
+	{% block menuLat %}{% include 'html/menu_lateral.html' %}{% endblock %}
+	{% block mapa %}
+
+	{% endblock %}

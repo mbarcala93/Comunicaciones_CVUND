@@ -1,0 +1,30 @@
+.titulo {
+  font-size: 120%;
+}
+.caducidad.cercana {
+  font-weight: bold;
+}
+.datos_patron {
+  font-family: "Courier new";
+  font-size: 80%;
+}
+.boton.panel.invisible2 {
+  display: none;
+}
+.patron_ajuste.invisible2 {
+  display: none;
+}
+.material-icons {
+  vertical-align: bottom;
+}
+span.boton.panel.aceptar.boton_upload {
+  margin: 0 10px 0 0;
+}
+.boton.finalizar {
+  background-color: #21a45a;
+  color: ##0f4a29;
+}
+.botonera_opciones {
+  margin: 0;
+  padding: 0;
+}

@@ -1,0 +1,21 @@
+{% macro input_boton_numerico(etiqueta, indice, name, valor=None) %}
+<span>
+    <span class="etiqueta">{{etiqueta}}</span>
+</span>
+<input id='valor-{{indice}}' type='text' class='ficha_ valor val valor-{{indice}}' name='{{name}}' onkeyup="$(this).addClass('editado'); sustituyePuntoDecimal(this);$('.boton_upload').removeClass('invisible');" value='{{valor if valor else ""}}'><br class='val valor valor-{{indice}} '>
+
+<div class="grid_container grbot grid_botonera3">
+    <div class="boton panel bot boton-{{indice}}" onclick="anadeInput('{{indice}}', this)">1</div>
+    <div class="boton panel bot boton-{{indice}}" onclick="anadeInput('{{indice}}', this)">2</div>
+    <div class="boton panel bot boton-{{indice}}" onclick="anadeInput('{{indice}}', this)">3</div>
+    <div class="boton panel bot boton-{{indice}}" onclick="anadeInput('{{indice}}', this)">4</div>
+    <div class="boton panel bot boton-{{indice}}" onclick="anadeInput('{{indice}}', this)">5</div>
+    <div class="boton panel bot boton-{{indice}}" onclick="anadeInput('{{indice}}', this)">6</div>
+    <div class="boton panel bot boton-{{indice}}" onclick="anadeInput('{{indice}}', this)">7</div>
+    <div class="boton panel bot boton-{{indice}}" onclick="anadeInput('{{indice}}', this)">8</div>
+    <div class="boton panel bot boton-{{indice}}" onclick="anadeInput('{{indice}}', this)">9</div>
+    <div class="boton panel bot boton-{{indice}}" onclick="anadeInput('{{indice}}', this);sustituyePuntoDecimal('#valor-{{indice}}');">.</div>
+    <div class="boton panel bot boton-{{indice}}" onclick="anadeInput('{{indice}}', this)">0</div>
+    <div class="boton panel bot boton-{{indice}}" onclick="$('#valor-{{indice}}').val($('#valor-{{indice}}').val().substring(0,$('#valor-{{indice}}').val().length -1));pulsarFeedBack(this)"><span class="material-icons">backspace</span></div>
+</div>
+{% endmacro %}

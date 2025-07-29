@@ -1,0 +1,85 @@
+@media (min-width: 968px) {
+  .titulo_login {
+    color: #e6e6e6;
+    font-size: 180px;
+    text-align: center;
+
+    letter-spacing: -10px;
+    margin-bottom: 0px;
+    margin-top: 17vh;
+  }
+
+  .pie_login {
+  	height: 43px;
+  }
+}
+
+@media (max-width: 967px) {
+
+  .pie_login {
+  	height: 100px;
+  }
+  #texto_pe_login {
+    width: 211px;
+  }
+  .titulo_login {
+    color: #e6e6e6;
+    font-size: 80px;
+    text-align: center;
+    letter-spacing: -10px;
+    margin-bottom: 0px;
+    margin-top: 17vh;
+  }
+}
+
+@media (max-width: 766px) {
+
+}
+
+#form_login {
+  width:315px;
+  margin:0 auto;text-align:center;
+  color: #666;
+  margin-bottom: 7vh;
+}
+#form_login>span {
+  font-size: 13px;
+}
+#texto_pe_login {
+  margin-left:20px;
+  text-align:left;
+  float:left;
+}
+
+.pie_login {
+	border-top: 3px solid #666;
+	background-color: #666;
+	margin-top: 10px;
+	font-size: 11px;
+	padding-top: 10px;
+	color: #fff;
+  position: absolute;
+  width: 100%;
+}
+
+ul.lista_pie_login {
+  list-style-type: none !important;
+  padding:0;
+  margin-top: 4px;
+}
+ul.lista_pie_login li {
+  float: left;
+  margin: 0 2px 0 2px;
+}
+
+ul.lista_pie_login li a {
+  color:white;
+  text-decoration: none;
+}
+
+input.login {
+  width: 230px;
+  height: 30px;
+  margin-bottom: 0px;
+  padding-left: 5px;
+}

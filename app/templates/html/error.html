@@ -1,0 +1,22 @@
+{% extends "html/base.html" %}
+	{% block titulo %}<title>{{resultados.error}} - iRedes</title>{% endblock %}
+	{% block scripts %}
+	{% endblock %}
+	{% block nome_paxina %}<span id="nome_paxina" alt="{{resultados.error}}">{{resultados.error}} - {{resultados.texto}}</span>{% endblock %}
+	{% block todo %}
+	<div id="todo" class="zurdo">
+			<h1>{{resultados.error}}</h1>
+			<h3>{{resultados.texto}}</h3>
+			{{resultados.recomendacion}} Se o problema persiste contacte co administrador.
+			{% if pagina %}<a href="{{pagina}}">Ir á páxina actualizada.</a>{% endif %}
+
+
+
+	</div>
+	{% endblock %}
+
+	{% block menuLat %}{% include "html/menu_lateral.html" %}{% endblock %}
+
+	{% block mapa %}
+
+	{% endblock %}

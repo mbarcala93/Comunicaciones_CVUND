@@ -1,0 +1,24 @@
+{% extends "html/base.html" %}
+	{% block titulo %}<title>Inicio - iRedes</title>{% endblock %}
+	{% block scripts %}
+	<script src="static/js/laboratorio.js" crossorigin=""></script>
+	{% endblock %}
+	{% block scripts2 %}
+	<link rel="stylesheet" href="static/css/laboratorio.css">
+	{% endblock %}
+	{% block nome_paxina %}<span id="nome_paxina" alt="Inicio">Páxina de inicio</span>{% endblock %}
+	{% block todo %}
+	<div id="todo" class="grid_container grid_indice zurdo">
+		<div class="panel">
+			<span>Cargar ficheiro de laboratorio:</span><br>
+			<input type="file" name="laboratorio" onchange="cargaLaboratorio(this)" autocomplete="off" multiple="false">
+		</div>
+		<div id="comparacionMuestras"></div>
+	</div>
+	{% endblock %}
+
+	{% block menuLat %}{% include "html/menu_lateral.html" %}{% endblock %}
+
+	{% block mapa %}
+	{% endblock %}
+                                                                                    

@@ -1,0 +1,40 @@
+@media (min-width: 968px) {
+    .grid_fichas {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+@media (min-width: 1300px) {
+
+    .grid_fichas {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (min-width: 1800px) {
+
+    .grid_fichas {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width: 967px) {
+    .grid_fichas {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+.grid_fichas_muestras {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+h4.centrado {
+    text-align: center;
+}
+
+h2 {
+    margin: 10px 0 0 10px;
+    width: 70%;
+}

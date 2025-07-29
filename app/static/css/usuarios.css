@@ -1,0 +1,4 @@
+.contenedor_filtros {
+    grid-template-columns: 99fr 1fr;
+    margin-right: 10px ;
+  }

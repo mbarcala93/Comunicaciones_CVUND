@@ -1,0 +1,20 @@
+<aside class="compacto menu_lateral zurdo">
+  <span><i id="boton_abrir" class="icono_menu material-icons" onclick="abreMenu()">menu</i></span>
+  <span><i id="boton_cerrar" class="icono_menu material-icons invisible" onclick="cierraMenu()">close</i></span>
+  <br>
+  <ul>
+    <li{%if resultados.pagina == "inicio" %} class="resaltado"{% endif %}>
+      <a href="/">
+        <span id="" class=""><i class="material-icons {%if resultados.pagina ==  'inicio'%}resaltado{% endif %}">home</i></span>
+        <apartado class="texto_menu clicable">Inicio</apartado>
+      </a>
+    </li>
+    <li{%if resultados.pagina ==  "verificaciones"%} class="resaltado"{% endif %}>
+      <a href="/verificaciones" class="noDecorado">
+        <span id="" class=""><i class="material-icons {%if resultados.pagina ==  'verificaciones'%}resaltado{% endif %}">verified</i></span>
+        <apartado class="texto_menu clicable">Verificacións</apartado>
+      </a>
+    </li>
+
+  </ul>
+</aside>

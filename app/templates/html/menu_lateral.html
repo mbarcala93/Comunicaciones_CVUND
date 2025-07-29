@@ -1,0 +1,60 @@
+<aside class="compacto menu_lateral zurdo">
+  <span><i id="boton_abrir" class="icono_menu material-icons" onclick="abreMenu()">menu</i></span>
+  <span><i id="boton_cerrar" class="icono_menu material-icons invisible" onclick="cierraMenu()">close</i></span>
+  <br>
+  <ul>
+    <li{%if resultados.pagina == "inicio" %} class="resaltado"{% endif %}>
+      <a href="/">
+        <span id="" class=""><i class="material-icons {%if resultados.pagina == 'inicio'%}resaltado{% endif %}">home</i></span>
+        <apartado class="texto_menu clicable">Inicio</apartado>
+      </a>
+    </li>
+    <!-- <li{%if resultados.pagina == "permisos"%} class="resaltado">
+      <a href="/permisos">
+        <span id="" class=""><i class="material-icons {%if resultados.pagina == 'permisos'%}resaltado{% endif %}">supervised_user_circle</i></span>
+        <apartado class="texto_menu clicable">Permisos de usuario</apartado>
+      </a>
+    </li>-->
+    <!-- <li{%if resultados.pagina == "cambios"%} class="resaltado"{% endif %}>
+      <a href="/cambios">
+        <span id="" class=""><i class="material-icons {%if resultados.pagina == 'cambios'%}resaltado{% endif %}">restore</i></span>
+        <apartado class="texto_menu clicable">Cambios</apartado>
+      </a>
+    </li>{% endif %}
+    <li{%if resultados.pagina == "descargas"%} class="resaltado"{% endif %}>
+      <a href="/descargas{{resultados.cod_concello}}">
+        <span id="" class=""><i class="material-icons {%if resultados.pagina == 'descargas'%}resaltado{% endif %}">cloud_download</i></span>
+        <apartado class="texto_menu clicable">Descargas</apartado>
+      </a>
+    </li> -->
+    {% if session.ambito == 'admin' %}
+    <li{%if resultados.pagina == "usuarios"%} class="resaltado"{% endif %}>
+      <a href="/usuarios">
+        <span id="" class=""><i class="material-icons {%if resultados.pagina ==  'usuarios'%}resaltado{% endif %}">people</i></span>
+        <apartado class="texto_menu clicable">Usuarios</apartado>
+      </a>
+    </li>
+    <!-- <li{%if resultados.pagina == "estatisticas"%} class="resaltado"{% endif %}>
+      <a href="/estatisticas{{resultados.cod_concello}}">
+        <span id="" class=""><i class="material-icons {%if resultados.pagina == 'estatisticas'%}resaltado{% endif %}">insert_chart</i></span>
+        <apartado class="texto_menu clicable">Estatísticas</apartado>
+      </a>
+    </li> -->
+    <li{%if resultados.pagina == "verificaciones"%} class="resaltado"{% endif %}>
+      <a href="/verificaciones" class="noDecorado">
+        <span id="" class=""><i class="material-icons {%if resultados.pagina == 'verificaciones'%}resaltado{% endif %}">verified</i></span>
+        <apartado class="texto_menu clicable">Verificacións</apartado>
+      </a>
+    </li>
+    <li{%if resultados.pagina == "laboratorio"%} class="resaltado"{% endif %}>
+      <a href="/laboratorio" class="noDecorado">
+        <span id="" class=""><i class="material-icons {%if resultados.pagina == 'laboratorio'%}resaltado{% endif %}">science</i></span>
+        <apartado class="texto_menu clicable">Datos laboratorio</apartado>
+      </a>
+    </li>
+
+    {% endif %}
+
+
+  </ul>
+</aside>

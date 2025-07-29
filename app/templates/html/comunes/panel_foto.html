@@ -1,0 +1,20 @@
+<div id="foto{{foto.id}}" class='interior_panel rotable{{elemento}}{{foto.id}} revision revision{{foto.id_auditoria}} {{"invisible" if session.id_auditoria != foto.id_auditoria}}' {% if session.ambito in ['admin', 'galicia'] %}onclick='rota("{{elemento}}{{foto.id}}"){% endif %}'>
+    <div class='frontal_panel foto'>
+        <img src='/static_p/fotos_audit/{{foto.ruta}}'>
+        <span id=promocionadaPortada2{{foto.id}} class='material-icons promocionadaPortada2 {{"invisible" if not foto.portada}}'>star</span>
+        <span id=promocionadaPortada{{foto.id}} class='material-icons promocionadaPortada {{"invisible" if not foto.portada}}'>star</span>
+    </div>
+    {% if session.ambito in ['admin', 'galicia'] %}
+    <div class='trasero_panel foto'>
+        <b>{% if foto.tipo == 1 %}Principal{% elif foto.tipo == 2 %}Placa{% else %}Outras{% endif %}</b><br>
+        <span onclick='borraFoto({{foto.id}}, "{{elemento}}")'><span class='material-icons'>delete</span> Borrar foto</span><br>
+        <span onclick='giraFoto({{foto.id}}, "{{elemento}}")'><span class='material-icons'>rotate_right</span> Xirar foto</span><br>
+        {% if elemento == 'equipos' %}
+        <span onclick='promocionaAuditoria({{foto.id}}, "{{elemento}}")'><span class='material-icons '>star</span> Auditoría</span><br>
+        {% endif %}
+        <span onclick='cambiaTipo({{foto.id}}, 1, "{{elemento}}")'><span class='material-icons'>photo</span> Foto principal do elemento</span><br>
+        <span onclick='cambiaTipo({{foto.id}}, 2, "{{elemento}}")'><span class='material-icons'>photo</span> Foto da placa</span><br>
+        <span onclick='promocionaPortada({{foto.id}}, "{{elemento}}")'><span id=promocionaPortada{{foto.id}} class='material-icons {{"correcto" if foto.portada}}'>star</span> Portada</span>
+    </div>        
+    {% endif %}
+</div>

@@ -1,0 +1,14 @@
+<div id="elem_parametro{{parametro.id}}" class="elem_parametro grid_container grid_analiticas_plani grid{{elemento.id}}">
+    <span id="textoActual{{elemento.id}}-22-{{parametro.id}}" class="texto editar{{elemento.id}}">{{ parametro.etiqueta if parametro.etiqueta else '-' }}</span>
+    <input id="valorActual{{elemento.id}}-22-{{parametro.id}}vinculado" type="text" class="val{{elemento.id}} valor parametro invisible" onkeyup="" name="id_param" value="{{parametro.id_param if parametro.id_param}}">
+    <input id="seleccionActual{{elemento.id}}-22-{{parametro.id}}" type="text" class="ficha_ val{{elemento.id}} valor vinculado editar{{elemento.id}} invisible i_boton hermano{{parametro.id}}" oninput="editaInputLista(this)" value="{{ parametro.etiqueta if parametro.etiqueta }}" placeholder="Etiqueta" list="parametros"/><br class="val{{elemento.id}} valor invisible">
+
+    <input id="valor{{elemento.id}}-23-{{parametro.id}}" type="text" class="ficha_ val{{elemento.id}} valor parametro invisible" name="in_situ" value="{% if parametro.in_situ %}{{parametro.in_situ}}{% endif %}">
+
+    <span id="textoActual{{elemento.id}}-24-{{parametro.id}}" class="texto editar{{elemento.id}}">{%if parametro.sonda %}{{parametro.sonda}} - {{parametro.sonda_param}}{% endif %}</span>
+    <input id="valorActual{{elemento.id}}-24-{{parametro.id}}vinculado" type="text" class="val{{elemento.id}} valor parametro invisible" onkeyup="" name="id_sonda" value="{{parametro.id_sonda if parametro.id_sonda}}">
+    <input id="seleccionActual{{elemento.id}}-24-{{parametro.id}}" type="text" class="ficha_ val{{elemento.id}} valor vinculado editar{{elemento.id}} invisible i_boton hermano{{parametro.id}}" oninput="editaInputLista(this);marcaInSitu({{elemento.id}},{{parametro.id}})" value="{%if parametro.sonda %}{{parametro.sonda}} - {{parametro.sonda_param}}{% endif %}" placeholder="Sonda" list="sondas"/><br class="val{{elemento.id}} valor invisible">
+
+    <div class="hermano{{parametro.id}} ocupa_grid editar{{elemento.id}} invisible2"></div>
+    <span id="valor{{elemento.id}}-25-{{parametro.id}}" onclick="eliminaParametro({{parametro.id}},{{elemento.id}})" class="material-icons editar{{elemento.id}} invisible circulo_eliminar_parametro hermano{{parametro.id}}">remove_circle_outline</span>
+</div>

@@ -1,0 +1,190 @@
+<div id="ficha{{elemento.id}}" class="panel ficha inspeccion ficha{{elemento.id}}">
+
+    <div class="datos_principales">
+  
+  
+      <span onclick="ocultaFicha('inspecciones', {{elemento.id}})" class="material-icons derecha">visibility_off</span>
+      <span class="titulo_ficha t_ficha{{elemento.id}} confirma">{{elemento.cod_inspeccion}}</span>
+  
+      <br><i>{{elemento.sistema}}</i>
+      <span class="material-icons derecha editar{{elemento.id}} invisible" onclick="eliminarInspeccion({{elemento.id}})">delete</span>
+    </div>
+  
+    <div class="linea"></div>
+    <!-- <span id="" onclick="actualizaElemento('{{elemento.id}}')" class="invisible boton_upload{{elemento.id}} derecha editado clicable"><span class="material-icons">arrow_circle_up</span> Subir cambios<br></span> -->
+    <span class="invisible confirmar{{elemento.id}}">
+      <h3 class="titulo_ficha t_ficha confirma">Resumo de cambios:</h3>
+    </span>
+  
+    {% if resultados.permiso %}<span id="boton_editar{{elemento.id}}" onclick="modoEdicionVisor({{elemento.id}});$('.grid_analiticas_plani.grid{{elemento.id}}').toggleClass('editar_analiticas');$('.grid_envases.grid{{elemento.id}}').toggleClass('editar_envases');" class="material-icons derecha">edit</span>{% endif %}
+  
+    <span id="formulario{{elemento.id}}">
+      <!-- <span class="titulo_ficha t_ficha{{elemento.id}}">Datos da inspección<br></span> -->
+      <span class="apartado_ficha">
+  
+        <span id="etiqueta{{elemento.id}}-1b" class="etiqueta etiq{{elemento.id}} editar{{elemento.id}} invisible">Cód. inspección<br></span>
+        <input id="valor{{elemento.id}}-1b" type="text" class="ficha_ val{{elemento.id}} valor editar{{elemento.id}} inspeccion invisible" onkeyup="editarInput(this, {{elemento.id}})" name="cod_inspeccion" value="{% if elemento.cod_inspeccion %}{{elemento.cod_inspeccion}}{% endif %}"><br class="val{{elemento.id}} valor invisible">
+  
+        <span id="etiqueta{{elemento.id}}-1" class="etiqueta etiq{{elemento.id}} editar{{elemento.id}} invisible">Data planificada(aaaa/mm/dd)<br></span>
+        <span class="editar{{elemento.id}}">{{elemento.fecha[6:8]}}/{{elemento.fecha[4:6]}}/{{elemento.fecha[0:4]}}{% if elemento.hora %} {{elemento.hora}}{% endif %}<br></span>
+        <input id="valor{{elemento.id}}-1" type="text" class="ficha_ val{{elemento.id}} valor editar{{elemento.id}} inspeccion invisible" onkeyup="editarInput(this, {{elemento.id}})" name="fecha" value="{% if elemento.fecha %}{{elemento.fecha}}{% endif %}"><br class="val{{elemento.id}} valor invisible">
+        <span id="etiqueta{{elemento.id}}-1bis" class="etiqueta etiq{{elemento.id}} editar{{elemento.id}} invisible">Hora planificada<br class="invisible editar{{elemento.id}}"></span>
+        <input id="valor{{elemento.id}}-1bis" type="text" class="ficha_ val{{elemento.id}} valor editar{{elemento.id}} inspeccion invisible" onkeyup="editarInput(this, {{elemento.id}})" name="hora" value="{% if elemento.hora %}{{elemento.hora}}{% endif %}"><br class="val{{elemento.id}} valor invisible">
+  
+        <span id="etiquetaActual{{elemento.id}}-2" class="etiqueta etiq{{elemento.id}}">Inspector<br></span>
+        <span id="textoActual{{elemento.id}}-2" class="texto editar{{elemento.id}}">{{ elemento.inspector_rel }}</span>
+        <input id="valorActual{{elemento.id}}-2vinculado" type="text" class="val{{elemento.id}} valor inspeccion invisible" onkeyup="" name="inspector" value="{{elemento.inspector_rel if elemento.inspector_rel}}">
+        <input id="seleccionActual{{elemento.id}}-2" type="text" class="val{{elemento.id}} valor vinculado editar{{elemento.id}} invisible" oninput="editaInputLista(this)" value="{{ elemento.inspector_rel if elemento.inspector_rel }}" placeholder="Inspector" list="inspectores"/>
+        <!-- <span id="etiqueta{{elemento.id}}-2" class="etiqueta etiq{{elemento.id}} editar{{elemento.id}} invisible">Inspector<br></span>
+        <span class="editar{{elemento.id}}">{% if elemento.inspector %}{{elemento.inspector}}{% else %}-{% endif %}<br></span>
+        <input id="valor{{elemento.id}}-2" type="text" class="ficha_ val{{elemento.id}} valor editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="inspector" value="{% if elemento.inspector %}{{elemento.inspector}}{% endif %}"><br class="val{{elemento.id}} valor invisible"> -->
+        <span id="etiquetaActual{{elemento.id}}-51" class="etiqueta etiq{{elemento.id}}">Acompañante<br></span>
+        <span id="textoActual{{elemento.id}}-51" class="texto editar{{elemento.id}}">{{ elemento.supervisor }}</span>
+        <input id="valorActual{{elemento.id}}-51vinculado" type="text" class="val{{elemento.id}} valor inspeccion invisible" onkeyup="" name="supervisor" value="{{elemento.supervisor if elemento.supervisor}}">
+        <input id="seleccionActual{{elemento.id}}-51" type="text" class="val{{elemento.id}} valor vinculado editar{{elemento.id}} invisible" oninput="editaInputLista(this)" value="{{ elemento.supervisor if elemento.supervisor }}" placeholder="Acompañante" list="inspectores"/>
+  
+        <span id="etiqueta{{elemento.id}}-3" class="etiqueta etiq{{elemento.id}}">Tipo<br></span>
+        <span class="editar{{elemento.id}}">{% if elemento.tipo_inspeccion == 0 %}Contacto inicial{% elif elemento.tipo_inspeccion == 1 %}Avaliación inicial{% elif elemento.tipo_inspeccion == 2 %}Control{% else %}-{% endif %}<br></span>
+        <input id="valor{{elemento.id}}-3" type="text" class="ficha_ val{{elemento.id}} valor inspeccion invisible" onkeyup="editarInput(this, {{elemento.id}})" name="tipo_inspeccion" value="{% if elemento.tipo_inspeccion %}{{elemento.tipo_inspeccion}}{% endif %}"><br class="val{{elemento.id}} valor invisible">
+        <div class="grid_container grbot{{elemento.id}} grid_botonera2 invisible editar{{elemento.id}}">
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-3 {% if elemento.tipo_inspeccion == 0 %}pulsado{% endif %}" onclick="editaInput(0, 3, this, '{{elemento.id}}')">Contacto</div>
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-3 {% if elemento.tipo_inspeccion == 1 %}pulsado{% endif %}" onclick="editaInput(1, 3, this, '{{elemento.id}}')">Avaliación</div>
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-3 {% if elemento.tipo_inspeccion == 2 %}pulsado{% endif %}" onclick="editaInput(2, 3, this, '{{elemento.id}}')">Control</div>
+        </div>
+        <span id="etiqueta{{elemento.id}}-5" class="etiqueta etiq{{elemento.id}}">Consideracións previas<br></span>
+        <span class="editar{{elemento.id}}">{% if elemento.consideraciones_previas %}{{elemento.consideraciones_previas}}{% else %}-{% endif %}<br></span>
+        <textarea id="valor{{elemento.id}}-5" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="consideraciones_previas" value="" rows="8" cols="90">{% if elemento.consideraciones_previas %}{{elemento.consideraciones_previas}}{% endif %}</textarea>
+  
+        <span id="etiquetaActual{{elemento.id}}-39" class="etiqueta etiq{{elemento.id}}">Organismo solicitante<br></span>
+        <span id="textoActual{{elemento.id}}-39" class="texto editar{{elemento.id}}">{{ elemento.organismo_sol if elemento.organismo_sol else '-' }}</span>
+        <input id="valorActual{{elemento.id}}-39vinculado" type="text" class="val{{elemento.id}} valor inspeccion invisible" onkeyup="" name="id_organismo_sol" value="{{elemento.id_organismo_sol if elemento.id_organismo_sol}}">
+        <input id="seleccionActual{{elemento.id}}-39" type="text" class="val{{elemento.id}} valor vinculado editar{{elemento.id}} invisible" oninput="editaInputLista(this)" value="{{ elemento.organismo_sol if elemento.organismo_sol }}" placeholder="Organismo Solicitante" list="organismos"/>
+      </span>
+  
+      <span>
+        <span id="etiquetaActual{{elemento.id}}-6" class="etiqueta etiq{{elemento.id}}">Interlocutor<br></span>
+        <span id="textoActual{{elemento.id}}-6" class="texto editar{{elemento.id}}">{% if elemento.interlocutor %}{{ elemento.dni_interlocutor }} - {{ elemento.interlocutor }}{% else %}-{% endif %}</span>
+        <input id="valorActual{{elemento.id}}-6vinculado" type="text" class="val{{elemento.id}} valor inspeccion invisible" onkeyup="" name="id_interlocutor" value="{{elemento.id_interlocutor if elemento.id_interlocutor}}">
+        <input id="seleccionActual{{elemento.id}}-6" type="text" class="val{{elemento.id}} valor vinculado editar{{elemento.id}} invisible" oninput="editaInputLista(this)" value="{% if elemento.interlocutor %}{{ elemento.dni_interlocutor }} - {{ elemento.interlocutor }}{% else %}-{% endif %}" placeholder="Interlocutor" list="usuarios"/>
+  
+        <span id="etiqueta{{elemento.id}}-50" class="etiqueta etiq{{elemento.id}}">Descripción<br></span>
+        <span class="editar{{elemento.id}}">{% if elemento.descripcion %}{{elemento.descripcion}}{% else %}-{% endif %}<br></span>
+        <textarea id="valor{{elemento.id}}-50" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="descripcion" value="" rows="8" cols="90" placeholder="Información adicional a recompilar e observacións a ter en conta durante a inspección">{% if elemento.descripcion %}{{elemento.descripcion}}{% endif %}</textarea>
+        <br class="val{{elemento.id}} valor invisible">
+  
+        <span id="etiqueta{{elemento.id}}-40" class="etiqueta etiq{{elemento.id}}">Xustifucación mostras<br></span>
+        <span class="editar{{elemento.id}}">{% if elemento.justificacion_muestras %}{{elemento.justificacion_muestras}}{% else %}-{% endif %}<br></span>
+        <textarea id="valor{{elemento.id}}-40" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="justificacion_muestras" value="" rows="8" cols="90">{% if elemento.justificacion_muestras %}{{elemento.justificacion_muestras}}{% endif %}</textarea>
+        <br class="val{{elemento.id}} valor invisible">
+  
+        <span id="etiqueta{{elemento.id}}-41" class="etiqueta etiq{{elemento.id}}">Localización / Descripción punto de vertido<br></span>
+        <span class="editar{{elemento.id}}">{% if elemento.localizacion_pv %}{{elemento.localizacion_pv}}{% else %}-{% endif %}<br></span>
+        <textarea id="valor{{elemento.id}}-41" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="localizacion_pv" value="" rows="8" cols="90">{% if elemento.localizacion_pv %}{{elemento.localizacion_pv}}{% endif %}</textarea>
+        <br class="val{{elemento.id}} valor invisible">
+  
+        <span id="etiqueta{{elemento.id}}-42" class="etiqueta etiq{{elemento.id}}">Natureza vertido<br></span>
+        <span class="editar{{elemento.id}}">{% if elemento.naturaleza_vertido == 0 %}Indutrial{% elif elemento.naturaleza_vertido == 1 %}Augas Brancas{% elif elemento.naturaleza_vertido == 2 %}Auga salobre{% elif elemento.naturaleza_vertido == 3 %}Outro{% else %}-{% endif %}<br></span>
+        <input id="valor{{elemento.id}}-42" type="text" class="ficha_ val{{elemento.id}} valor inspeccion invisible" onkeyup="editarInput(this, {{elemento.id}})" name="naturaleza_vertido" value="{% if elemento.naturaleza_vertido %}{{elemento.naturaleza_vertido}}{% endif %}">
+        <br class="val{{elemento.id}} valor invisible">
+        <div class="grid_container grbot{{elemento.id}} grid_botonera2 invisible editar{{elemento.id}}">
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-42 {% if elemento.naturaleza_vertido == 0 %}pulsado{% endif %}" onclick="editaInput(0, 42, this, '{{elemento.id}}')">Indutrial</div>
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-42 {% if elemento.naturaleza_vertido == 1 %}pulsado{% endif %}" onclick="editaInput(1, 42, this, '{{elemento.id}}')">Augas Brancas</div>
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-42 {% if elemento.naturaleza_vertido == 2 %}pulsado{% endif %}" onclick="editaInput(2, 42, this, '{{elemento.id}}')">Auga salobre</div>
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-42 {% if elemento.naturaleza_vertido == 3 %}pulsado{% endif %}" onclick="editaInput(3, 42, this, '{{elemento.id}}')">Outro</div>
+        </div>
+  
+        <span id="etiqueta{{elemento.id}}-43" class="etiqueta etiq{{elemento.id}}">Arqueta rexistro<br></span>
+        <span class="editar{{elemento.id}}">{% if elemento.arqueta_registro == 0 %}Sí{% elif elemento.arqueta_registro == 1 %}Non{% elif elemento.arqueta_registro == 2 %}Descoñecese{% else %}-{% endif %}<br></span>
+        <input id="valor{{elemento.id}}-43" type="text" class="ficha_ val{{elemento.id}} valor inspeccion invisible" onkeyup="editarInput(this, {{elemento.id}})" name="arqueta_registro" value="{% if elemento.arqueta_registro %}{{elemento.arqueta_registro}}{% endif %}">
+        <br class="val{{elemento.id}} valor invisible">
+        <div class="grid_container grbot{{elemento.id}} grid_botonera2 invisible editar{{elemento.id}}">
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-43 {% if elemento.arqueta_registro == 0 %}pulsado{% endif %}" onclick="editaInput(0, 43, this, '{{elemento.id}}')">Sí</div>
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-43 {% if elemento.arqueta_registro == 1 %}pulsado{% endif %}" onclick="editaInput(1, 43, this, '{{elemento.id}}')">Non</div>
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-43 {% if elemento.arqueta_registro == 2 %}pulsado{% endif %}" onclick="editaInput(2, 43, this, '{{elemento.id}}')">Descoñecese</div>
+        </div>
+
+        <span id="etiqueta{{elemento.id}}-44" class="etiqueta etiq{{elemento.id}}">Documento Normativo<br></span>
+        <span id="texto{{elemento.id}}-44" class="texto editar{{elemento.id}}">{% for doc_norm in doc_normativos_ind if doc_norm.id_insp == elemento.id %}{{ doc_norm.titulo if doc_norm.titulo else '-' }}<br>{% endfor %}</span>
+        {% if doc_normativos|length >= 1 %}
+        <input id="valor{{elemento.id}}-44" type="text" class="valor val{{elemento.id}} inspeccion invisible" onkeyup="" name="ids_doc_normativo" value="{% for doc_norm in doc_normativos_ind if doc_norm.id_insp == elemento.id %}{{ doc_norm.id if doc_norm.id }},{% endfor %}">
+
+        <div class="grid_container grbot{{elemento.id}} grid_botonera1 invisible editar{{elemento.id}}">
+        {% for doc_norm in doc_normativos %}
+        <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-44 {% for doc_norm_ind in doc_normativo_ind if doc_norm_ind.id == doc_norm.id %}pulsado{% endfor %}" onclick="seleccionaInput({{doc_norm.id}}, ',', 44, this, '{{elemento.id}}')">{{doc_norm.titulo}}</div>
+        {% endfor %}
+        </div>
+        {% else %}
+        <span class="invisible editar{{elemento.id}}"><i>No existen Doc. Normativos especificos para esta industria</i></span>
+        {% endif %}
+  
+        <span id="etiqueta{{elemento.id}}-45" class="etiqueta etiq{{elemento.id}}">Comprobación LDN<br></span>
+        <span class="editar{{elemento.id}}">{% if elemento.ldn == 0 %}Sí{% elif elemento.ldn == 1 %}Non{% else %}-{% endif %}<br></span>
+        <input id="valor{{elemento.id}}-45" type="text" class="ficha_ val{{elemento.id}} valor inspeccion invisible" onkeyup="editarInput(this, {{elemento.id}})" name="ldn" value="{% if elemento.ldn %}{{elemento.ldn}}{% endif %}">
+        <br class="val{{elemento.id}} valor invisible">
+        <div class="grid_container grbot{{elemento.id}} grid_botonera2 invisible editar{{elemento.id}}">
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-45 {% if elemento.ldn == 0 %}pulsado{% endif %}" onclick="editaInput(0, 45, this, '{{elemento.id}}')">Sí</div>
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-45 {% if elemento.ldn == 1 %}pulsado{% endif %}" onclick="editaInput(1, 45, this, '{{elemento.id}}')">Non</div>
+        </div>
+  
+        <span id="etiqueta{{elemento.id}}-46" class="etiqueta etiq{{elemento.id}}">Mostra refrixerada<br></span>
+        <span class="editar{{elemento.id}}">{% if elemento.refrigerado == 0 %}Sí{% elif elemento.refrigerado == 1 %}Non{% else %}-{% endif %}<br></span>
+        <input id="valor{{elemento.id}}-46" type="text" class="ficha_ val{{elemento.id}} valor inspeccion invisible" onkeyup="editarInput(this, {{elemento.id}})" name="refrigerado" value="{% if elemento.refrigerado %}{{elemento.refrigerado}}{% endif %}">
+        <br class="val{{elemento.id}} valor invisible">
+        <div class="grid_container grbot{{elemento.id}} grid_botonera2 invisible editar{{elemento.id}}">
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-46 {% if elemento.refrigerado == 0 %}pulsado{% endif %}" onclick="editaInput(0, 46, this, '{{elemento.id}}')">Sí</div>
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-46 {% if elemento.refrigerado == 1 %}pulsado{% endif %}" onclick="editaInput(1, 46, this, '{{elemento.id}}')">Non</div>
+        </div>
+  
+        <span id="etiqueta{{elemento.id}}-47" class="etiqueta etiq{{elemento.id}}">Tipo de mostra<br></span>
+        <span class="editar{{elemento.id}}">{% if elemento.tipo_muestra == 0 %}Puntual{% elif elemento.tipo_muestra == 1 %}Composta{% else %}-{% endif %}<br></span>
+        <input id="valor{{elemento.id}}-47" type="text" class="ficha_ val{{elemento.id}} valor inspeccion invisible" onkeyup="editarInput(this, {{elemento.id}})" name="tipo_muestra" value="{% if elemento.tipo_muestra %}{{elemento.tipo_muestra}}{% endif %}">
+        <br class="val{{elemento.id}} valor invisible">
+        <div class="grid_container grbot{{elemento.id}} grid_botonera2 invisible editar{{elemento.id}}">
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-47 {% if elemento.tipo_muestra == 0 %}pulsado{% endif %}" onclick="editaInput(0, 47, this, '{{elemento.id}}')">Puntual</div>
+          <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-47 {% if elemento.tipo_muestra == 1 %}pulsado{% endif %}" onclick="editaInput(1, 47, this, '{{elemento.id}}')">Composta</div>
+        </div>
+  
+        <span id="etiqueta{{elemento.id}}-48" class="etiqueta etiq{{elemento.id}}">Motivo de elección do tipo de mostra<br></span>
+        <span class="editar{{elemento.id}}">{% if elemento.motivo_elec_muestra %}{{elemento.motivo_elec_muestra}}{% else %}-{% endif %}<br></span>
+        <textarea id="valor{{elemento.id}}-48" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="motivo_elec_muestra" value="" rows="8" cols="90">{% if elemento.motivo_elec_muestra %}{{elemento.motivo_elec_muestra}}{% endif %}</textarea>
+        <br class="val{{elemento.id}} valor invisible">
+  
+        <span id="etiqueta{{elemento.id}}-49" class="etiqueta etiq{{elemento.id}}">Motivo de elección dos parametros a analizar<br></span>
+        <span class="editar{{elemento.id}}">{% if elemento.motivo_elec_param %}{{elemento.motivo_elec_param}}{% else %}-{% endif %}<br></span>
+        <textarea id="valor{{elemento.id}}-49" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="motivo_elec_param" value="" rows="8" cols="90">{% if elemento.motivo_elec_param %}{{elemento.motivo_elec_param}}{% endif %}</textarea>
+        <br class="val{{elemento.id}} valor invisible">
+      </span>
+      <span id="parametros{{elemento.id}}" class="apartado_ficha apartado_muestras">
+        {% if elemento.estado_insp == 0 %}
+        {% for muestra in muestras %}
+        {% if muestra.id_inspecciones_ind == elemento.id %}
+        {% include 'html/fichas/ficha_muestra_plani.html' %}
+        {% endif %}{% endfor %}
+        {% endif %}
+      </span>
+        <span class="clicable invisible editar{{elemento.id}} val{{elemento.id}}" onclick="nuevaMuestra({{elemento.id}})"><span class="material-icons" style="">add_circle_outline</span> Nova mostra</span>
+       <div class="boton bot panel editar{{elemento.id}}" onclick="cerrarPlanificacion({{elemento.id}})">Cerrar planificicación</div>
+      <br>
+      <span id="" onclick="actualizaElemento({{elemento.id}})" class="invisible izquierda boton_upload{{elemento.id}} boton panel aceptar"><span class="material-icons">arrow_circle_up</span> Subir cambios</span>
+    <span class="check_upload{{elemento.id}} invisible">
+      <span class="material-icons check" style="">check_circle</span> Datos actualizados correctamente
+    </span>
+    <div class="linea invisible confirmar{{elemento.id}}"></div>
+    <br class="confirmar{{elemento.id}} invisible">
+    <span id="boton_confirmar{{elemento.id}}" class="invisible confirmar{{elemento.id}} clicable boton panel aceptar" onclick="ConfirmaActualizaElemento('inspección', '{{elemento.id}}')">
+      <span class="material-icons">check</span> Confirmar cambios
+    </span>
+    <br class="confirmar{{elemento.id}} invisible"><br class="confirmar{{elemento.id}} invisible"><br class="confirmar{{elemento.id}} invisible">
+    <span class="invisible confirmar{{elemento.id}} clicable boton panel cancelar" onclick="muestraFichaInspeccion('{{elemento.id}}', 0, 1);boton_actualizar_pulsado = 0;">
+      <span class="material-icons">cancel</span> Cancelar cambios
+    </span>
+    <br class="confirmar{{elemento.id}} invisible"><br class="confirmar{{elemento.id}} invisible">
+  </div>
+  
+  <script type="text/javascript">
+  
+    $( "span.numero{{elemento.id}}" ).each(function() {
+      sustituyeNumero(this);
+    });
+  </script>
+  

@@ -1,0 +1,19 @@
+{% macro elemento_menu(etiqueta, icono, href, pagina) %}
+<li class="{{'resaltado' if resultados.pagina == pagina}}">
+  <a href="{{href}}">
+    <span id="" class=""><i class="material-icons">{{icono}}</i></span>
+    <apartado class="texto_menu clicable">{{etiqueta}}</apartado>
+  </a>
+</li>
+{% endmacro %}
+
+<aside class="compacto menu_lateral zurdo">
+  <span><i id="boton_abrir" class="icono_menu material-icons" onclick="abreMenu()">menu</i></span>
+  <span><i id="boton_cerrar" class="icono_menu material-icons invisible" onclick="cierraMenu()">close</i></span>
+  <br>
+  <ul>
+    {{ elemento_menu("Tratamentos", "home", "/instalacions-" + resultados.cod_EDAR, "instalaciones") }}
+    {{ elemento_menu("Equipos", "list", "/equipos-edar-" + resultados.cod_EDAR, "equipos") }}
+    {{ elemento_menu("Revisións pendentes", "pending_actions", "/revisions_pendentes-" + resultados.cod_EDAR, "tareas_pte") }}    
+  </ul>
+</aside>

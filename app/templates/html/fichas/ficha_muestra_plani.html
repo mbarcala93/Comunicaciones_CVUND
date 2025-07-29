@@ -1,0 +1,25 @@
+<div id="elem_muestra{{muestra.id}}" class="elem_muestra">
+    <span class="material-icons derecha editar{{elemento.id}} invisible muestra{{muestra.id}}" onclick="eliminaMuestra({{muestra.id}})">delete</span>
+    <span id="etiqueta{{elemento.id}}-20_{{muestra.id}}" class="etiqueta etiq{{elemento.id}} muestra{{muestra.id}}">Cód. mostra</span>
+    <span class="editar{{elemento.id}} muestra{{muestra.id}}">{% if muestra.cod_muestra %}{{muestra.cod_muestra}}{% else %}-{% endif %}<br></span>
+    <input id="valor{{elemento.id}}-20_{{muestra.id}}" type="text" class="ficha_ val{{elemento.id}} valor muestra editar{{elemento.id}} invisible i_boton muestra{{muestra.id}}" onkeyup="editarInput(this, {{elemento.id}})" name="cod_muestra" value="{% if muestra.cod_muestra %}{{muestra.cod_muestra}}{% else %}{% endif %}"><br class="val{{elemento.id}} valor invisible">
+
+    <span id="etiqueta{{elemento.id}}-21_{{muestra.id}}" class="etiqueta etiq{{elemento.id}} hermano muestra{{muestra.id}}">Parámetros<br></span>
+    <span id="analiticas{{muestra.id}}" class="grid_container muestra{{muestra.id}} apartado_parametros">
+        {% for parametro in analiticas %}{% if parametro.id_muestra == muestra.id %}
+      {% include 'html/fichas/ficha_parametro_plani.html' %}
+      {% endif %}{% endfor %}
+    </span>
+  
+    <span class="clicable invisible editar{{elemento.id}} val{{elemento.id}} muestra{{muestra.id}}" onclick="nuevoParametro({{elemento.id}}, {{muestra.id}})"><span class="material-icons" style="">add_circle_outline</span> Engadir parámetro</span>
+  
+    <span id="etiqueta{{elemento.id}}-22_{{muestra.id}}" class="etiqueta etiq{{elemento.id}} hermano muestra{{muestra.id}}">Envases<br></span>
+    <span id="envases{{muestra.id}}" class="grid_container muestra{{muestra.id}} apartado_envases">
+        {% for envase in envases %}{% if envase.id_muestra == muestra.id %}
+      {% include 'html/fichas/ficha_envase_plani.html' %}
+      {% endif %}{% endfor %}
+    </span>
+    <span class="clicable invisible editar{{elemento.id}} val{{elemento.id}} muestra{{muestra.id}}" onclick="nuevoEnvase({{elemento.id}}, {{muestra.id}})"><span class="material-icons" style="">add_circle_outline</span> Engadir envase</span>
+  
+    <div class="linea val{{elemento.id}} muestra{{muestra.id}}"></div>
+  </div>

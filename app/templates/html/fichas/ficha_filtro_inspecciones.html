@@ -1,0 +1,61 @@
+<h4>Inspeccións industrias</h4>
+
+<span id='' class='etiqueta etiq'>Tipo inspección<br></span>
+<div class='grid_container grbot grid_botonera2'>
+  <div class='boton panel bot {% if diccionarios_filtro[0].inspeccionætipo_inspeccion == 0 %}correcto{% elif diccionarios_filtro[1].inspeccionætipo_inspeccion == 0 %}incorrecto{% endif %}' onclick='alternaInput(0, "20b_1", this, "");filtra("{{sistema}}")'>Contacto</div>
+  <div class='boton panel bot {% if diccionarios_filtro[0].inspeccionætipo_inspeccion == 1 %}correcto{% elif diccionarios_filtro[1].inspeccionætipo_inspeccion == 1 %}incorrecto{% endif %}' onclick='alternaInput(1, "20b_2", this, "");filtra("{{sistema}}")'>Avaliación</div>
+  <div class='boton panel bot {% if diccionarios_filtro[0].inspeccionætipo_inspeccion == 2 %}correcto{% elif diccionarios_filtro[1].inspeccionætipo_inspeccion == 2 %}incorrecto{% endif %}' onclick='alternaInput(2, "20b_3", this, "");filtra("{{sistema}}")'>Control</div>
+  <input id='valor-20b_1' class="invisible filtro {% if diccionarios_filtro[0].inspeccionætipo_inspeccion == 0 %}correcto{% elif diccionarios_filtro[1].inspeccionætipo_inspeccion == 0 %}incorrecto{% endif %}" type="text" name="inspeccionætipo_inspeccion" value="0">
+  <input id='valor-20b_2' class="invisible filtro {% if diccionarios_filtro[0].inspeccionætipo_inspeccion == 1 %}correcto{% elif diccionarios_filtro[1].inspeccionætipo_inspeccion == 1 %}incorrecto{% endif %}" type="text" name="inspeccionætipo_inspeccion" value="1">
+  <input id='valor-20b_3' class="invisible filtro {% if diccionarios_filtro[0].inspeccionætipo_inspeccion == 2 %}correcto{% elif diccionarios_filtro[1].inspeccionætipo_inspeccion == 2 %}incorrecto{% endif %}" type="text" name="inspeccionætipo_inspeccion" value="2">
+</div>
+
+
+<span id='' class='etiqueta etiq'>Avaliación vertido<br></span>
+<div class='grid_container grbot grid_botonera2'>
+  <div class='boton panel bot {% if diccionarios_filtro[0].inspeccionæfecha_evaluacion == "notnull" %}correcto{% elif diccionarios_filtro[1].inspeccionæfecha_evaluacion == "notnull" %}incorrecto{% endif %}' onclick='alternaInput(&quot;notnull&quot;, "20_1", this, "");filtra("{{sistema}}")'>Si</div>
+  <div class='boton panel bot {% if diccionarios_filtro[0].inspeccionæfecha_evaluacion == "null" %}correcto{% elif diccionarios_filtro[1].inspeccionæfecha_evaluacion == "null" %}incorrecto{% endif %}' onclick='alternaInput(&quot;null&quot;, "20_2", this, "");filtra("{{sistema}}")'>Pendiente</div>
+  <input id='valor-20_1' class="invisible filtro {% if diccionarios_filtro[0].inspeccionæfecha_evaluacion == 'notnull' %}correcto{% elif diccionarios_filtro[1].inspeccionæfecha_evaluacion == 'notnull' %}incorrecto{% endif %}" type="text" name="inspeccionæfecha_evaluacion" value="notnull">
+  <input id='valor-20_2' class="invisible filtro {% if diccionarios_filtro[0].inspeccionæfecha_evaluacion == 'null' %}correcto{% elif diccionarios_filtro[1].inspeccionæfecha_evaluacion == 'null' %}incorrecto{% endif %}" type="text" name="inspeccionæfecha_evaluacion" value="null">
+</div>
+
+<span id='' class='etiqueta etiq'>Conforme<br></span>
+<div class='grid_container grbot grid_botonera3'>
+  <div class='boton panel bot {% if diccionarios_filtro[0].inspeccionæconforme == "1" %}correcto{% elif diccionarios_filtro[1].inspeccionæconforme == "1" %}incorrecto{% endif %}' onclick='alternaInput(1, "21_1", this, "");filtra("{{sistema}}")'>Si</div>
+  <div class='boton panel bot {% if diccionarios_filtro[0].inspeccionæconforme == "0" %}correcto{% elif diccionarios_filtro[1].inspeccionæconforme == "0" %}incorrecto{% endif %}' onclick='alternaInput(0, "21_2", this, "");filtra("{{sistema}}")'>Non</div>
+  <div class='boton panel bot {% if diccionarios_filtro[0].inspeccionæconforme == "null" %}correcto{% elif diccionarios_filtro[1].inspeccionæconforme == "null" %}incorrecto{% endif %}' onclick='alternaInput(&quot;null&quot;, "21_3", this, "");filtra("{{sistema}}")'>Pte</div>
+  <input id='valor-21_1' class="invisible filtro {% if diccionarios_filtro[0].inspeccionæconforme == '1' %}correcto{% elif diccionarios_filtro[1].inspeccionæconforme == '1' %}incorrecto{% endif %}" type="text" name="inspeccionæconforme" value="1">
+  <input id='valor-21_2' class="invisible filtro {% if diccionarios_filtro[0].inspeccionæconforme == '0' %}correcto{% elif diccionarios_filtro[1].inspeccionæconforme == '0' %}incorrecto{% endif %}" type="text" name="inspeccionæconforme" value="0">
+  <input id='valor-21_3' class="invisible filtro {% if diccionarios_filtro[0].inspeccionæconforme == 'null' %}correcto{% elif diccionarios_filtro[1].inspeccionæconforme == 'null' %}incorrecto{% endif %}" type="text" name="inspeccionæconforme" value="null">
+</div>
+
+<span id='' class='etiqueta etiq'>Afección sistema<br></span>
+<div class='grid_container grbot grid_botonera3'>
+  <div class='boton panel bot {% if diccionarios_filtro[0].inspeccionæevaluacion_afeccion_sistema == "0" %}correcto{% elif diccionarios_filtro[1].inspeccionæevaluacion_afeccion_sistema == "0" %}incorrecto{% endif %}' onclick='alternaInput(0, "22_1", this, "");filtra("{{sistema}}")'>Baixa</div>
+  <div class='boton panel bot {% if diccionarios_filtro[0].inspeccionæevaluacion_afeccion_sistema == "1" %}correcto{% elif diccionarios_filtro[1].inspeccionæevaluacion_afeccion_sistema == "1" %}incorrecto{% endif %}' onclick='alternaInput(1, "22_2", this, "");filtra("{{sistema}}")'>Media</div>
+  <div class='boton panel bot {% if diccionarios_filtro[0].inspeccionæevaluacion_afeccion_sistema == "2" %}correcto{% elif diccionarios_filtro[1].inspeccionæevaluacion_afeccion_sistema == "2" %}incorrecto{% endif %}' onclick='alternaInput(2, "22_3", this, "");filtra("{{sistema}}")'>Alta</div>
+  <input id='valor-22_1' class="invisible filtro {% if diccionarios_filtro[0].inspeccionæevaluacion_afeccion_sistema == '0' %}correcto{% elif diccionarios_filtro[1].inspeccionæevaluacion_afeccion_sistema == '0' %}incorrecto{% endif %}" type="text" name="inspeccionæevaluacion_afeccion_sistema" value="0">
+  <input id='valor-22_2' class="invisible filtro {% if diccionarios_filtro[0].inspeccionæevaluacion_afeccion_sistema == '1' %}correcto{% elif diccionarios_filtro[1].inspeccionæevaluacion_afeccion_sistema == '1' %}incorrecto{% endif %}" type="text" name="inspeccionæevaluacion_afeccion_sistema" value="1">
+  <input id='valor-22_3' class="invisible filtro {% if diccionarios_filtro[0].inspeccionæevaluacion_afeccion_sistema == '2' %}correcto{% elif diccionarios_filtro[1].inspeccionæevaluacion_afeccion_sistema == '2' %}incorrecto{% endif %}" type="text" name="inspeccionæevaluacion_afeccion_sistema" value="2">
+</div>
+
+<span id='' class='etiqueta etiq'>Xestión vertido<br></span>
+<div class='grid_container grbot grid_botonera2'>
+  <div class='boton panel bot {% if diccionarios_filtro[0].inspeccionæevaluacion_gestion_vertido == "0" %}correcto{% elif diccionarios_filtro[1].inspeccionæevaluacion_gestion_vertido == "0" %}incorrecto{% endif %}' onclick='alternaInput(0, "23_1", this, "");filtra("{{sistema}}")'>Inadecuada</div>
+  <div class='boton panel bot {% if diccionarios_filtro[0].inspeccionæevaluacion_gestion_vertido == "1" %}correcto{% elif diccionarios_filtro[1].inspeccionæevaluacion_gestion_vertido == "1" %}incorrecto{% endif %}' onclick='alternaInput(1, "23_2", this, "");filtra("{{sistema}}")'>Mellorable</div>
+  <div class='boton panel bot {% if diccionarios_filtro[0].inspeccionæevaluacion_gestion_vertido == "2" %}correcto{% elif diccionarios_filtro[1].inspeccionæevaluacion_gestion_vertido == "2" %}incorrecto{% endif %}' onclick='alternaInput(2, "23_3", this, "");filtra("{{sistema}}")'>Adecuada</div>
+  <input id='valor-23_1' class="invisible filtro {% if diccionarios_filtro[0].inspeccionæevaluacion_gestion_vertido == '0' %}correcto{% elif diccionarios_filtro[1].inspeccionæevaluacion_gestion_vertido == '0' %}incorrecto{% endif %}" type="text" name="inspeccionæevaluacion_gestion_vertido" value="0">
+  <input id='valor-23_2' class="invisible filtro {% if diccionarios_filtro[0].inspeccionæevaluacion_gestion_vertido == '1' %}correcto{% elif diccionarios_filtro[1].inspeccionæevaluacion_gestion_vertido == '1' %}incorrecto{% endif %}" type="text" name="inspeccionæevaluacion_gestion_vertido" value="1">
+  <input id='valor-23_3' class="invisible filtro {% if diccionarios_filtro[0].inspeccionæevaluacion_gestion_vertido == '2' %}correcto{% elif diccionarios_filtro[1].inspeccionæevaluacion_gestion_vertido == '2' %}incorrecto{% endif %}" type="text" name="inspeccionæevaluacion_gestion_vertido" value="2">
+</div>
+
+<span class="expandeInsp derecha material-icons invisible" onclick="expandir('Insp')">expand_less</span>
+<span class="expandeInsp derecha material-icons" onclick="expandir('Insp')">expand_more</span>
+<h4 onclick="expandir('Insp')" class="clicable">Listaxe inspeccións</h4>
+<div class="expandeInsp invisible">
+  {% for inspeccion in inspecciones %}
+  <div class="panel boton inspeccion inspeccion{{inspeccion.id}}" style="margin-bottom:10px" onclick="muestraFichaInspeccion({{inspeccion.id}}, 0)">
+    {{inspeccion.fecha}} {{inspeccion.sistema}} {{inspeccion.cod_industria}}
+  </div>
+  {% endfor %}
+</div>

@@ -1,0 +1,9 @@
+<a href="/equipo-{{equipo.id}}" class="noDecorado botonEquipo">
+    <div class="panel menu equipo" style="background-color:#8bd0e3">
+        <div class="texto_indicadores">
+            {% include 'html/auditorias/indicadores_estado.html' %}
+            <b>{{equipo.denominacion}} {% if equipo.tipo %}- {{equipo.tipo}}{% endif %}</b>
+            <br>{{equipo.cod_equipo_instalacion if equipo.cod_equipo_instalacion}} {{equipo.posicion if equipo.posicion}} 
+        </div>
+    </div>
+</a>

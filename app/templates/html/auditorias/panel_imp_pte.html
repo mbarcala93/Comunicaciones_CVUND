@@ -1,0 +1,12 @@
+<div id="imp_pte{{importacion.id}}" class="panel boton importacion_pendiente{{importacion.id}} imp_pte_visible" onclick="cargaDatosTempPte({{importacion.id}}, {{resultados.id_edar}})">
+	<span>
+		{{importacion.fecha | fecha_bonita}}
+		<span class="material-icons">visibility</span>
+	</span>
+</div>
+<div id="imp_pte_resaltado{{importacion.id}}" class="panel boton importacion_pendiente{{importacion.id}} imp_pte_invisible invisible resaltado" onclick="vaciaDatosTempPte({{importacion.id}})">
+	<span>
+		{{importacion.fecha | fecha_bonita}}
+		<span class="material-icons">visibility_off</span>
+	</span>
+</div>

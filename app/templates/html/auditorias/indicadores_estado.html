@@ -1,0 +1,12 @@
+{% for observacion in observaciones if observacion.id_equipo == equipo.id %}
+<div id="indicadores{{observacion.id}}" class="indicador_estado revision revision{{observacion.id_auditoria}} {{'invisible' if observacion.id_auditoria != session.id_auditoria}}">
+    {% if observacion.hay_motor == 1 %}
+    <span class="derecha material-icons {% if observacion.estado_motor == 0 %}sin_iniciar{% elif observacion.estado_motor == 1 %}invisible{% else %}iniciado{% endif %}">note_alt</span>
+    <span class="material-icons derecha sin_iniciar {{'invisible' if observacion.hay_fotos_motor == 1}}">no_photography</span>
+    <span class="derecha {{'invisible' if observacion.hay_fotos_motor == 1 and observacion.estado_motor == 1}}">|</span>
+    {% endif %}{% if session.ambito == 'admin' or session.ambito == 'admin' %}
+    <span class="derecha material-icons {% if observacion.estado_equipo == 0 %}sin_iniciar{% elif observacion.estado_equipo == 1 %}invisible{% else %}iniciado{% endif %}">note_alt</span>
+    <span class="material-icons derecha sin_iniciar {{'invisible' if observacion.hay_fotos_equipo == 1}}">no_photography</span>
+    {% endif %}
+</div>
+{% endfor %}

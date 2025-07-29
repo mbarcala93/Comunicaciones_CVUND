@@ -1,0 +1,22 @@
+<table>
+    <tr>
+        {% for columna in datos[0] %}
+            <th id="columna{{loop.index}}" columna="{{columna}}" class="columnas">
+            <span id="tituloExistente{{loop.index}}">{{columna}}</span>
+            </th>
+        {% endfor %}
+    </tr>
+    {% for fila in datos %}
+    {% set num_fila = loop.index %}
+    {% if num_fila == 5 and (datos | length > 10) %}
+    <tr>
+        <td colspan="{{datos | length }}" onclick="mostrarFilas()" class="filaOculta clicable decorado resaltado">Mostrar {{(datos | length) - 10}} filas ocultas</td>  
+    </tr>
+    {% endif %}
+    <tr>
+        {% for celda in fila%}
+            <td class="{{'invisible filaOculta' if (num_fila > 4 and num_fila < datos |length -4 ) }} {{'incorrecto' if ((fila[celda] | intenta_float) is not float()) and loop.index > 1}}" columna="{{loop.index}}">{{fila[celda] | numero_bonito}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>

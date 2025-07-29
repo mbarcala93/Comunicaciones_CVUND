@@ -1,0 +1,114 @@
+<div class="panel ficha ficha{{elemento.id}}">
+  <div id="foto_principal" class="foto foto_principal">
+    <img src="/static_p/fotos/{% if not elemento.ruta %}sin_foto.png" {% else %}{{elemento.ruta}}" onclick="ampliaImagen('{{elemento.ruta}}')" class="clicable"{% endif %} alt="Foto">
+  </div>
+  <div class="datos_principales">
+    <span onclick="ocultaFicha('elemento')" class="material-icons derecha">visibility_off</span>
+    <a href="https://www.google.es/maps/@{{elemento.geometria[1:-1] | replace(' ', '')}},16z" target="_blank"><span class="material-icons derecha">explore</span></a>
+    <span class="titulo_ficha t_ficha confirma">Cod. {{resultados.ficha[0] | upper}}{{elemento.id}}</span>
+    <br><i>{{elemento.cod_edar}}</i>
+  </div>
+  <div class="linea"></div>
+
+
+  <span class="invisible confirmar clicable">
+    <h3 class="titulo_ficha t_ficha confirma">Resumo de cambios:</h3>
+  </span>
+  {% if resultados.permiso %}<span id="boton_editar" onclick="modoEdicionVisor({{elemento.id}})" class="material-icons derecha">edit</span>{% endif %}
+
+
+  <span id="formulario">
+    <span class="titulo_ficha t_ficha">Datos {% if elemento.tipo_elemento %} do {{elemento.tipo_elemento | lower}}{% endif %}<br></span>
+
+    <span id="etiqueta-1" class="etiqueta etiq editar{{elemento.id}}">Data creación<br></span>
+    <span class="editar{{elemento.id}}">{% if elemento.fecha %}{{elemento.fecha | fecha_bonita }}{% else %}-{% endif %}<br></span>
+
+    <span id="etiqueta-2" class="etiqueta etiq editar{{elemento.id}}">Inspector<br></span>
+    <span class="editar{{elemento.id}}">{% if elemento.inspector %}{{elemento.inspector}}{% else %}-{% endif %}<br></span>
+
+    <span id="etiqueta-3" class="etiqueta etiq invisible editar{{elemento.id}}">Tipo de elemento<br></span>
+    <input id="valor-3" type="text" class="ficha_ valor val invisible" name="tipo_elemento" value="{% if elemento.tipo_elemento %}{{elemento.tipo_elemento}}{% endif %}"><br class="val valor invisible">
+    <div class="grid_container grbot grid_botonera2 invisible editar{{elemento.id}}">
+      <div class="boton panel bot boton-3 {% if elemento.tipo_elemento == 'Pozo' %}pulsado{% endif %}" onclick="editaInput('Pozo', 3, this, '')">Pozo</div>
+      <div class="boton panel bot boton-3 {% if elemento.tipo_elemento == 'EBAR' %}pulsado{% endif %}" onclick="editaInput('EBAR', 3, this, '')">EBAR</div>
+      <div class="boton panel bot boton-3 {% if elemento.tipo_elemento == 'PV medio' %}pulsado{% endif %}" onclick="editaInput('PV medio', 3, this, '')">PV medio</div>
+      <div class="boton panel bot boton-3 {% if elemento.tipo_elemento == 'PV industria' %}pulsado{% endif %}" onclick="editaInput('PV industria', 3, this, '')">PV industria</div>
+      <div class="boton panel bot boton-3 {% if elemento.tipo_elemento == 'Acometida' %}pulsado{% endif %}" onclick="editaInput('Acometida', 3, this, '')">Acometida</div>
+    </div>
+
+    <span id="etiqueta-4" class="etiqueta etiq">Altura (m)<br></span>
+    <span class="editar{{elemento.id}}">{% if elemento.altura %}{{elemento.altura}}{% else %}-{% endif %}<br></span>
+    <div class="grid_container grbot grid_botonera3 editar{{elemento.id}} invisible">
+      <div class="boton panel bot boton-4 {% if elemento.altura == 0.5 %}pulsado{% endif %}" onclick="editaInput(0.5, 4, this, ''); $('.valor-4').hide()">0,5</div>
+      <div class="boton panel bot boton-4 {% if elemento.altura == 1.0 %}pulsado{% endif %}" onclick="editaInput(1.0, 4, this, ''); $('.valor-4').hide()">1,0</div>
+      <div class="boton panel bot boton-4 {% if elemento.altura == 1.5 %}pulsado{% endif %}" onclick="editaInput(1.5, 4, this, ''); $('.valor-4').hide()">1,5</div>
+      <div class="boton panel bot boton-4 {% if elemento.altura == 2.0 %}pulsado{% endif %}" onclick="editaInput(2.0, 4, this, ''); $('.valor-4').hide()">2,0</div>
+      <div class="boton panel bot boton-4 {% if elemento.altura == 2.5 %}pulsado{% endif %}" onclick="editaInput(2.5, 4, this, ''); $('.valor-4').hide()">2,5</div>
+      <div class="boton panel bot boton-4 {% if elemento.altura == 3.0 %}pulsado{% endif %}" onclick="editaInput(3.0, 4, this, ''); $('.valor-4').hide()">3,0</div>
+      <div class="boton panel bot boton-4 {% if elemento.altura == 3.5 %}pulsado{% endif %}" onclick="editaInput(3.5, 4, this, ''); $('.valor-4').hide()">3,5</div>
+      <div class="boton panel bot boton-4 {% if elemento.altura == 4.0 %}pulsado{% endif %}" onclick="editaInput(4.0, 4, this, ''); $('.valor-4').hide()">4,0</div>
+      <div class="boton panel bot boton-4 {% if elemento.altura == 4.5 %}pulsado{% endif %}" onclick="editaInput(4.5, 4, this, ''); $('.valor-4').hide()">4,5</div>
+      <div class="boton panel bot boton-4 {% if elemento.altura == 5.0 %}pulsado{% endif %}" onclick="$('.valor-4').toggle();"><span class="material-icons">edit</span></div>
+      <div class="boton panel bot boton-4 {% if elemento.altura == 5.5 %}pulsado{% endif %}" onclick="editaInput(parseFloat($('.valor-4').show().val()) - 0.5, 4, this, '');">-</div>
+      <div class="boton panel bot boton-4 {% if elemento.altura == 6.0 %}pulsado{% endif %}" onclick="editaInput(parseFloat($('.valor-4').show().val()) + 0.5, 4, this, '');">+</div>
+    </div>
+    <input id="valor-4" type="text" class="ficha_ valor val invisible valor-4" name="altura" value="{% if elemento.altura %}{{elemento.altura}}{% endif %}"><br class="val valor valor-4 invisible">
+
+    <span id="etiqueta-5" class="etiqueta etiq">Cota (m)<br></span>
+    <span class="editar{{elemento.id}}">{% if elemento.cota_z_terreno %}{{elemento.cota_z_terreno}}{% else %}-{% endif %}<br></span>
+    <input id="valor-5" type="text" class="ficha_ valor val editar{{elemento.id}} invisible" name="cota_z_terreno" value="{% if elemento.cota_z_terreno %}{{elemento.cota_z_terreno}}{% endif %}"><br class="val valor editar{{elemento.id}} invisible">
+
+    <span id="etiqueta-6" class="etiqueta etiq">Tipo auga residual<br></span>
+    <span class="editar{{elemento.id}}">{% if elemento.tipo_agua_residual == 0 %}Fecais{% elif elemento.tipo_agua_residual == 1 %}Pluviais{% elif elemento.tipo_agua_residual == 2 %}Unitario{% elif elemento.tipo_agua_residual == 3 %}Descoñecido{% elif elemento.tipo_agua_residual == 4%}Industrial{% else %}-{% endif %}<br></span>
+    <input id="valor-6" type="text" class="ficha_ valor val invisible" name="tipo_agua_residual" value="{% if elemento.tipo_agua_residual %}{{elemento.tipo_agua_residual}}{% endif %}"><br class="val valor invisible">
+    <div class="grid_container grbot grid_botonera2 invisible editar{{elemento.id}}">
+      <div class="boton panel bot boton-6 {% if elemento.tipo_agua_residual == 0 %}pulsado{% endif %}" onclick="editaInput(0, 6, this, '')">Fecais</div>
+      <div class="boton panel bot boton-6 {% if elemento.tipo_agua_residual == 1 %}pulsado{% endif %}" onclick="editaInput(1, 6, this, '')">Pluviais</div>
+      <div class="boton panel bot boton-6 {% if elemento.tipo_agua_residual == 2 %}pulsado{% endif %}" onclick="editaInput(2, 6, this, '')">Unitario</div>
+      <div class="boton panel bot boton-6 {% if elemento.tipo_agua_residual == 3 %}pulsado{% endif %}" onclick="editaInput(3, 6, this, '')">Descoñecido</div>
+      <div class="boton panel bot boton-6 {% if elemento.tipo_agua_residual == 4 %}pulsado{% endif %}" onclick="editaInput(4, 6, this, '')">Industrial</div>
+    </div>
+
+    {% if inspecciones %}
+    <div class="linea"></div>
+    <!-- <span id="etiqueta-7" class="etiqueta etiq">Cargar inspeccións realizadas<br></span> -->
+    <span class="titulo_ficha t_ficha">Inspeccións<br></span>
+    <div  id="botones_fichas{{elemento.id}}" class="grid_container grbot grid_botonera2">
+      {% if inspecciones | length > 1 %}
+      <div class="boton panel bot" onclick="muestraFichaInspeccion({{elemento.id}}, 1)">Todas</div>
+      {% endif %}
+      {% for inspeccion in inspecciones %}
+      <div id="boton_inspeccion{{inspeccion.id}}" class="boton panel bot" onclick="muestraFichaInspeccion({{inspeccion.id}}, 0)">{{inspeccion.fecha[6:8]}}/{{inspeccion.fecha[4:6]}}/{{inspeccion.fecha[0:4]}} {{inspeccion.hora}}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </span>
+
+	<span onclick="actualizaElemento('')" class="invisible izquierda editado boton_upload clicable boton panel aceptar"><span class="material-icons">arrow_circle_up</span> Subir cambios</span>
+  <span class="check_upload invisible">
+    <span class="material-icons check" style="">check_circle</span> Cambios actualizados correctamente
+  </span>
+  <br class="confirmar invisible">
+  <span id="boton_confirmar" class="invisible confirmar clicable boton panel aceptar" onclick="ConfirmaActualizaElemento('elementos', '{{resultados.id}}')">
+    <span class="material-icons">check</span> Confirmar cambios
+  </span>
+  <br class="confirmar invisible"><br class="confirmar invisible"><br class="confirmar invisible">
+  <span class="invisible confirmar clicable boton panel cancelar" onclick="muestraFichaElemento({{resultados.id}}); boton_actualizar_pulsado = 0;">
+    <span class="material-icons">cancel</span> Cancelar cambios
+  </span>
+  <br class="confirmar invisible"><br class="confirmar invisible">
+</div>
+
+<script type="text/javascript">
+  var foto_principal = {% if not elemento.foto_principal %}0{% else %}1{% endif %}
+
+  $('.valor').keyup(function( event ) {
+    if (!boton_actualizar_pulsado) {
+      $(".boton_upload").show();
+      alargaMenu();
+      var indice = this.id.split("-")[1];
+      $("#etiqueta-"+indice).addClass("editado");
+      $(this).addClass("editado");
+    }
+  });
+</script>

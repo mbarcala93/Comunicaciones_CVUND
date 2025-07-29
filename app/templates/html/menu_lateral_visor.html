@@ -1,0 +1,65 @@
+<aside class="compacto menu_lateral zurdo">
+  <span><i id="boton_abrir" class="icono_menu material-icons" onclick="abreMenu()">menu</i></span>
+  <span><i id="boton_cerrar" class="icono_menu material-icons invisible" onclick="cierraMenu()">close</i></span>
+  <br>
+  <ul>
+    <li>
+      <span onclick="muestraFiltros('{{resultados.cod_edar}}')">
+        <span id="" class=""><i class="material-icons">filter_alt</i></span>
+        <apartado class="texto_menu clicable">Filtrar</apartado>
+      </span>
+    </li>
+    {% if resultados.permiso %}
+    <li>
+      <span onclick="getPosition()">
+        <span id="" class="activadoGPS"><i class="material-icons">gps_fixed</i></span>
+        <apartado class="texto_menu clicable activadoGPS">GPS activado</apartado>
+        <span id="" class="desactivadoGPS invisible"><i class="material-icons">gps_off</i></span>
+        <apartado class="texto_menu clicable desactivadoGPS invisible">GPS desactivado</apartado>
+      </span>
+    </li>
+    <li>
+      <span onclick="mymap.setView(userMarker._latlng)">
+        <span id="" class=""><i class="material-icons">share_location</i></span>
+        <apartado class="texto_menu clicable">Centrar posición</apartado>
+      </span>
+    </li>
+    <li>
+      <span onclick="mymap.setZoom(20)">
+        <span id="" class=""><i class="material-icons">center_focus_strong</i></span>
+        <apartado class="texto_menu clicable">Zoom máximo</apartado>
+      </span>
+    </li>
+    <li>
+      <span onclick="mymap.zoomIn()">
+        <span id="" class=""><i class="material-icons">zoom_in</i></span>
+        <apartado class="texto_menu clicable">Achegar vista</apartado>
+      </span>
+    </li>
+    <li>
+      <span onclick="mymap.zoomOut()">
+        <span id="" class=""><i class="material-icons">zoom_out</i></span>
+        <apartado class="texto_menu clicable">Afastar vista</apartado>
+      </span>
+    </li>
+    <li>
+      <span onclick="mymap.setZoom(15)">
+        <span id="" class=""><i class="material-icons">zoom_out_map</i></span>
+        <apartado class="texto_menu clicable">Zoom xeral</apartado>
+      </span>
+    </li>
+    <li>
+      <span onclick="crearElemento('{{resultados.cod_edar}}')">
+        <span id="" class=""><i class="material-icons">add_location_alt</i></span>
+        <apartado class="texto_menu clicable">Crear elemento</apartado>
+      </span>
+    </li>
+    <li>
+      <span onclick="registrarUsuario()">
+        <span id="" class=""><i class="material-icons">person_add</i></span>
+        <apartado class="texto_menu clicable">Rexistrar Usuario</apartado>
+      </span>
+    </li>
+    {% endif %}
+  </ul>
+</aside>

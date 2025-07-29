@@ -1,0 +1,55 @@
+{
+    "parametros": {
+        "Sólidos en suspensión": "Sólidos en suspensión",
+        "DQO": "DQO",
+        "DBO{_5}": "DBO5",
+        "Nitrógeno total Kjeldahl": "NTK",
+        "Nitrogeno oxidado (NO{_2} + NO{_3})": "Nitróxeno oxidado",
+        "Nitrógeno total": "Nitróxeno total",
+        "Fósforo Total": "Fósforo total",
+        "pH": "pH"
+    },
+    "incertidumbre": {
+        "pH": {
+            "≤4": 0.1,
+            ">4": 0.2
+        },
+        "Sólidos en suspensión": {
+            "<500": 0.25,
+            "≥500": 0.10
+        },
+        "DQO": {
+            "<200": 0.25,
+            "≥200": 0.15
+        },
+        "DBO5": {
+            "≥14": 0.25
+        },
+        "NTK": {
+            "<10": 0.2,
+            "≥10": 0.18
+        },
+        "Nitróxeno total": {
+            "<10": 0.28,
+            "≥10": 0.23
+        },
+        "Nitróxeno oxidado": {
+            "≥0": 0
+        },
+        "Fósforo total": {
+            "<2": 0.25,
+            "≥2": 0.160
+        }
+    },
+    "unidades": {
+        "pH": "",
+        "Sólidos en suspensión": "mg/l",
+        "DQO": "mg/l",
+        "DBO5": "mg/l",
+        "Nitróxeno total": "mg/l",
+        "Nitróxeno oxidado": "mg/l",
+        "NTK": "mg/l",
+        "Fósforo total": "mg/l"
+    },
+    "proyecto": "Inspección de Redes (Referencia AUG-2023-0006)"
+}

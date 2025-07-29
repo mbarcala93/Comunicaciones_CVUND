@@ -1,0 +1,24 @@
+<div id="ficha_filtro" class="">
+  <div class="panel ficha">
+    <div id="formulario">
+
+      {% for categoria, listado in categorias.items() %}
+      <span class="expande{{categoria}} derecha material-icons invisible" onclick="expandir('{{categoria}}')">expand_less</span>
+      <span class="expande{{categoria}} derecha material-icons" onclick="expandir('{{categoria}}')">expand_more</span>
+      <span id='' class='etiqueta etiq' onclick="expandir('{{categoria}}')">{{listado[0]}}</span><br>
+        <div class="grid_container grid_botonera1 expande{{categoria}} invisible">
+          {% for elemento in listado[1] %}
+          <div class='boton panel bot' onclick='alternaInput("{{elemento}}", "8_{{categoria}}_{{loop.index}}", this, "");filtra("{{sistema}}")'>{{elemento}}</div><br>
+          <input id='valor-8_{{categoria}}_{{loop.index}}' class="invisible" type="text" name="{{categoria}}" value="">
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+
+
+</script>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="es">
+	
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="robots" content="noindex">
+  <title>Inventario Inspecciones Sistema de Saneamento - Ribadumia</title>
+	<link rel="stylesheet" href="static/css/leaflet.css" crossorigin=""/>
+	<link rel="icon" href="{{url_for('static', filename='/images/CZ_FAV.png')}}" type="image/png"/>
+	<script src="static/js/leaflet.js" crossorigin=""></script>
+	<link rel="stylesheet" href="{{url_for('static', filename='/css/estilo_imprimir.css')}}">
+	<script type="text/javascript">const mq = window.matchMedia( "(min-width: 968px)" );</script>
+</head>
+
+<body>
+	<div class="todo">
+	{% for elemento in elementos %}
+	<div class="cabecera3">		
+		<div id="logos">
+			<div class="izquierda">
+				{% if elemento.cod_edar=='Bande' %}
+				<img id="logoConcello" src="{{url_for('static', filename='/images/logo_bande.png')}}" alt="augas">
+				{% endif %}
+				{% if elemento.cod_edar=='Barreiros' %}
+				<img id="logoConcello" src="{{url_for('static', filename='/images/logo_barreiros.png')}}" alt="augas">
+				{% endif %}
+				{% if elemento.cod_edar=='TOMI' %}
+				<img id="logoConcello" src="{{url_for('static', filename='/images/logo_tomino.png')}}" alt="augas">
+				{% endif %}
+				{% if elemento.cod_edar=='Cortegada' %}
+				<img id="logoConcello" src="{{url_for('static', filename='/images/logo_cortegada.png')}}" alt="augas">
+				{% endif %}
+				{% if elemento.cod_edar=='Rodeiro' %}
+				<img id="logoConcello" src="{{url_for('static', filename='/images/logo_rodeiro.png')}}" alt="augas">
+				{% endif %}
+				{% if elemento.cod_edar=='VALG' %}
+				<img id="logoConcello" src="{{url_for('static', filename='/images/logo_valga.png')}}" alt="augas">
+				{% endif %}
+				{% if elemento.cod_edar=='Chantada' %}
+				<img id="logoConcello" src="{{url_for('static', filename='/images/logo_chantada.png')}}" alt="augas">
+				{% endif %}
+			</div>
+			<div class="derecha">
+					<img id="logoAT" src="{{url_for('static', filename='/images/logoCZ.svg')}}" alt="AT">
+			</div>
+		</div>
+		<div class="nome_proxecto">
+			<div class="">
+				Rede de Saneamento vencellada á EBAR de Cabanelas (EDAR de Ribadumia) <br>
+				Inventario de Elementos Inspeccionados
+			</div>
+		</div>		
+	</div>
+
+	<div id="" class="pagina4">
+		<div class="contenido_bloque grid_columnaHZ">
+			<div class="rotulo">
+				Identificación do elemento
+			</div>
+			<div class="rotuloHZ">
+				Localización {{elemento.tipo_elemento}}
+			</div>			
+			<div class="">
+				<div class="contenido_sub_bloque grid_columna2HZ">
+					<div class="columna">
+						<span class="etiqueta">Tipo de elemento:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{% if elemento.tipo_elemento %}{{elemento.tipo_elemento}}{% else %}-{% endif %}</span><br class="largo">
+					</div>
+				</div>
+				<div class="contenido_sub_bloque grid_columna2HZ">
+					<div class="columna">
+						<span class="etiqueta">ID {{elemento.tipo_elemento}}:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{% if elemento.id %}{{elemento.id}}{% else %}-{% endif %}</span><br class="largo">
+					</div>
+				</div>
+				<div class="contenido_sub_bloque grid_columna2HZ">
+					<div class="columna">
+						<span class="etiqueta">Situación:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{% if elemento.situacion %}
+											{% if elemento.situacion == 0 %}
+											Beirarrúa
+											{% elif elemento.situacion == 1 %}
+											Estrada
+											{% elif elemento.situacion == 2 %}
+											Zona verde
+											{% endif %}												
+											{% else %}-{% endif %}</span><br class="largo">
+					</div>
+				</div>
+				<div class="contenido_sub_bloque grid_columna2HZ">
+					<div class="columna">
+						<span class="etiqueta">Data de rexistro:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{% if elemento.fecha %}
+							{{ elemento.fecha[6:8] }}/{{ elemento.fecha[4:6] }}/{{ elemento.fecha[0:4] }}
+							{% else %}-{% endif %}</span><br class="largo">
+					</div>
+				</div>
+				<div class="contenido_sub_bloque grid_columna2HZ">
+					<div class="columna">
+						<span class="etiqueta"> Coord. X (UTM ETRS89):</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{{coordenadas[elemento.id][0] | int | numero_bonito}}</span><br class="largo">
+					</div>
+				</div>
+				<div class="contenido_sub_bloque grid_columna2HZ">
+					<div class="columna">
+						<span class="etiqueta">Coord. Y (UTM ETRS89):</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{{coordenadas[elemento.id][1] | int | numero_bonito}}</span><br class="largo">
+					</div>
+				</div>						
+				<div class="rotulo">
+					Características do elemento
+				</div>			
+				<div class="contenido_sub_bloque grid_columna2HZ">
+					<div class="columna">
+						<span class="etiqueta">Profundidade:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{% if elemento.altura %}{{elemento.altura}} m{% else %}-{% endif %}</span><br class="largo">
+					</div>
+				</div>
+				<div class="contenido_sub_bloque grid_columna2HZ">
+					<div class="columna">
+						<span class="etiqueta">Diámetro:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{% if elemento.diametro %}{{elemento.diametro}} cm{% else %}-{% endif %}</span><br class="largo">
+					</div>
+				</div>
+				<div class="contenido_sub_bloque grid_columna2HZ">
+					<div class="columna">
+						<span class="etiqueta">Tipo de rede:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{% if elemento.tipo_agua_residual %}
+											{% if elemento.tipo_agua_residual == 0 %}
+											Augas fecais
+											{% elif elemento.tipo_agua_residual == 1 %}
+											Augas pluviais
+											{% elif elemento.tipo_agua_residual == 2 %}
+											Unitaria
+											{% endif %}												
+											{% else %}Descoñecida{% endif %}</span><br class="largo">
+					</div>
+				</div>
+				<div class="contenido_sub_bloque grid_columna2HZ">
+					<div class="columna">
+						<span class="etiqueta">Aliviadoiro:</span><br class="largo">
+					</div>
+					<div class="columna">
+						<span class="valor">{% if elemento.aliviadero %}
+											{% if elemento.aliviadero == 0 %}
+											Non
+											{% elif elemento.aliviadero == 1 %}
+											Si
+											{% endif %}																							
+											{% else %}-{% endif %}</span><br class="largo">
+					</div>
+				</div>
+				
+							
+			</div>
+			
+			<div class="contenido_bloque grid_columnaFP_HZ">				
+				<div class="">
+					<img id="foto_elemento_principal_HZ" src="/static_p/fotos/{% if not elemento.foto_principal %}sin_foto.png{% else %}{{elemento.ruta_foto}}{% endif %}" alt="Foto">
+					<div>
+						<span class="etiquetaFoto">Foto principal </span>
+					</div>
+				</div>
+				<div class="">			
+				<div id="mapid{{elemento.id}}" class="mapa_pequeno_principal_HZ"></div>
+				<div>
+					<span class="etiquetaMapa">Xeolocalización {{elemento.tipo_elemento}} {{elemento.id}} </span>
+				</div>
+				</div>
+			</div>
+		</div>
+		<div class="contenido_bloque grid_columna1">	
+			<div class="rotulo">
+				Inspeccións
+			</div>
+		</div>		
+			<div class="contenido_bloque grid_columna4HZ">
+				<div class="rotulo3HZ">
+					Data
+				</div>
+				<div class="rotulo3HZ">
+					Hora
+				</div>
+				<div class="rotulo3HZ">
+					Medicións
+				</div>
+				<div class="rotulo3HZ">
+					Observacións
+				</div>			
+			</div>				
+		{% for inspeccion in inspeccions if inspeccion.id_elemento == elemento.id %}
+		<div class="contenido_sub_bloque grid_columna4HZ">
+			<div class="columnaC">
+				<span class="valor">{% if inspeccion.fecha %}
+					{{ inspeccion.fecha[6:8] }}/{{ inspeccion.fecha[4:6] }}/{{ inspeccion.fecha[0:4] }}							
+					{% else %}-{% endif %}</span><br class="largo">
+			</div>
+			<div class="columnaC">
+				<span class="valor">{% if inspeccion.hora %}{{inspeccion.hora}}{% else %}-{% endif %}</span><br class="largo">
+			</div>
+			<div class="">
+			{% for medicion in mediciones if medicion.id_inspeccion == inspeccion.id%}	
+					<div class="contenido_sub_bloque grid_columna2AC">
+						<div class="columnaM">
+							<span class="valor">{{medicion.etiqueta}}:</span><br class="largo">
+						</div>
+						<div class="columnaM">
+							<span class="valor">{% if medicion.valor %}{{medicion.valor}}{% else %}-{% endif %} {{medicion.unidades}}</span><br class="largo">
+						</div>
+					</div>
+			{%endfor%}	
+			</div>				
+			<div class="columnaM">
+				<span class="valor">{% if inspeccion.comentarios %}{{inspeccion.comentarios}}{% else %}-{% endif %}
+									{% if inspeccion.comentarios[-1] != "." %}.{% endif %}
+				</span><br class="largo">
+			</div>
+
+			
+		</div>		
+		{% endfor %}
+		
+		<!--#########################################################################################################################################################-->
+													<!--CODIGO PARA CROQUIS-->
+		<!--#########################################################################################################################################################-->		
+		
+		{% if entronques[elemento.id] > 0 %}
+		<div class="contenido_bloque grid_columna1">
+			<div class="rotulo">Conducións de entrada e saída</div>
+		</div>
+		<div class="contenido_bloque grid_columna3CQ_HZ">
+			
+			<div class="">
+				<div class="contenido_sub_bloque grid_columna4">
+					<div class="rotulo3">
+						Orientación
+					</div>
+					<div class="rotulo3">
+						Material
+					</div>
+					<div class="rotulo3">
+						Profundidade (m)
+					</div>
+					<div class="rotulo3">
+						Diámetro (mm)
+					</div>			
+				</div>
+			</div>
+			<div class="rotulo3">Croquis da planta do pozo</div>
+			<div class="rotulo3">Croquis do alzado do pozo</div>
+
+			<div class="">
+				{% for acometida in direcciones if acometida.id_elemento == elemento.id %}
+				<div class="contenido_sub_bloque grid_columna4">
+					<div class="columnaC">
+						<div class="valor">
+						{% if acometida.orientacion %}{{acometida.orientacion}}{% else %}-{% endif %}
+						</div>
+					</div>
+					<div class="columnaC">
+						<div class="valor">
+						{% if acometida.material %}{{acometida.material}}{% else %}-{% endif %}
+						</div>
+					</div>
+					<div class="columnaC">
+						<div class="valor">
+						{% if acometida.altura %}{{acometida.altura}}{% else %}-{% endif %}
+						</div>					
+					</div>
+					<div class="columnaC">
+						<div class="valor">
+						{% if acometida.diametro %}{{acometida.diametro}}{% else %}-{% endif %}
+						</div>
+					</div>			
+				</div>
+				{%endfor%}
+			</div>
+			
+			<div class="contenedor_croquis_HZ">
+					<!--CODIGO PARA PLANTA-->
+					
+				<svg width="250" height="250" transform="scale(1,1)">
+					<rect x="0" y="0" stroke="#dadce0" fill="white" width="100%" height="100%"/>
+
+					{% for acometida in direcciones if acometida.id_elemento == elemento.id %}
+					<rect x="115" y="45" width="20" height="30" transform="rotate({{cardinalP[acometida.orientacion]}} 125 125)" fill="{{materiales[acometida.material]}}" style="stroke-width:2;stroke:'{{materiales[acometida.material]}}'" />
+					<ellipse cx="125" cy="45" rx="10" ry="5" transform="rotate({{cardinalP[acometida.orientacion]}} 125 125)" fill="{{materiales[acometida.material]}}" style="stroke-width:2;stroke:'{{materiales[acometida.material]}}'" />
+					{% endfor %}
+					{% for acometida in direcciones if acometida.id_elemento == elemento.id %}
+					{% if acometida['diametro']: %}
+					<text x="110" y="32" transform="rotate({{cardinalP[acometida.orientacion]}} 125 125)" font-family="etelka_light_proregular" font-size="7pt" fill="black">Ø {{acometida['diametro']}} mm</text>
+					{% else %}
+					<text x="115" y="32" transform="rotate({{cardinalP[acometida.orientacion]}} 125 125)" font-family="Helvetica" font-size="7pt" fill="black">Ø</text>
+					{% endif %}
+					{% endfor %}
+
+					<circle cx="125" cy="125" r="50" stroke="black" stroke-width="2" fill="grey" />
+
+				</svg>									
+				
+			</div>	
+					
+			<div class="contenedor_croquis_HZ">	
+					<!--CODIGO PARA ALZADO-->
+					
+				<svg width="250" height="250" transform="scale(1,1)">
+					<rect x="0" y="0" stroke="#dadce0" fill="white" width="100%" height="100%"/>
+					<polygon points="117,60 160,60 160,190 85,190 85,95" style="fill:Rgba(255, 255, 255, 0.01);stroke:black;stroke-width:3" />	
+					{% for acometida in direcciones if acometida.id_elemento == elemento.id %}
+					<!-- Dibujar las acometidas-->
+					<!-- Las sentencias "transform="translate(0,10)"" se aplica apara desplazar los colectores hacia abajo la distancia de su radio, para ajustar su altura ya que se dibuja desde el centro-->
+					{% if acometida.orientacion=="N": %}
+					<!-- NORTE -->
+					<ellipse cx="{{cardinalS[acometida.orientacion]}}" cy="{{profundidad[acometida.id]}}" rx="10" ry="10" transform="translate(0, 10)" fill="{{materiales[acometida.material]}}" style="stroke-width:2;stroke:black;stroke-dasharray:5, 5" />
+					{% endif %}
+				
+					{% if acometida.orientacion=="NL": %}
+					<!-- NORESTE -->
+					<ellipse cx="{{cardinalS[acometida.orientacion]}}" cy="{{profundidad[acometida.id]}}" rx="5" ry="10" transform="translate(0, 10)" fill="{{materiales[acometida.material]}}" style="stroke-width:2;stroke:black;stroke-dasharray:5, 5" />
+					{% endif %}
+				
+					{% if acometida.orientacion=="NO": %}
+					<!-- NOROESTE -->
+					<ellipse cx="{{cardinalS[acometida.orientacion]}}" cy="{{profundidad[acometida.id]}}" rx="5" ry="10" transform="translate(0, 10)" fill="{{materiales[acometida.material]}}" style="stroke-width:2;stroke:black;stroke-dasharray:5, 5" />
+					{% endif %}
+				
+					{% if acometida.orientacion=="O": %}
+					<!-- OESTE -->
+					<rect x="{{cardinalS[acometida.orientacion]}}" y="{{profundidad[acometida.id]}}" width="35" height="20" fill="{{materiales[acometida.material]}}" style="stroke-width:2;stroke:'{{materiales[acometida.material]}}'" />
+					<ellipse cx="{{cardinalS[acometida.orientacion]}}" cy="{{profundidad[acometida.id]}}" transform="translate(0, 10)" rx="5" ry="10" fill="{{materiales[acometida.material]}}" style="stroke-width:2;stroke:'{{materiales[acometida.material]}}'" />
+					{% endif %}
+				
+					{% if acometida.orientacion=="L": %}
+					<!-- ESTE -->
+					<rect x="{{cardinalS[acometida.orientacion]}}" y="{{profundidad[acometida.id]}}" width="35" height="20" fill='{{materiales[acometida.material]}}' style="stroke-width:2;stroke:'{{materiales[acometida.material]}}'" />
+					<ellipse cx="{{cardinalS[acometida.orientacion]}}" cy="{{profundidad[acometida.id]}}" transform="translate(35, 10)" rx="5" ry="10" fill="{{materiales[acometida.material]}}" style="stroke-width:2;stroke:'{{materiales[acometida.material]}}'" />
+					{% endif %}
+				
+					{% if acometida.orientacion=="S": %}
+					<!-- SUR -->
+					<ellipse cx="{{cardinalS[acometida.orientacion]}}" cy="{{profundidad[acometida.id]}}" rx="10" ry="10" transform="translate(0, 10)" fill="{{materiales[acometida.material]}}" style="stroke-width:2;stroke:'{{materiales[acometida.material]}}'" />
+					{% endif %}
+				
+					{% if acometida.orientacion=="SL": %}
+					<!-- SURESTE -->
+					<ellipse cx="{{cardinalS[acometida.orientacion]}}" cy="{{profundidad[acometida.id]}}" rx="5" ry="10" transform="translate(0, 10)" fill="{{materiales[acometida.material]}}" style="stroke-width:2;stroke:'{{materiales[acometida.material]}}'" />
+					{% endif %}
+				
+					{% if acometida.orientacion=="SO": %}
+					<!-- SUROESTE -->
+					<ellipse cx="{{cardinalS[acometida.orientacion]}}" cy="{{profundidad[acometida.id]}}" rx="5" ry="10" transform="translate(0, 10)" fill="{{materiales[acometida.material]}}" style="stroke-width:2;stroke:'{{materiales[acometida.material]}}'" />
+					{% endif %}
+				
+					{% endfor %}
+				
+					<!-- COTAS -->
+					{% for acometida in direcciones if acometida.id_elemento == elemento.id%}
+					<!-- acotar las acometidas, previamente agrupadas por orientación para no superponer cotas-->
+					
+					{% if acometida.altura: %}
+					{% if acometida.altura != elemento.altura: %} <!-- acotar si la cota de las acometidas ES DIFERENTE a la profundidad del pozo-->
+					<line x1="{{cardinalD[acometida.orientacion]}}" y1='{{cota_y[acometida.id]}}' x2="{{cardinalD[acometida.orientacion]}}" y2="60" style="stroke-width:1;stroke:black"/>
+					<circle cx="{{cardinalD[acometida.orientacion]}}" cy='{{cota_y[acometida.id]}}' r="2" stroke="black" stroke-width="1" fill="black" />
+					<circle cx="{{cardinalD[acometida.orientacion]}}" cy='60' r="2" stroke="black" stroke-width="1" fill="black" />
+					<text x="{{cardinalX[acometida.orientacion]}}" y='{{text_y[acometida.id]}}' transform="rotate(90 {{cardinalX[acometida.orientacion]}}, {{text_y[acometida.id]}})" font-family="etelka_light_proregular" font-size="5pt" fill="black">{{acometida.altura}} m</text>
+					{% endif %}
+					{% endif %}
+				
+					{% endfor %} 
+					
+				
+					<!-- COTA PROFUNDIDAD -->
+					<!-- Posición variable en función de si existe acometida L u acometida O -->
+					<line x1="{{cotaprof[elemento.id]}}" y1="60" x2="{{cotaprof[elemento.id]}}" y2="190" style="stroke-width:2;stroke:black"/>
+					<circle cx="{{cotaprof[elemento.id]}}" cy='190' r="3" stroke="black" stroke-width="1" fill="black" />
+					<circle cx="{{cotaprof[elemento.id]}}" cy='60' r="3" stroke="black" stroke-width="1" fill="black" />
+					{% if not elemento.altura: %}
+					<!-- Si no hay valor de altura puesto en el pozo, pone "H" como leyenda de cota -->
+					<text x="{{textprof[elemento.id]}}" y="200" transform="rotate(90 {{textprof[elemento.id]}}, 220)" font-family="etelka_light_proregular" font-size="5pt" fill="black">H</text>
+					{% else %}
+					<text x="{{textprof[elemento.id]}}" y="120" transform="rotate(90 {{textprof[elemento.id]}}, 120)" font-family="etelka_light_proregular" font-size="5pt" fill="black">{{elemento.altura}} m</text>
+					{% endif %}
+				
+					<!-- COTA DIAMETRO -->
+					<line x1="85" y1="210" x2="160" y2="210" style="stroke-width:2;stroke:black"/>
+					<circle cx="85" cy='210' r="3" stroke="black" stroke-width="1" fill="black" />
+					<circle cx="160" cy='210' r="3" stroke="black" stroke-width="1" fill="black" />
+					{% if not elemento.diametro: %}
+					<!-- Si no hay valor de diametro de pozo, pone "D" como leyenda de cota -->
+					<text x="115" y="220"  font-family="etelka_light_proregular" font-size="5pt" fill="black">D</text>
+					{% else %}
+					<text x="110" y="220" font-family="etelka_light_proregular" font-size="5pt" fill="black">{{elemento.diametro}} cm</text>
+					{% endif %}
+
+				</svg>
+				
+			</div>
+			
+			
+			
+			</div>
+			{% endif %}
+			
+		</div>
+	</div>
+	<!--#########################################################################################################################################################-->
+													<!--CODIGO PARA INSPECCIONES DEL ELEMENTO-->
+	<!--#########################################################################################################################################################-->
+	{% for inspeccion in inspeccions if inspeccion.id_elemento == elemento.id %}
+	
+	<div class="hueco2 saltopagina">	</div>
+		<div class="cabecera3INSP">
+			<!-- <div class="encabezado" style=""> -->
+			<div id="logos">
+				<div class="izquierda">
+					{% if elemento.cod_edar=='Bande' %}
+					<img id="logoConcello" src="{{url_for('static', filename='/images/logo_bande.png')}}" alt="augas">
+					{% endif %}
+					{% if elemento.cod_edar=='Barreiros' %}
+					<img id="logoConcello" src="{{url_for('static', filename='/images/logo_barreiros.png')}}" alt="augas">
+					{% endif %}
+					{% if elemento.cod_edar=='TOMI' %}
+					<img id="logoConcello" src="{{url_for('static', filename='/images/logo_tomino.png')}}" alt="augas">
+					{% endif %}
+					{% if elemento.cod_edar=='Cortegada' %}
+					<img id="logoConcello" src="{{url_for('static', filename='/images/logo_cortegada.png')}}" alt="augas">
+					{% endif %}
+					{% if elemento.cod_edar=='Rodeiro' %}
+					<img id="logoConcello" src="{{url_for('static', filename='/images/logo_rodeiro.png')}}" alt="augas">
+					{% endif %}
+					{% if elemento.cod_edar=='VALG' %}
+					<img id="logoConcello" src="{{url_for('static', filename='/images/logo_valga.png')}}" alt="augas">
+					{% endif %}
+					{% if elemento.cod_edar=='Chantada' %}
+					<img id="logoConcello" src="{{url_for('static', filename='/images/logo_chantada.png')}}" alt="augas">
+					{% endif %}
+				</div>
+				<div class="derecha">
+					<img id="logoAT" src="{{url_for('static', filename='/images/logoCZ.svg')}}" alt="AT">
+				</div>
+			</div>
+			<div class="nome_proxecto">
+				<div>
+					Rede de Saneamento vencellada á EBAR de Cabanelas (EDAR de Ribadumia) <br>
+					Inventario de Elementos Inspeccionados
+				</div>					
+			</div>
+			<!-- </div> -->			
+		</div>
+		<div id="" class="pagina4">
+		<div class="bloque">
+			<div class="rotuloINSPHZ">
+				{{elemento.tipo_elemento}} {{elemento.id}} - Inspección I{{'%02d' %(loop.index)}}
+			</div>
+			<div class="contenido_bloque grid_columna2">
+				
+				<div class="">
+					<div class="rotuloHZ">Datos da inspección</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Data de inspección:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if inspeccion.fecha %}
+								{{ inspeccion.fecha[6:8] }}/{{ inspeccion.fecha[4:6] }}/{{ inspeccion.fecha[0:4] }}							
+								{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Hora da inspección:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if inspeccion.hora %}{{inspeccion.hora}}{% else %}-{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Estado do elemento:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">
+								{% if inspeccion.estado == 0 %}
+								Deficiente								
+								{% elif inspeccion.estado == 1 %}
+								Regular								
+								{% elif inspeccion.estado == 2 %}
+								Bo																
+								{% else %}
+								-
+								{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Ten infiltracións:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">
+								{% if inspeccion.infiltraciones == 0 %}
+								Non
+								{% elif inspeccion.infiltraciones == 1 %}
+								Si											
+								{% else %}
+								-
+								{% endif %}</span><br class="largo">
+						</div>
+					</div>
+
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">Observacións do inspector:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if inspeccion.comentarios %}{{inspeccion.comentarios}}{% else %}-{% endif %}
+												{% if inspeccion.comentarios[-1] != "." %}.{% endif %}
+							</span><br class="largo">
+						</div>
+					</div>
+				</div>	
+				<div class="">
+					<div class="rotuloHZ">Medicións da inspección</div>
+					
+					{% for medicion in mediciones if medicion.id_inspeccion == inspeccion.id%}					
+					<div class="contenido_sub_bloque grid_columna2">
+						<div class="columna">
+							<span class="etiqueta">{{medicion.etiqueta}}:</span><br class="largo">
+						</div>
+						<div class="columna">
+							<span class="valor">{% if medicion.valor %}{{medicion.valor}}{% else %}-{% endif %} {{medicion.unidades}}</span><br class="largo">
+						</div>
+					</div>
+					{% endfor %}
+										
+				</div>
+			</div>
+			<div class="contenido_bloque grid_columna1">
+					<div class="rotuloHZ">Fotos da inspección</div>
+			</div>
+			<!--{% if fotografias[inspeccion.id] < 3 %}
+			<div class="contenido_bloque grid_columna2">
+			{% elif fotografias[inspeccion.id] < 10 %}
+			<div class="contenido_bloque grid_columna3">
+			{% elif fotografias[inspeccion.id] < 17 %}
+			<div class="contenido_bloque grid_columna4">	
+			{%else%}
+			<div class="contenido_bloque grid_columna5">	
+			{% endif %}-->
+			{% if fotografias[inspeccion.id] < 4 %}
+			<div class="contenido_bloque grid_columna3">
+			{% elif fotografias[inspeccion.id] < 9 %}
+			<div class="contenido_bloque grid_columna4">	
+			{%else%}
+			<div class="contenido_bloque grid_columna6">	
+			{% endif %}
+			{% for foto in fotos if foto.id_inspeccion == inspeccion.id %} <!-- cambiar foto.id_inspeccion por foto.id_tabla segundo a BBDD sexa antigua ou moderda, pola estrutura da táboa de fotos ao relacionar as fotos mediante inspeccions ou taboa-->
+				<div class="">					
+					<div class="contenido_bloqueINSP grid_columnaINSP">				
+						<div class="contenedor_foto">
+							<img id="foto_elemento_inspeccion" src="/static_p/fotos/{% if not elemento.foto_principal %}sin_foto.png{% else %}{{foto.ruta}}{% endif %}" alt="Foto">
+						</div>
+						<div>
+							<span class="etiquetaF">Foto {{foto.etiqueta}}</span>
+						</div>						
+					</div>					
+				</div>
+			{% endfor %}				
+			</div>	
+		</div>
+		</div>
+
+		</div>
+	</div>
+	</div>
+	</div>
+		
+	{% endfor %}
+	
+	<div class="hueco2 saltopagina">	</div>
+	
+	
+	</div>
+	{% endfor %}
+	<script src="static/js/mapa_base.js" crossorigin=""></script>
+	<script>{% include "js/mapa_inventario.js" %}</script>
+		
+</body>
+
+

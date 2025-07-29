@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="robots" content="noindex">
+	<title>Login</title>
+	<link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='/images/CZ_FAV.png')}}"/>
+	<link rel="stylesheet" href="{{url_for('static', filename='/css/estilo.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='/css/login.css')}}">
+	<script type="text/javascript">
+		function visibilizaAxuda() {
+			if (document.getElementById("axuda").style.display == "") {
+				document.getElementById("axuda").style.display = "block";
+			} else {
+				document.getElementById("axuda").style.display = "";
+			}
+		};
+	</script>
+</head>
+<body>
+	<header class="cabecera">
+		<div class="encabezado">
+			<div class="izquierda">
+				<a href="/"><img id="logoCZ" src="{{url_for('static', filename='/images/logoCZ.svg')}}" alt="Inicio"></a>
+			</div>
+			<div class="nome_proxecto">
+				<span id='titulo_app'>iRedes</span>
+			</div>
+			<div class="derecha">
+				<a href=""><img id="logoXunta" src="{{url_for('static', filename='/images/logo_trans.png')}}" width=150px alt="Augas de Galicia"></a>
+			</div>
+		</div>
+	</header>
+	<h1 class="titulo_login">iRedes</h1>
+	<div id="form_login">
+		<h2 style="font-size:16px;">Benvido/a á inspección de Redes</h2>
+	  {% if error %}<p class="error"><strong>Error:</strong> {{ error }}{% endif %}
+	  <form action="{{ url.url }}" method=post>
+	      <input class="login" type=text name=username placeholder="Nome de usuario"><p>
+				<input class="login" type=password name=password placeholder="Contrasinal"><p>
+	      <input class="login" style="cursor:pointer; background-color:#067FB6;color:white;border:none;border-radius:3px;" type=submit value=Acceder>
+	  </form>
+		<span>Esta aplicación web so garda unha cookie no seu ordenador, necesaria para xestionar a sesión.<br>
+		Recoméndase o uso dun navegador actualizado como Firefox, Chrome, Opera, Brave, Edge ou Safari.</span>
+		<br><br><span class="clicable decorado" onclick="visibilizaAxuda()">Esqueceu o contrasinal ou necesita un usuario da aplicación</span>
+		<span id='axuda' class='invisible' style="float:left">Para renovar o contrasinal ou solictar unha conta de usuario póñase en contacto cos administradores da aplicación. {{resultados.telefono}} </span>
+	</div>
+	<div class="pie_login">
+		<div style="max-width: 1000px; margin:0 auto 0 auto;">
+
+		</div>
+	</div>
+</body>

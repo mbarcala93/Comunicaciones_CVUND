@@ -1,0 +1,21 @@
+{% for observacion in observaciones %}
+<div class="{{'invisible' if session.id_auditoria != observacion.id_auditoria}} revision revision{{equipo.id}} revision{{observacion.id_auditoria}}">
+    <span class="etiqueta">Observacións</span>
+    <textarea id="observacion{{observacion.id}}" class="editable_equipo observacion{{equipo.id}}" rows="6" cols="50" onkeyup="hay_Cambio('', {{equipo.id}})" autocomplete="off">{{observacion.observacion if observacion.observacion}}</textarea>
+</div>
+{% endfor %}
+<span class="formulario expande1">
+    <span class="etiqueta">Marca</span>
+    <input id="marca" class="editable_equipo" type="text" name="marca" value="{% if equipo.marca %}{{equipo.marca}}{% endif %}" onkeyup="hay_Cambio('', {{equipo.id}})" autocomplete="off">
+    <span class="etiqueta">Modelo</span>
+    <input id="modelo" class="editable_equipo" type="text" name="modelo" value="{% if equipo.modelo %}{{equipo.modelo}}{% endif %}" onkeyup="hay_Cambio('', {{equipo.id}})" autocomplete="off">
+    <span class="etiqueta">Nº serie</span>
+    <input id="num_serie" class="editable_equipo" type="text" name="num_serie" value="{% if equipo.num_serie %}{{equipo.num_serie}}{% endif %}" onkeyup="hay_Cambio('', {{equipo.id}})" autocomplete="off">
+    <span class="etiqueta">Criticidade</span>
+    <div class="grid_container grid_botonera3">
+        <div class="boton panel bot editable_equipo" onclick="$('input[name=&quot;criticidad&quot;]').val('Crítica');hay_Cambio('', {{equipo.id}})">Crítica</div>
+        <div class="boton panel bot editable_equipo" onclick="$('input[name=&quot;criticidad&quot;]').val('Media');hay_Cambio('', {{equipo.id}})">Media</div>
+        <div class="boton panel bot editable_equipo" onclick="$('input[name=&quot;criticidad&quot;]').val('Baixa');hay_Cambio('', {{equipo.id}})">Baixa</div>
+    </div>
+    <input id="criticidad" class="editable_equipo" type="text" name="criticidad" value="{% if equipo.criticidad %}{{equipo.criticidad}}{% endif %}" onkeyup="hay_Cambio('', {{equipo.id}})" autocomplete="off">
+</span>

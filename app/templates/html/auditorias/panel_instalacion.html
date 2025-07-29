@@ -1,0 +1,12 @@
+<div id="instalacion{{instalacion.id}}" class="panel">
+    {% if session.ambito in ['admin', 'galicia'] %}
+    <span class="material-icons derecha noDecorado alineado" onclick="nuevoTratamiento({{instalacion.id}})">add_circle_outline</span>
+    <span class="material-icons derecha noDecorado alineado invisible editar" onclick="borraInstalacion({{instalacion.id}})">delete</span>
+    {% endif %}
+    <h3>{{instalacion.nombre}}</h3>
+    <div id="listado_tratamientos{{instalacion.id}}">
+        {% for tratamiento in tratamientos if tratamiento.id_instalacion == instalacion.id %}
+        {% include 'html/auditorias/panel_tratamiento.html' %}
+        {% endfor %}
+    </div>
+</div>

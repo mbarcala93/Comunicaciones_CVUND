@@ -1,0 +1,410 @@
+<div class="panel ficha ficha{{industria.id}}">
+  <div id="foto_principal" class="foto foto_principal">
+    <img src="/static_p/fotos/{% if not industria.ruta_foto %}sin_foto.png" onclick="{% if resultados.permiso %}cargar_('foto', ''){% endif %}" {% else %}{{industria.ruta_foto}}" onclick="ampliaImagen('{{industria.ruta_foto}}')"{% endif %} class="clicable"alt="Foto">
+  </div>
+  <div class="datos_principales">
+    <div id="carga_foto" class="invisible">
+      <span class="etiqueta etiq etiqueta_fotos">Fotos</span>
+      <div id="botones_fotos" class="grid_container grbot grid_botonera3">
+        <div class="boton panel bot fachada botonSubirFoto" onclick="document.getElementById('file64_fachada').click();">
+          Fachada
+          <span id="cargando_fachada" class="invisible cargando" style="font-size:60%" >Comprimindo...</span>
+        </div>
+        <div class="boton panel bot ptoVert botonSubirFoto" onclick="document.getElementById('file64_ptoVert').click();">
+          Punto vertido
+          <span id="cargando_ptoVert" class="invisible cargando" style="font-size:60%">Comprimindo...</span>
+        </div>
+        <div class="boton panel bot" onclick="otrasFotos()">
+          <span class="material-icons">add</span>
+        </div>
+      </div>
+
+      <div class="valores_fotos">
+        <input id="file64_fachada" class="imagenComprimir invisible" onchange="comprimir('fachada','')" name="files64_fachada" type="file" value="Archivo" multiple="false" accept="image/*">
+        <input id="string64_fachada" class="stringFotos" type="text" name="string64_fachada" value="" style="display: none;">
+        <input id="valor_fachada" class="invisible" value="Fachada">
+
+        <input id="file64_ptoVert" class="imagenComprimir invisible" onchange="comprimir('ptoVert','')" name="files64_ptoVert" type="file" value="Archivo" multiple="false" accept="image/*">
+        <input id="string64_ptoVert" class="stringFotos" type="text" name="string64_ptoVert" value="" style="display: none;">
+        <input id="valor_ptoVert" class="invisible" value="Punto vertido">
+      </div>
+
+    </div>
+    <span onclick="ocultaFicha('elemento')" class="material-icons derecha">visibility_off</span>
+    {% if resultados.permiso %}<span onclick="cargar_('foto', '')" class="material-icons derecha">add_a_photo</span>{% endif %}
+    <span class="titulo_ficha t_ficha confirma">{{industria.nome_industria}}</span>
+    <br><i>{{industria.sistema}}_{{industria.cod_industria}}</i>
+  </div>
+  {% if industria.enlace_gmaps %}<a href="{{industria.enlace_gmaps}}" target="_blank"><span class="material-icons derecha">explore</span></a>
+  {% else %}<a href="{{resultados.enlace_gmaps}}" target="_blank"><span class="material-icons derecha">explore</span></a>{% endif %}
+  <div id="mas_fotos{{industria.id}}" class="">
+    <span onclick="cargaMasFotos('{{industria.id}}', 0)" class="clicable"><span class="material-icons negro">collections</span> Fotos</span>
+  </div>
+  <div class="linea"></div>
+  <span class="invisible confirmar clicable">
+    <h3 class="titulo_ficha t_ficha confirma">Resumo de cambios:</h3>
+  </span>
+  {% if resultados.permiso %}<span id="boton_editar" onclick="modoEdicionVisor('');minimizaActividades();" class="material-icons derecha">edit</span>{% endif %}
+
+  <span id="formulario">
+    <!-- <span class="titulo_ficha t_ficha">Datos da industria<br></span> -->
+    <h4>Identificación</h4>
+    <span class="apartado_ficha">
+      <span id='etiqueta-2' class='etiqueta etiq'>Nome<br></span>
+      <span class='editar'>{% if industria.nome_industria %}{{industria.nome_industria}}{% else %}-{% endif %}<br></span>
+      <input id='valor-2' type='text' class='ficha_ valor industria  val invisible editar' name='nome_industria' value='{% if industria.nome_industria %}{{industria.nome_industria}}{% endif %}'>
+      <span id='aviso_cod_industria'></span>
+      <span id='etiqueta-1' class='etiqueta etiq'>Código<br></span>
+      <span class='editar'>{% if industria.cod_industria %}{{industria.cod_industria}}{% else %}-{% endif %}<br></span>
+      <input id='valor-1' type='text' class='ficha_ valor industria  val invisible editar' onkeyup="compruebaCodigo(this.value.toUpperCase(), '{{industria.sistema}}')" name='cod_industria' value='{% if industria.cod_industria %}{{industria.cod_industria}}{% endif %}'>
+    </span>
+
+    <div class="linea"></div>
+    <span id="" class="expande1 derecha material-icons" onclick="expandir(1)">expand_less</span><span class="expande1 derecha material-icons invisible" onclick="expandir(1)">expand_more</span>
+    <span id="empresa" class="material-icons verde derecha"></span>
+    <h4 class="clicable" onclick="expandir(1)">Empresa</h4>
+    <span class="expande1 apartado_ficha">
+      <span id='etiqueta-3' class='etiqueta etiq'>Razón social<br></span><span class='editar {% if industria.razon_social %}empresa{% endif %}'>{% if industria.razon_social %}{{industria.razon_social}}{% else %}-{% endif %}<br></span><input id='valor-3' type='text' class='ficha_ valor industria  val invisible editar' name='razon_social' value='{% if industria.razon_social %}{{industria.razon_social}}{% endif %}'>
+      <span id='etiqueta-4' class='etiqueta etiq'>CIF<br></span><span class='editar {% if industria.cif %}empresa{% endif %}'>{% if industria.cif %}{{industria.cif}}{% else %}-{% endif %}<br></span><input id='valor-4' type='text' class='ficha_ valor industria  val invisible editar' name='cif' value='{% if industria.cif %}{{industria.cif}}{% endif %}'>
+      <span id='etiqueta-5' class='etiqueta etiq'>Enderezo<br></span><span class='editar {% if industria.direccion %}empresa{% endif %}'>{% if industria.direccion %}{{industria.direccion}}{% else %}-{% endif %}<br></span><input id='valor-5' type='text' class='ficha_ valor industria  val invisible editar' name='direccion' value='{% if industria.direccion %}{{industria.direccion}}{% endif %}'>
+      <span id='etiqueta-6' class='etiqueta etiq'>Cód. Concello<br></span><span class='editar {% if industria.cod_concello %}empresa{% endif %}'>{% if industria.cod_concello %}{{industria.cod_concello}}{% else %}-{% endif %}<br></span><input id='valor-6' type='text' class='ficha_ valor industria  val invisible editar' name='cod_concello' value='{% if industria.cod_concello %}{{industria.cod_concello}}{% endif %}'>
+      <span id='etiqueta-7' class='etiqueta etiq'>Teléfono 1<br></span><span class='editar {% if industria.telefono_1 %}empresa{% endif %}'>{% if industria.telefono_1 %}{{industria.telefono_1}}{% else %}-{% endif %}<br></span><input id='valor-7' type='text' class='ficha_ valor industria  val invisible editar' name='telefono_1' value='{% if industria.telefono_1 %}{{industria.telefono_1}}{% endif %}'>
+      <span id='etiqueta-8' class='etiqueta etiq'>Teléfono 2<br></span><span class='editar {% if industria.telefono_2 %}empresa{% endif %}'>{% if industria.telefono_2 %}{{industria.telefono_2}}{% else %}-{% endif %}<br></span><input id='valor-8' type='text' class='ficha_ valor industria  val invisible editar' name='telefono_2' value='{% if industria.telefono_2 %}{{industria.telefono_2}}{% endif %}'>
+      <span id='etiqueta-9' class='etiqueta etiq'>e-mail<br></span><span class='editar {% if industria.email %}empresa{% endif %}'>{% if industria.email %}{{industria.email}}{% else %}-{% endif %}<br></span><input id='valor-9' type='text' class='ficha_ valor industria  val invisible editar' name='email' value='{% if industria.email %}{{industria.email}}{% endif %}'>
+      <span id='etiqueta-10' class='etiqueta etiq'>Web<br></span><span class='editar {% if industria.web %}empresa{% endif %}'><a href="{% if industria.web %}{{industria.web}}{% endif %}">{% if industria.web %}{{industria.web}}{% else %}-{% endif %}</a><br></span><input id='valor-10' type='text' class='ficha_ valor industria  val invisible editar' name='web' value='{% if industria.web %}{{industria.web}}{% endif %}'>
+
+      <span id="" class="expandeActiv derecha material-icons invisible2" onclick="expandir_invisible('Activ')">expand_less</span>
+      <span class="expandeActiv derecha material-icons invisible editar" onclick="expandir_invisible('Activ')">expand_more</span>
+      <span id='etiqueta-16' class='etiqueta etiq clicable' onclick="expandir_invisible('Activ')">Actividade<br></span>
+      <span class='editar {% if industria.actividade %}empresa{% endif %}'>{% if industria.actividade %}{{industria.actividade}}{% else %}-{% endif %}<br></span><input id='valor-16' type='text' class='ficha_ valor industria  val invisible editar' name='actividade' value='{% if industria.actividade %}{{industria.actividade}}{% endif %}'>
+
+      <span class="expandeActiv grid_container grid_botonera1 invisible2">
+        <div class='boton panel bot' onclick='completaActividad(&quot;Conserveira, depuradora de mariscos.&quot;, &quot;Esperable vertedura de elevado caudal con altas carga orgánica, NTK e sales solubles.&quot;, 1, 1)'>Conserveira, depuradora de mariscos.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Matadoiro, procesado e conservación de carne.&quot;, &quot;Esperable vertedura con elevado caudal, carga orgánica e NTK, dependente do volume de produción.&quot;, 1, 1)'>Matadoiro, procesado e conservación de carne.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Leitería e elaboración de productos derivados do mesmo.&quot;, &quot;Posible vertedura con elevadas carga orgánica e NTK. Debido aos sistema de limpeza CIP, posible pH fóra de rango permitido. &quot;, 1, 1)'>Leitería e elaboración de productos derivados do mesmo.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Elaboración de produtos alcólicos.&quot;, &quot;Esperable unha vertedura con presenza de elevada de carga orgánica e posible pH fóra de rango permitido.&quot;, 1, 1)'>Elaboración de produtos alcólicos.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Panificadoras industriais.&quot;, &quot;Pola súa actividade posible vertedura de caudal medio con alta carga orgánica, NTK, sólidos en suspensión e toxicidade.&quot;, 1, 1)'>Panificadoras industriais.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Panaderías e pequenos fornos.&quot;, &quot;Pola súa actividade posible vertedura de baixo caudal con alta carga orgánica, NTK, sólidos en suspensión e toxicidade. Non se espera unha incidencia substancial no correcto funcionamento da EDAR municipal.&quot;, 3, 0)'>Panaderías e pequenos fornos.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Outras industrias alimentarias.&quot;, &quot;&quot;, 1, 1)'>Outras industrias alimentarias.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Explotación gandeira. Cría de vacuno ou porcino, avicultura.&quot;, &quot;Esperable que os puríns xerados no interior das naves se acumulen nunha foxa séptica para a súa posterior aplicación en campo ou retirada mediante xestor autorizado.&quot;, 4, 0)'>Explotación gandeira. Cría de vacuno ou porcino, avicultura.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Lonxa, conxelado de pescado, venta de pescados e mariscos e actividades anexas ao porto.&quot;, &quot;Pola súa actividade é esperable vertedura derivada das limpezas e baldeos con condutividade elevada. Polo seu carácter puntual no tempo non se espera que a vertedura teña efectos significativos para o correcto funcionamento da EDAR municipal.&quot;, 3, 0)'>Lonxa, conxelado de pescado, venta de pescados e mariscos e actividades anexas ao porto.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Curtidorías, peleteiras.&quot;, &quot;Posible vertedura con alta condutividade, carga orgánica e nitróxeno.&quot;, 1, 1)'>Curtidorías, peleteiras.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Fabricación de carpintaría metálica, maquinaria naval, chapado de vehículos. Actividades relacionadas con soldadura ou tratamento de metais.&quot;, &quot;Previsible vertedura de moi baixo caudal. Posible presenza de augas ácidas se no seu proceso dispoñen da etapa de decapado. Non se esperan efectos significativos para o correcto funcionamento da EDAR municipal.&quot;, 3, 0)'>Fabricación de carpintaría metálica, maquinaria naval, chapado de vehículos. Actividades relacionadas con soldadura ou tratamento de metais.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Industria química de todo tipo, incluso fabricación de produtos de limpeza ou deterxentes, laboratorios. &quot;, &quot;Espérase que non se produzan verteduras de augas residuais significativas, intentando minimizar a perda de produtos. Posibles verteduras puntuais durante a limpeza de cubas para a preparación dos compostos químicos. Inspeccionar se se detecta presenza de ditas substancias á entrada da EDAR municipal, ou se se detectan fenómenos asociados a compostos con elevada toxicidade ou que causen interaccións co proceso da EDAR.&quot;, 3, 0)'>Industria química de todo tipo, incluso fabricación de produtos de limpeza ou deterxentes, laboratorios. </div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Fabricación de texidos, impresión de artes gráficas. Outras actividades con uso de tinturas.&quot;, &quot;Vertedura con posible presenza de tintes ou tintas cun caudal moi baixo. Inspeccionar se se detecta presenza de ditas substancias á entrada da EDAR municipal, ou se se detectan fenómenos asociados a compostos con elevada toxicidade.&quot;, 3, 0)'>Fabricación de texidos, impresión de artes gráficas. Outras actividades con uso de tinturas.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Fabricación de formigón fresco, canteiras, entalladura e acabado de pedra, olaría. Fabricación de materiais de construcción.&quot;, &quot;Sen o correcto tratamento existe unha posible vertedura con presenza de sólidos decantables. Non se espera unha vertedura perigosa para o correcto funcionamento da EDAR municipal polo seu baixo caudal.&quot;, 3, 0)'>Fabricación de formigón fresco, canteiras, entalladura e acabado de pedra, olaría. Fabricación de materiais de construcción.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Serradoiro e carpintería de madeira.&quot;, &quot;Esperable vertedura de baixo caudal con posible presenza de sólidos decantables.&quot;, 3, 0)'>Serradoiro e carpintería de madeira.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Outras industrias non alimentarias.&quot;, &quot;&quot;, 1, 1)'>Outras industrias non alimentarias.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Construción, instalacións de carpintería, fontanería e electricidade.&quot;, &quot;Emprazamento do domicilio social. Previsiblemente non existe vertedura derivada da súa actividade principal no punto indicado, xa que o vertedura se realiza no emprazamento da obra.&quot;, 4, 0)'>Construción, instalacións de carpintería, fontanería e electricidade.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Taller, desguace, concesionario de vehículos, lavadoiro de vehículos e gasolineira.&quot;, &quot;Vertedura de baixo caudal con posible presenza de aceites, graxas e combustibles se non se lle aplica o tratamento axeitado. Non se espera que sexan prexudiciais para o correcto funcionamento da EDAR municipal.&quot;, 3, 0)'>Taller, desguace, concesionario de vehículos, lavadoiro de vehículos e gasolineira.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Comercios, oficinas, almacéns, restaurantes. Instalacións privadas con uso asimilable a doméstico.&quot;, &quot;Pola súa actividade esperable vertedura asimilable a doméstico.&quot;, 4, 0)'>Comercios, oficinas, almacéns, restaurantes. Instalacións privadas con uso asimilable a doméstico.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Edificacións singulares para usos non industriais e equipamentos públicos. Edificios oficiais, residencias, centros de saúde e hospitais, centros de ensinanza, polideportivos públicos.&quot;, &quot;Pola súa actividade esperable vertedura asimilable a doméstico.&quot;, 4, 0)'>Edificacións singulares para usos non industriais e equipamentos públicos. Edificios oficiais, residencias, centros de saúde e hospitais, centros de ensinanza, polideportivos públicos.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Balnearios e piscinas.&quot;, &quot;Vertedura non apta para a súa descarga ao medio receptor pola súa elevada temperatura ou presenza de químicos, polo que é esperable o seu envío a saneamento. O elevado caudal aportado pode supoñer un aumento significativo do caudal circulante a través do sistema de saneamento co consecuente risco de ocorrencia de alivios ao longo do mesmo. Débese avaliar a posible incidencia no sistema, independetemente do cumprimento de parámetros de vertedura.&quot;, 1, 1)'>Balnearios e piscinas.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Lavado e limpeza de prendas textís e de pel. Lavandarías.&quot;, &quot;Consumo de auga dependente do volume de produción. vertedura con posible presenza de deterxentes e outros produtos químicos. Non se espera un vertedura perigoso para o correcto funcionamento da EDAR municipal.  Inspeccionar se se detecta presenza de ditas substancias á entrada da EDAR municipal, ou se se detectan fenómenos asociados a compostos con elevada toxicidade ou que causen interaccións co proceso da EDAR.&quot;, 3, 0)'>Lavado e limpeza de prendas textís e de pel. Lavandarías.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Actividade descoñecida.&quot;, &quot;Descoñécese a actividade realizada neste emprazamento.&quot;, 4, 0)'>Actividade descoñecida.</div><br>
+        <div class='boton panel bot' onclick='completaActividad(&quot;Sen actividade. Instalacións en estado de abandono.&quot;, &quot;A información dispoñible indica que non se produce vertedura ao saneamento neste punto, dada a ausencia de actividade.&quot;, 4, 0)'>Sen actividade. Instalacións en estado de abandono.</div><br>
+      </span>
+
+      <span id='etiqueta-32' class='etiqueta etiq'>Entidade xestora<br></span><span class='editar {% if industria.entidad_gestora %}empresa{% endif %}'>{% if industria.entidad_gestora %}{{industria.entidad_gestora}}{% else %}-{% endif %}<br></span><input id='valor-32' type='text' class='ficha_ valor industria val invisible editar' name='entidad_gestora' value='{% if industria.entidad_gestora %}{{industria.entidad_gestora}}{% endif %}'>
+
+      <span id='etiqueta-17' class='etiqueta etiq'>CNAE<br></span><span class='editar {% if industria.cnae %}empresa{% endif %}'>{% if industria.cnae %}{{industria.cnae}}{% else %}-{% endif %}<br></span><input id='valor-17' type='text' class='ficha_ valor industria val invisible editar' name='cnae' value='{% if industria.cnae %}{{industria.cnae}}{% endif %}'>
+      <span id='etiqueta-14' class='etiqueta etiq'>Outras entidades administrativas<br></span><span class='editar {% if industria.outras_entidades_admin %}inspeccion{% endif %}'>{% if industria.outras_entidades_admin %}{{industria.outras_entidades_admin}}{% else %}-{% endif %}<br></span><input id='valor-14' type='text' class='ficha_ valor industria val invisible editar' name='outras_entidades_admin' value='{% if industria.outras_entidades_admin %}{{industria.outras_entidades_admin}}{% endif %}'>
+
+      <span id="borraAAI" class="material-icons derecha {% if not industria.ruta_AAI %}invisible{% endif %}" onclick="borrarAAI({{industria.id}})">delete</span>
+      <span id='etiqueta-17b' class='etiqueta etiq'>AAI<br></span>
+      <span class='editar {% if industria.aai != None %}empresa{% endif %}'>{% if industria.aai == 1 %}Si{% else %}Non{% endif %}<br></span>
+      <div class='grid_container grbot grid_botonera2 editar invisible'>
+        <div class='boton panel bot boton-17b {% if industria.aai == 1 %}pulsado{% endif %}' onclick='editaInput(1, "17b", this, ""); $(".valor-17b").hide()'>Si</div>
+        <div class='boton panel bot boton-17b {% if industria.aai == 0 %}pulsado{% endif %}' onclick='editaInput(0, "17b", this, ""); $(".valor-17b").hide()'>Non</div>
+      </div>
+      <input id='valor-17b' type='text' class='ficha_ valor industria val invisible valor-17b' name='aai' value='{% if industria.aai %}{{industria.aai}}{% endif %}'><br class='val valor valor-17b invisible'>
+
+      <div id="boton_subir_AAI" class='boton bot panel'
+      {% if industria.ruta_AAI %}onclick='download("/static_p/AAI/{{industria.ruta_AAI}}", "{{industria.ruta_AAI}}")'>Ver AAI
+      {% else %}' onclick='$("#file_AAI").click()'>Subir AAI{% endif %}
+      </div>
+      <input id="file_AAI" class="invisible" type="file" name="" value="" onchange="subirAAI({{industria.id}})">
+    </span>
+
+    <div class="linea"></div>
+    <span id="" class="expande5 derecha material-icons" onclick="expandir(5)">expand_less</span><span class="expande5 derecha material-icons invisible" onclick="expandir(5)">expand_more</span>
+    <span id="info_adic" class="material-icons verde derecha"></span>
+    <h4 class="clicable" onclick="expandir(5)">Información adicional</h4>
+    <span class="expande5 apartado_ficha">
+      <!-- input ubicacion -->
+      <span id='etiqueta-33' class='etiqueta etiq'>Ubicación<br></span>
+      <span class='editar {% if industria.ubicacion %}info_adic{% endif %}'>{% if industria.ubicacion %}{{industria.ubicacion}}{% else %}-{% endif %}<br></span>
+      <input id='valor-33' type='text' class='ficha_ valor industria val invisible editar' name='ubicacion' value='{% if industria.ubicacion %}{{industria.ubicacion}}{% endif %}'>
+      <!-- textarea sistema_dep -->
+      <span id='etiqueta-34' class='etiqueta etiq'>Sistema depuración<br></span>
+      <span class='editar {% if industria.sistema_dep %}info_adic{% endif %}'>{% if industria.sistema_dep %}{{industria.sistema_dep}}{% else %}-{% endif %}<br></span>
+      <textarea id="valor-34" class="ficha_ val valor industria invisible editar" name="sistema_dep" value="" rows="8" cols="90">{% if industria.sistema_dep %}{{industria.sistema_dep}}{% endif %}</textarea>
+      <!-- textarea mezcla_corrientes -->
+      <span id='etiqueta-35' class='etiqueta etiq'>Mestura de correntes<br></span>
+      <span class='editar {% if industria.mezcla_corrientes %}info_adic{% endif %}'>{% if industria.mezcla_corrientes %}{{industria.mezcla_corrientes}}{% else %}-{% endif %}<br></span>
+      <textarea id="valor-35" class="ficha_ val valor industria invisible editar" name="mezcla_corrientes" value="" rows="8" cols="90">{% if industria.mezcla_corrientes %}{{industria.mezcla_corrientes}}{% endif %}</textarea>
+      <!-- textarea aguas -->
+      <span id='etiqueta-36' class='etiqueta etiq'>Augas asimilables a domésticas<br></span>
+      <span class='editar {% if industria.aguas %}info_adic{% endif %}'>{% if industria.aguas %}{{industria.aguas}}{% else %}-{% endif %}<br></span>
+      <textarea id="valor-36" class="ficha_ val valor industria invisible editar" name="aguas" value="" rows="8" cols="90">{% if industria.aguas %}{{industria.aguas}}{% endif %}</textarea>
+      <!-- textarea agua_residual -->
+      <span id='etiqueta-37' class='etiqueta etiq'>Cando se produce auga residual<br></span>
+      <span class='editar {% if industria.agua_residual %}info_adic{% endif %}'>{% if industria.agua_residual %}{{industria.agua_residual}}{% else %}-{% endif %}<br></span>
+      <textarea id="valor-37" class="ficha_ val valor industria invisible editar" name="agua_residual" value="" rows="8" cols="90">{% if industria.agua_residual %}{{industria.agua_residual}}{% endif %}</textarea>
+      <!-- textarea puntos_vertido -->
+      <span id='etiqueta-38' class='etiqueta etiq'>Puntos de vertido<br></span>
+      <span class='editar {% if industria.puntos_vertido %}info_adic{% endif %}'>{% if industria.puntos_vertido %}{{industria.puntos_vertido}}{% else %}-{% endif %}<br></span>
+      <textarea id="valor-38" class="ficha_ val valor industria invisible editar" name="puntos_vertido" value="" rows="8" cols="90">{% if industria.puntos_vertido %}{{industria.puntos_vertido}}{% endif %}</textarea>
+      <!-- textarea pluviales -->
+      <span id='etiqueta-39' class='etiqueta etiq'>Pluviais<br></span>
+      <span class='editar {% if industria.pluviales %}info_adic{% endif %}'>{% if industria.pluviales %}{{industria.pluviales}}{% else %}-{% endif %}<br></span>
+      <textarea id="valor-39" class="ficha_ val valor industria invisible editar" name="pluviales" value="" rows="8" cols="90">{% if industria.pluviales %}{{industria.pluviales}}{% endif %}</textarea>
+      <!-- input num_trabajadores -->
+      <span id='etiqueta-40' class='etiqueta etiq'>Número trabajadores<br></span>
+      <span class='editar {% if industria.num_trabajadores %}info_adic{% endif %}'>{% if industria.num_trabajadores %}{{industria.num_trabajadores}}{% else %}-{% endif %}<br></span>
+      <input id='valor-40' type='text' class='ficha_ valor industria val invisible editar' name='num_trabajadores' value='{% if industria.num_trabajadores %}{{industria.num_trabajadores}}{% endif %}'>
+    </span>
+
+    <div class="linea"></div>
+    <span id="" class="expande2 derecha material-icons" onclick="expandir(2)">expand_less</span><span class="expande2 derecha material-icons invisible" onclick="expandir(2)">expand_more</span>
+    <span id="prioridade" class="material-icons verde derecha"></span>
+    <h4 class="clicable" onclick="expandir(2)">Prioridade</h4>
+    <span class="expande2 apartado_ficha">
+
+      <span id='etiqueta-28b' class='etiqueta etiq'>Prioridade censo preliminar<br></span>
+      <span class='editar {% if industria.prioridade_censo_prelim != None %}prioridade{% endif %}'>{% if industria.prioridade_censo_prelim == 1 %}Alta{% elif industria.prioridade_censo_prelim == 2 %}Media{% elif industria.prioridade_censo_prelim == 3 %}Baixa{% elif industria.prioridade_censo_prelim == 4 %}Moi baixa{% elif industria.prioridade_censo_prelim == 5 %}Descoñecida{% else %}-{% endif %}<br></span>
+      <div class='grid_container grbot grid_botonera2 editar invisible'>
+        <div class='boton panel bot boton-28b {% if industria.prioridade_censo_prelim == 1 %}pulsado{% endif %}' onclick='editaInput(1, "28b", this, ""); $(".valor-28b").hide()'>Alta</div>
+        <div class='boton panel bot boton-28b {% if industria.prioridade_censo_prelim == 2 %}pulsado{% endif %}' onclick='editaInput(2, "28b", this, ""); $(".valor-28b").hide()'>Media</div>
+        <div class='boton panel bot boton-28b {% if industria.prioridade_censo_prelim == 3 %}pulsado{% endif %}' onclick='editaInput(3, "28b", this, ""); $(".valor-28b").hide()'>Baixa</div>
+        <div class='boton panel bot boton-28b {% if industria.prioridade_censo_prelim == 4 %}pulsado{% endif %}' onclick='editaInput(4, "28b", this, ""); $(".valor-28b").hide()'>Moi baixa</div>
+        <div class='boton panel bot boton-28b {% if industria.prioridade_censo_prelim == 5 %}pulsado{% endif %}' onclick='editaInput(5, "28b", this, ""); $(".valor-28b").hide()'>Descoñecida</div>
+      </div>
+      <input id='valor-28b' type='text' class='ficha_ valor industria val invisible valor-28b' name='prioridade_censo_prelim' value='{% if industria.prioridade_censo_prelim %}{{industria.prioridade_censo_prelim}}{% endif %}'><br class='val valor valor-28b invisible'>
+
+      <span id='etiqueta-29' class='etiqueta etiq'>Recoméndase contacto inicial<br></span>
+      <span class='editar  {% if industria.recomendase_contacto_inicial != None %}prioridade{% endif %}'>{% if industria.recomendase_contacto_inicial == 1 %}Si{% elif industria.recomendase_contacto_inicial == 0 %}Non{% else %}-{% endif %}<br></span>
+      <div class='grid_container grbot grid_botonera2 editar invisible'>
+        <div class='boton panel bot boton-29 {% if industria.recomendase_contacto_inicial == 1 %}pulsado{% endif %}' onclick='editaInput(1, 29, this, ""); $(".valor-29").hide()'>Si</div>
+        <div class='boton panel bot boton-29 {% if industria.recomendase_contacto_inicial == 0 %}pulsado{% endif %}' onclick='editaInput(0, 29, this, ""); $(".valor-29").hide()'>Non</div>
+      </div>
+      <input id='valor-29' type='text' class='ficha_ valor industria val invisible valor-29' name='recomendase_contacto_inicial' value='{% if industria.recomendase_contacto_inicial %}{{industria.recomendase_contacto_inicial}}{% endif %}'><br class='val valor valor-29 invisible'>
+
+      <span id='etiqueta-28' class='etiqueta etiq'>Comentario prioridade censo<br></span>
+      <span class='editar {% if industria.comentario_prior_censo_prelim %}prioridade{% endif %}'>{% if industria.comentario_prior_censo_prelim %}{{industria.comentario_prior_censo_prelim}}{% else %}-{% endif %}<br></span>
+      <textarea id="valor-28" class="ficha_ val valor industria invisible editar" name="comentario_prior_censo_prelim" value="" rows="8" cols="90">{% if industria.comentario_prior_censo_prelim %}{{industria.comentario_prior_censo_prelim}}{% endif %}</textarea>
+
+      <span id='etiqueta-28c' class='etiqueta etiq'>Prioridade industria<br></span>
+      <span class='editar {% if industria.prioridade != None %}prioridade{% endif %}'>{% if industria.prioridade == 1 %}Alta{% elif industria.prioridade == 2 %}Media{% elif industria.prioridade == 3 %}Baixa{% elif industria.prioridade == 4 %}Moi baixa{% elif industria.prioridade == 5 %}Descoñecida{% else %}-{% endif %}<br></span>
+      <div class='grid_container grbot grid_botonera2 editar invisible'>
+        <div class='boton panel bot boton-28c {% if industria.prioridade == 1 %}pulsado{% endif %}' onclick='editaInput(1, "28c", this, ""); $(".valor-28c").hide()'>Alta</div>
+        <div class='boton panel bot boton-28c {% if industria.prioridade == 2 %}pulsado{% endif %}' onclick='editaInput(2, "28c", this, ""); $(".valor-28c").hide()'>Media</div>
+        <div class='boton panel bot boton-28c {% if industria.prioridade == 3 %}pulsado{% endif %}' onclick='editaInput(3, "28c", this, ""); $(".valor-28c").hide()'>Baixa</div>
+        <div class='boton panel bot boton-28c {% if industria.prioridade == 4 %}pulsado{% endif %}' onclick='editaInput(4, "28c", this, ""); $(".valor-28c").hide()'>Moi baixa</div>
+        <div class='boton panel bot boton-28c {% if industria.prioridade == 5 %}pulsado{% endif %}' onclick='editaInput(5, "28c", this, ""); $(".valor-28c").hide()'>Descoñecida</div>
+      </div>
+      <input id='valor-28c' type='text' class='ficha_ valor industria val invisible valor-28c' name='prioridade' value='{% if industria.prioridade %}{{industria.prioridade}}{% endif %}'><br class='val valor valor-28c invisible'>
+
+      <span id='etiqueta-28d' class='etiqueta etiq'>Recoméndase avaliación<br></span>
+      <span class='editar  {% if industria.recomendase_inspeccion_inicial != None %}prioridade{% endif %}'>{% if industria.recomendase_inspeccion_inicial == 1 %}Si{% elif industria.recomendase_inspeccion_inicial == 0 %}Non{% else %}-{% endif %}<br></span>
+      <div class='grid_container grbot grid_botonera2 editar invisible'>
+        <div class='boton panel bot boton-28d {% if industria.recomendase_inspeccion_inicial == 1 %}pulsado{% endif %}' onclick='editaInput(1, "28d", this, ""); $(".valor-28d").hide()'>Si</div>
+        <div class='boton panel bot boton-28d {% if industria.recomendase_inspeccion_inicial == 0 %}pulsado{% endif %}' onclick='editaInput(0, "28d", this, ""); $(".valor-28d").hide()'>Non</div>
+      </div>
+      <input id='valor-28d' type='text' class='ficha_ valor industria val invisible valor-28d' name='recomendase_inspeccion_inicial' value='{% if industria.recomendase_inspeccion_inicial %}{{industria.recomendase_inspeccion_inicial}}{% endif %}'><br class='val valor valor-28d invisible'>
+
+      <span id='etiqueta-28e' class='etiqueta etiq'>Recoméndase control<br></span>
+      <span class='editar  {% if industria.recomendase_control != None %}prioridade{% endif %}'>{% if industria.recomendase_control == 1 %}Si{% elif industria.recomendase_control == 0 %}Non{% else %}-{% endif %}<br></span>
+      <div class='grid_container grbot grid_botonera2 editar invisible'>
+        <div class='boton panel bot boton-28e {% if industria.recomendase_control == 1 %}pulsado{% endif %}' onclick='editaInput(1, "28e", this, ""); $(".valor-28e").hide()'>Si</div>
+        <div class='boton panel bot boton-28e {% if industria.recomendase_control == 0 %}pulsado{% endif %}' onclick='editaInput(0, "28e", this, ""); $(".valor-28e").hide()'>Non</div>
+      </div>
+      <input id='valor-28e' type='text' class='ficha_ valor industria val invisible valor-28e' name='recomendase_control' value='{% if industria.recomendase_control %}{{industria.recomendase_control}}{% endif %}'><br class='val valor valor-28e invisible'>
+
+    </span>
+
+    <div class="linea"></div>
+    <span id="" class="expande3 derecha material-icons" onclick="expandir(3)">expand_less</span><span class="expande3 derecha material-icons invisible" onclick="expandir(3)">expand_more</span>
+    <span id="contacto" class="material-icons verde derecha"></span>
+    <h4 class="clicable" onclick="expandir(3)">Contacto inspeccións</h4>
+    <span class="expande3 apartado_ficha">
+      
+      <!-- selector representante -->
+      <span id="etiquetaActual-41" class="etiqueta etiq {% if industria.id_representante %}contacto{% endif %}">Representante<br></span>
+      <span id="textoActual-41" class="texto editar">{% if industria.representante %}{{industria.dni_representante}} - {{ industria.representante }}{% endif %}</span>
+      <input id="valorActual-41vinculado" type="text" class="valor industria invisible" onkeyup="" name="id_representante" value="{{industria.id_representante if industria.id_representante}}">
+      <input id="seleccionActual-41" type="text" class="valor vinculado editar invisible" oninput="editaInputLista(this)" value="{% if industria.representante %}{{industria.dni_representante}} - {{ industria.representante }}{% endif %}" placeholder="Representante" list="usuarios"/>
+
+      <span id="etiquet-42" class="etiqueta etiq {% if industria.dni_representante %}contacto{% endif %}">NIF<br></span>
+      <span id="texto-42" class="texto">{% if industria.dni_representante %}{{industria.dni_representante}}{% endif %}</span>
+
+      <span id="etiqueta-43" class="etiqueta etiq {% if industria.telf1_representante %}contacto{% endif %}">Teléfono<br></span>
+      <span id="texto-43" class="texto">{% if industria.telf1_representante %}{{industria.telf1_representante}}{% endif %}</span>
+
+      <span id="etiqueta-44" class="etiqueta etiq">2º Teléfono<br></span>
+      <span id="texto-44" class="texto">{% if industria.telf2_representante %}{{industria.telf2_representante}}{% endif %}</span>
+
+      <!-- <span id='etiqueta-11' class='etiqueta etiq'>Nome interlocutor<br></span>
+            <span class='editar {% if industria.nome_interlocutor %}contacto{% endif %}'>{% if industria.nome_interlocutor %}{{industria.nome_interlocutor}}{% else %}-{% endif %}<br></span>
+            <input id='valor-11' type='text' class='ficha_ valor val invisible editar' name='nome_interlocutor' value='{% if industria.nome_interlocutor %}{{industria.nome_interlocutor}}{% endif %}'>
+            <span id='etiqueta-12' class='etiqueta etiq'>Cargo interlocutor<br></span>
+            <span class='editar {% if industria.cargo %}contacto{% endif %}'>{% if industria.cargo %}{{industria.cargo}}{% else %}-{% endif %}<br></span>
+            <input id='valor-12' type='text' class='ficha_ valor val invisible editar' name='cargo' value='{% if industria.cargo %}{{industria.cargo}}{% endif %}'>
+
+      <span id="DNI_correcto" class="material-icons checkeo_DNI verde invisible derecha">check_circle</span>
+      <span id="DNI_incorrecto" class="material-icons checkeo_DNI rojo invisible derecha">dangerous</span>
+      <span id='etiqueta-13' class='etiqueta etiq'>DNI interlocutor<br></span>
+      <span class='editar {% if industria.dni %}contacto{% endif %}'>{% if industria.dni %}{{industria.dni}}{% else %}-{% endif %}<br></span>
+      <input id='valor-13' type='text' class='ficha_ valor val invisible editar' onkeyup="compruebaDNI(this, '')" name='dni' value='{% if industria.dni %}{{industria.dni}}{% endif %}'> -->
+
+    </span>
+
+    <div class="linea"></div>
+    <span id="" class="expande6 derecha material-icons" onclick="expandir(6)">expand_less</span><span class="expande6 derecha material-icons invisible" onclick="expandir(6)">expand_more</span>
+    <span id="punto_vertido" class="material-icons verde derecha"></span>
+    <h4 class="clicable" onclick="expandir(6)">Punto de vertido</h4>
+    <span class="expande6 apartado_ficha">
+      <span id='etiqueta-36' class='etiqueta etiq'>Concello punto de vertido<br></span>
+      <span class='editar {% if industria.concello_PV %}punto_vertido{% endif %}'>{% if industria.concello_PV %}{{industria.concello_PV}}{% else %}-{% endif %}<br></span>
+      <input id='valor-36' type='text' class='ficha_ valor industria val invisible editar' name='concello_PV' value='{% if industria.concello_PV %}{{industria.concello_PV}}{% endif %}'>
+
+      <span class="material-icons derecha editar invisible etiq" onclick="coordenadasPV()">place</span>
+      <span id='etiqueta-39' class='etiqueta etiq'>Latitude punto de vertido<br></span>
+      <span class='editar {% if industria.latitud_PV %}punto_vertido{% endif %}'>{% if industria.latitud_PV %}{{'%0.5f'| format(industria.latitud_PV|float)}}{% else %}-{% endif %}<br></span>
+      <input id='valor-39' type='text' class='ficha_ valor industria val invisible editar' name='latitud_PV' value='{% if industria.latitud_PV %}{{"%0.5f"| format(industria.latitud_PV|float)}}{% endif %}'>
+      <span id='etiqueta-40' class='etiqueta etiq'>Lonxitude punto de vertido<br></span><span class='editar {% if industria.longitud_PV %}punto_vertido{% endif %}'>{% if industria.longitud_PV %}{{'%0.5f'| format(industria.longitud_PV|float)}}{% else %}-{% endif %}<br></span>
+      <input id='valor-40' type='text' class='ficha_ valor industria val invisible editar' name='longitud_PV' value='{% if industria.longitud_PV %}{{"%0.5f"| format(industria.longitud_PV|float)}}{% endif %}'>
+      {% if resultados.coord_x_PV and resultados.coord_y_PV %}
+      <span class="etiqueta etiq">Coordenadas UTM PV<br></span>
+      <span id="coordenadas_PV_UTM" class="val">{{'%0.0f'| format(resultados.coord_x_PV)}}, {{'%0.0f'| format(resultados.coord_y_PV)}}<br></span>
+      {% endif %}
+      <span id='etiqueta-30' class='etiqueta etiq'>Consumo de auga (m³/ano)<br></span><span class='editar {% if industria.consumo_auga %}punto_vertido{% endif %}'>{% if industria.consumo_auga %}{{industria.consumo_auga}}{% else %}-{% endif %}<br></span><input id='valor-30' type='text' class='ficha_ valor industria val invisible editar' name='consumo_auga' value='{% if industria.consumo_auga %}{{industria.consumo_auga}}{% endif %}'>
+    </span>
+
+    <div class="linea"></div>
+    <span id="" class="expande4 derecha material-icons" onclick="expandir(4)">expand_less</span><span class="expande4 derecha material-icons invisible" onclick="expandir(4)">expand_more</span>
+    <span id="borraPerVert" class="material-icons derecha {% if industria.ruta_PV %}editar{% endif %} invisible" onclick="borrarPerVert({{industria.id}})">delete</span>
+    <span id="permiso" class="material-icons verde derecha"></span>
+    <h4 class="clicable" onclick="expandir(4)">Permiso de vertido</h4>
+    <span class="expande4 apartado_ficha">
+      <span id='etiqueta-18' class='etiqueta etiq'>Require permiso de vertido<br></span>
+      <span class='editar {% if industria.require_pv != None %}permiso{% endif %}'>{% if industria.require_pv == 1 %}Si{% elif industria.require_pv == 0 %}Non{% else %}-{% endif %}<br></span>
+      <div class='grid_container grbot grid_botonera2 editar invisible'>
+        <div class='boton panel bot boton-18 {% if industria.require_pv == 1 %}pulsado{% endif %}' onclick='editaInput(1, 18, this, ""); $(".valor-18").hide()'>Si</div>
+        <div class='boton panel bot boton-18 {% if industria.require_pv == 0 %}pulsado{% endif %}' onclick='editaInput(0, 18, this, ""); $(".valor-18").hide()'>Non</div>
+      </div>
+      <input id='valor-18' type='text' class='ficha_ valor industria val invisible valor-18' name='require_PV' value='{% if industria.require_pv %}{{industria.require_pv}}{% endif %}'><br class='val valor valor-18 invisible'>
+
+      <span id='etiqueta-19' class='etiqueta etiq'>Solicitude<br></span>
+      <span class='editar {% if industria.solicitude_permiso != None %}permiso{% endif %}'>{% if industria.solicitude_permiso == 1 %}Si{% elif industria.solicitude_permiso == 0 %}Non{% else %}-{% endif %}<br></span>
+      <div class='grid_container grbot grid_botonera2 editar invisible'>
+        <div class='boton panel bot boton-19 {% if industria.solicitude_permiso == 1 %}pulsado{% endif %}' onclick='editaInput(1, 19, this, ""); $(".valor-19").hide()'>Si</div>
+        <div class='boton panel bot boton-19 {% if industria.solicitude_permiso == 0 %}pulsado{% endif %}' onclick='editaInput(0, 19, this, ""); $(".valor-19").hide()'>Non</div>
+      </div>
+      <input id='valor-19' type='text' class='ficha_ valor industria val invisible valor-19' name='solicitude_permiso' value='{% if industria.solicitude_permiso %}{{industria.solicitude_permiso}}{% endif %}'><br class='val valor valor-19 invisible'>
+
+      <span id='etiqueta-20' class='etiqueta etiq'>Informe augas <br></span>
+      <span class='editar {% if industria.informe_augas != None %}permiso{% endif %}'>{% if industria.informe_augas == 1 %}Si{% elif industria.informe_augas == 0 %}Non{% else %}-{% endif %}<br></span>
+      <div class='grid_container grbot grid_botonera2 editar invisible'>
+        <div class='boton panel bot boton-20 {% if industria.informe_augas == 1 %}pulsado{% endif %}' onclick='editaInput(1, 20, this, ""); $(".valor-20").hide()'>Si</div>
+        <div class='boton panel bot boton-20 {% if industria.informe_augas == 0 %}pulsado{% endif %}' onclick='editaInput(0, 20, this, ""); $(".valor-20").hide()'>Non</div>
+      </div>
+      <input id='valor-20' type='text' class='ficha_ valor industria val invisible valor-20' name='informe_augas' value='{% if industria.informe_augas %}{{industria.informe_augas}}{% endif %}'><br class='val valor valor-20 invisible'>
+
+      <span id='etiqueta-21' class='etiqueta etiq'>Concedido<br></span>
+      <span class='editar {% if industria.per_con != None %}permiso{% endif %}'>{% if industria.per_con == 1 %}Si{% elif industria.per_con == 0 %}Non{% else %}-{% endif %}<br></span>
+      <div class='grid_container grbot grid_botonera2 editar invisible'>
+        <div class='boton panel bot boton-21 {% if industria.per_con == 1 %}pulsado{% endif %}' onclick='editaInput(1, 21, this, ""); $(".valor-21").hide()'>Si</div>
+        <div class='boton panel bot boton-21 {% if industria.per_con == 0 %}pulsado{% endif %}' onclick='editaInput(0, 21, this, ""); $(".valor-21").hide()'>Non</div>
+      </div>
+      <input id='valor-21' type='text' class='ficha_ valor industria val invisible valor-21' name='per_con' value='{% if industria.per_con %}{{industria.per_con}}{% endif %}'><br class='val valor valor-21 invisible'>
+
+      <div id="boton_subir_PV" class='boton bot panel'
+      {% if industria.ruta_PV %}onclick='download("/static_p/PV/{{industria.ruta_PV}}", "{{industria.ruta_PV}}")'>Ver permiso de vertido
+      {% else %}' onclick='$("#file_perVer").click()'>Subir permiso de vertido{% endif %}
+      </div>
+      <span id='etiqueta-22' class='etiqueta etiq'>Observacións<br></span>
+      <span class='editar {% if industria.observacions_pv != None %}permiso{% endif %}'>{% if industria.observacions_pv %}{{industria.observacions_pv}}{% else %}-{% endif %}<br></span>
+      <textarea id="valor-22" class="ficha_ val valor industria invisible editar" name="observacions_pv" value="" rows="8" cols="90">{% if industria.observacions_pv %}{{industria.observacions_pv}}{% endif %}</textarea>
+
+    </span>
+    <input id="file_perVer" class="invisible" type="file" name="" value="" onchange="subirPerVer({{industria.id}})">
+
+    <div class="linea"></div>
+    <span class="apartado_ficha">
+
+      <span id='etiqueta-31' class='etiqueta etiq'>Sistema<br></span>
+      <span class='editar'>{% if industria.sistema %}<a href="/censo-{{industria.sistema}}" class="noDecorado">{{industria.sistema}}</a>{% else %}-{% endif %}<br></span>
+      <input id='valor-31' type='text' class='ficha_ valor industria val invisible editar' name='sistema' value='{% if industria.sistema %}{{industria.sistema}}{% endif %}'>
+
+      <span id='etiqueta-26' class='etiqueta etiq'>Data censo<br></span><span class='editar'>{% if industria.data_censo_prelim %}{{industria.data_censo_prelim}}{% else %}-{% endif %}<br></span><input id='valor-26' type='text' class='ficha_ valor industria val invisible editar' name='data_censo_prelim' value='{% if industria.data_censo_prelim %}{{industria.data_censo_prelim}}{% endif %}'>
+      
+      <!-- selector inspector -->
+      <span id="etiquetaActual-27" class="etiqueta etiq">Inspector<br></span>
+      <span id="textoActual-27" class="texto editar">{{ industria.inspector if industria.inspector else '-' }}</span>
+      <input id="valorActual-27vinculado" type="text" class="valor industria invisible" onkeyup="" name="inspector" value="{{industria.inspector if industria.inspector}}">
+      <input id="seleccionActual-27" type="text" class="valor vinculado editar invisible" oninput="editaInputLista(this)" value="{{ industria.inspector if industria.inspector }}" placeholder="Inspector" list="inspectores"/>
+
+      <!-- <span id='etiqueta-27' class='etiqueta etiq'>Inspector censo<br></span><span class='editar'>{% if industria.inspector_censo_prelim %}{{industria.inspector_censo_prelim}}{% else %}-{% endif %}<br></span><input id='valor-27' type='text' class='ficha_ valor val invisible editar' name='inspector_censo_prelim' value='{% if industria.inspector_censo_prelim %}{{industria.inspector_censo_prelim}}{% endif %}'> -->
+
+      <span id='etiqueta-27c' class='etiqueta etiq'>Sistema tratamento<br></span>
+      <span class='editar'>{% if industria.tratamiento %}{{industria.tratamiento}}{% else %}-{% endif %}<br></span>
+      <textarea id="valor-27c" class="ficha_ val valor industria invisible editar" name="tratamiento" value="" rows="8" cols="90">{% if industria.tratamiento %}{{industria.tratamiento}}{% endif %}</textarea>
+
+      <span id='etiqueta-27b' class='etiqueta etiq'>Observacións industria<br></span>
+      <span class='editar'>{% if industria.observaciones %}{{industria.observaciones}}{% else %}-{% endif %}<br></span>
+      <textarea id="valor-27b" class="ficha_ val valor industria invisible editar" name="observaciones" value="" rows="8" cols="90">{% if industria.observaciones %}{{industria.observaciones}}{% endif %}</textarea>
+
+    </span>
+
+
+    <!-- <span id='etiqueta-34' class='etiqueta etiq'>Latitude<br></span><span class='editar'>{% if industria.latitud %}{{industria.latitud}}{% else %}-{% endif %}<br></span>
+    <span id='etiqueta-35' class='etiqueta etiq'>Lonxitude<br></span><span class='editar'>{% if industria.longitud %}{{industria.longitud}}{% else %}-{% endif %}<br></span> -->
+    {% if inspecciones %}
+    <h4 id="etiqueta-28" class="etiq">Inspeccións realizadas<br></h4>
+    <div  id="botones_fichas{{industria.id}}" class="grid_container grbot grid_botonera2">
+      {% if inspecciones | length > 1 %}
+      <div class="boton panel bot" onclick="muestraFichaInspeccion({{industria.id}}, 1)">Todas</div>
+      {% endif %}
+      {% for inspeccion in inspecciones %}
+      <div id="boton_inspeccion{{inspeccion.id}}" class="boton panel bot tipo{{inspeccion.tipo_inspeccion}}" onclick="muestraFichaInspeccion({{inspeccion.id}}, 0)">{{ inspeccion.fecha | fecha_bonita }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="clicable val{{industria.id}}" onclick="nuevaInspeccion({{industria.id}})"><span class="material-icons" style="">add_circle_outline</span> Planificar nova inspección</div>
+  </span>
+
+	<span onclick="actualizaElemento('')" class="invisible izquierda editado boton_upload clicable boton panel aceptar"><span class="material-icons">arrow_circle_up</span> Subir cambios</span>
+  <span class="check_upload invisible">
+    <span class="material-icons check" style="">check_circle</span> Datos actualizados correctamente
+  </span>
+  <br class="confirmar invisible">
+  <span id="boton_confirmar" class="invisible confirmar clicable boton panel aceptar" onclick="ConfirmaActualizaElemento('industria', '{{industria.id}}')">
+    <span class="material-icons">check</span> Confirmar cambios
+  </span>
+  <br class="confirmar invisible"><br class="confirmar invisible"><br class="confirmar invisible">
+  <span class="invisible confirmar clicable boton panel cancelar" onclick="muestraFichaIndustria({{industria.id}}); boton_actualizar_pulsado = 0;">
+    <span class="material-icons">cancel</span> Cancelar cambios
+  </span>
+  <br class="confirmar invisible"><br class="confirmar invisible">
+</div>
+
+<script type="text/javascript">
+  var foto_principal = {% if not industria.foto_principal %}0{% else %}1{% endif %}
+
+  $('.valor').keyup(function( event ) {
+    if (!boton_actualizar_pulsado) {
+      $(".boton_upload").show();
+      alargaMenu();
+      var indice = this.id.split("-")[1];
+      $("#etiqueta-"+indice).addClass("editado");
+      $(this).addClass("editado");
+    }
+  });
+  $(document).ready(function(){
+    var apartados = {"empresa": 11, "prioridade": 6, "contacto": 3, "punto_vertido": 4, "permiso": 5, "info_adic": 8}
+    for (apartado in apartados) {
+      revisaAvance(apartado, apartados[apartado]);
+    }
+  });
+</script>

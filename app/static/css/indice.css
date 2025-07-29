@@ -1,0 +1,13 @@
+@media (min-width: 968px) {
+  .grid_indice{
+    grid-template-columns: auto 50%;
+  }
+}
+
+@media (max-width: 967px) {
+
+}
+
+@media (max-width: 766px) {
+
+}

@@ -1,0 +1,115 @@
+<div id="ficha{{elemento.id}}" class="panel ficha inspeccion ficha{{elemento.id}}">
+  <div id="foto_principal{{elemento.id}}" class="foto foto_principal">
+    <img src="/static_p/fotos/{% if not elemento.ruta %}sin_foto.png" onclick="{% if resultados.permiso %}cargar_('foto', {{elemento.id}}){% endif %}" {% else %}{{elemento.ruta}}" onclick="ampliaImagen('{{elemento.ruta}}')"{% endif %} style="cursor:pointer;" alt="Foto">
+  </div>
+  <div class="datos_principales">
+    <div id="carga_foto{{elemento.id}}" class="foto invisible">
+      Seleccione unha foto:<br>
+      <input id="file64_foto{{elemento.id}}" class="imagenComprimir" onchange="comprimir('foto', {{elemento.id}})" name="files64_foto" type="file" value="Archivo" multiple="false" accept="image/*"> <span id="check_foto{{elemento.id}}" class="input{{elemento.id}} material-icons" style="display: none; color: #3A3;">check_circle</span><br>
+      Etiqueta foto:<br>
+      <div class="grid_container grbot{{elemento.id}} grid_botonera3">
+        <div class="boton panel bot interior{{elemento.id}}" onclick="editaInput('Interior', {{elemento.id}}, '', '_foto');document.getElementById('file64_foto{{elemento.id}}').click()">Interior</div>
+        <div class="boton panel bot exterior{{elemento.id}}" onclick="editaInput('Exterior', {{elemento.id}}, '', '_foto');document.getElementById('file64_foto{{elemento.id}}').click()">Exterior</div>
+        <div class="boton panel bot auxiliar{{elemento.id}}" onclick="editaInput('Auxiliar', {{elemento.id}}, '', '_foto');document.getElementById('file64_foto{{elemento.id}}').click()">Auxiliar</div>
+      </div>
+      <input id="valor_foto-{{elemento.id}}" type="text" name="etiqueta_foto" value="" style=""><br>
+      <input id="string64_foto{{elemento.id}}" type="text" name="string64_interna" value="" style="display: none;">
+      <span id="cargando_foto{{elemento.id}}" class="invisible cargando">Comprimindo foto...</span>
+      <span id="subir_foto_icon{{elemento.id}}" onclick="subirFoto({{elemento.id}}, 'foto')" class="invisible"> <i class="material-icons negro">cloud_upload</i> Subir</span>
+      <div class="linea"></div>
+    </div>
+    <span id="check_upload_foto{{elemento.id}}" class="invisible">
+      <span class="material-icons check" style="">check_circle</span> Foto subida correctamente
+      <div class="linea"></div>
+    </span>
+    <span onclick="ocultaFicha('inspecciones', {{elemento.id}})" class="material-icons derecha">visibility_off</span>
+    {% if resultados.permiso %}<span onclick="cargar_('foto', {{elemento.id}})" class="material-icons derecha">add_a_photo</span>{% endif %}
+    <span class="titulo_ficha t_ficha{{elemento.id}} confirma">Cod. {{resultados.ficha[0] | upper}}{{elemento.id}}</span>
+    <br><i>{{elemento.cod_edar}}</i>
+  </div>
+  <span class="material-icons derecha editar{{elemento.id}} invisible" onclick="eliminarInspeccion({{elemento.id}})">delete</span>
+  <div id="mas_fotos{{elemento.id}}" class="">
+    <span onclick="cargaMasFotos('{{elemento.id}}', 0)" class="clicable"><span class="material-icons negro">collections</span> Fotos</span>
+  </div>
+  <div class="linea"></div>
+  <!-- <span id="" onclick="actualizaElemento('{{elemento.id}}')" class="invisible boton_upload{{elemento.id}} derecha editado clicable"><span class="material-icons">arrow_circle_up</span> Subir cambios<br></span> -->
+  <span class="invisible confirmar{{elemento.id}}">
+    <h3 class="titulo_ficha t_ficha confirma">Resumo de cambios:</h3>
+  </span>
+
+  {% if resultados.permiso %}<span id="boton_editar{{elemento.id}}" onclick="modoEdicionVisor({{elemento.id}})" class="material-icons derecha">edit</span>{% endif %}
+
+
+  <span id="formulario{{elemento.id}}">
+    <span class="titulo_ficha t_ficha{{elemento.id}}">Datos da inspección<br></span>
+
+    <span id="etiqueta{{elemento.id}}-1" class="etiqueta etiq{{elemento.id}} editar{{elemento.id}} invisible">Data (aaaa/mm/dd)<br></span>
+    <span class="editar{{elemento.id}}">{{elemento.fecha[6:8]}}/{{elemento.fecha[4:6]}}/{{elemento.fecha[0:4]}} {{elemento.hora}}<br></span>
+    <input id="valor{{elemento.id}}-1" type="text" class="ficha_ val{{elemento.id}} valor editar{{elemento.id}} invisible" name="fecha" value="{% if elemento.fecha %}{{elemento.fecha}}{% endif %}"><br class="val{{elemento.id}} valor invisible">
+    <span id="etiqueta{{elemento.id}}-1bis" class="etiqueta etiq{{elemento.id}} editar{{elemento.id}} invisible">Hora<br class="invisible editar{{elemento.id}}"></span>
+    <input id="valor{{elemento.id}}-1bis" type="text" class="ficha_ val{{elemento.id}} valor editar{{elemento.id}} invisible" name="hora" value="{% if elemento.hora %}{{elemento.hora}}{% endif %}"><br class="val{{elemento.id}} valor invisible">
+
+    <span id="etiqueta{{elemento.id}}-2" class="etiqueta etiq{{elemento.id}} editar{{elemento.id}} invisible">Inspector<br></span>
+    <span class="editar{{elemento.id}}">{% if elemento.inspector %}{{elemento.inspector}}{% else %}-{% endif %}<br></span>
+    <input id="valor{{elemento.id}}-2" type="text" class="ficha_ val{{elemento.id}} valor editar{{elemento.id}} invisible" name="inspector" value="{% if elemento.inspector %}{{elemento.inspector}}{% endif %}"><br class="val{{elemento.id}} valor invisible">
+
+    <span id="etiqueta{{elemento.id}}-3" class="etiqueta etiq{{elemento.id}}">Estado<br></span>
+    <span class="editar{{elemento.id}}">{% if elemento.estado == 0 %}Non afectado{% elif elemento.estado == 1 %}Afectado{% elif elemento.estado == 2 %}Crítico{% else %}-{% endif %}<br></span>
+    <input id="valor{{elemento.id}}-3" type="text" class="ficha_ val{{elemento.id}} valor invisible" name="estado" value="{% if elemento.estado %}{{elemento.estado}}{% endif %}"><br class="val{{elemento.id}} valor invisible">
+    <div class="grid_container grbot{{elemento.id}} grid_botonera3 invisible editar{{elemento.id}}">
+      <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-3 {% if elemento.estado == 0 %}pulsado{% endif %}" onclick="editaInput(0, 3, this, '{{elemento.id}}')">Non afectado</div>
+      <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-3 {% if elemento.estado == 1 %}pulsado{% endif %}" onclick="editaInput(1, 3, this, '{{elemento.id}}')">Afectado</div>
+      <div class="boton panel bot{{elemento.id}} boton{{elemento.id}}-3 {% if elemento.estado == 2 %}pulsado{% endif %}" onclick="editaInput(2, 3, this, '{{elemento.id}}')">Crítico</div>
+    </div>
+    <div id="mediciones{{elemento.id}}" class="linea val{{elemento.id}}">
+      {% for medicion in mediciones %}{% if medicion.id_inspeccion == elemento.id %}
+      <span id="etiqueta{{elemento.id}}-4_{{loop.index}}" class="etiqueta etiq{{elemento.id}} editar{{elemento.id}}">{{medicion.etiqueta}}<br></span>
+      <input id="valor{{elemento.id}}-4_{{loop.index}}" type="text" class="ficha_ medicion{{elemento.id}} val{{elemento.id}} valor editar{{elemento.id}} invisible" name="medicionexistente|{{medicion.id}}|etiqueta" value="{{medicion.etiqueta}}">
+      <span class="editar{{elemento.id}}"><span class="numero{{elemento.id}}">{{medicion.valor}}</span> {{medicion.unidades}}<br></span>
+      <input id="valor{{elemento.id}}-4_{{loop.index}}" type="text" class="ficha_ medicion{{elemento.id}} val{{elemento.id}} valor editar{{elemento.id}} invisible" name="medicionexistente|{{medicion.id}}|valor" value="{{medicion.valor}}">
+      <input id="valor{{elemento.id}}-4_{{loop.index}}" type="text" class="ficha_ medicion{{elemento.id}} val{{elemento.id}} valor editar{{elemento.id}} invisible" name="medicionexistente|{{medicion.id}}|unidades" value="{{medicion.unidades}}">
+      <div class="linea invisible editar{{elemento.id}} val{{elemento.id}}"></div>
+      {% endif %}{% endfor %}
+    </div>
+    <span class="clicable invisible editar{{elemento.id}} val{{elemento.id}}" onclick="nuevaMedicion({{elemento.id}})"><span class="material-icons" style="">add_circle_outline</span> Nova medición</span>
+    <div class="linea val{{elemento.id}} invisible editar{{elemento.id}}"></div>
+
+    <span id="etiqueta{{elemento.id}}-5" class="etiqueta etiq{{elemento.id}}">Comentarios<br></span>
+    <span class="editar{{elemento.id}}">{% if elemento.comentarios %}{{elemento.comentarios}}{% else %}-{% endif %}<br></span>
+    <textarea id="valor{{elemento.id}}-5" class="ficha_ val{{elemento.id}} valor editar{{elemento.id}} invisible" name="comentarios" value="" rows="8" cols="90">{% if elemento.comentarios %}{{elemento.comentarios}}{% endif %}</textarea>
+  </span>
+
+	<span id="" onclick="actualizaElemento({{elemento.id}})" class="invisible izquierda boton_upload{{elemento.id}} boton panel aceptar"><span class="material-icons">arrow_circle_up</span> Subir cambios</span>
+  <span class="check_upload{{elemento.id}} invisible">
+    <span class="material-icons check" style="">check_circle</span> Cambios actualizados correctamente
+  </span>
+  <div class="linea invisible confirmar{{elemento.id}}"></div>
+  <br class="confirmar{{elemento.id}} invisible">
+  <span id="boton_confirmar{{elemento.id}}" class="invisible confirmar{{elemento.id}} clicable boton panel aceptar" onclick="ConfirmaActualizaElemento('inspecciones', '{{elemento.id}}')">
+    <span class="material-icons">check</span> Confirmar cambios
+  </span>
+  <br class="confirmar{{elemento.id}} invisible"><br class="confirmar{{elemento.id}} invisible"><br class="confirmar{{elemento.id}} invisible">
+  <span class="invisible confirmar{{elemento.id}} clicable boton panel cancelar" onclick="muestraFichaInspeccion('{{elemento.id}}', 0, 1);boton_actualizar_pulsado = 0;">
+    <span class="material-icons">cancel</span> Cancelar cambios
+  </span>
+  <br class="confirmar{{elemento.id}} invisible"><br class="confirmar{{elemento.id}} invisible">
+</div>
+
+<script type="text/javascript">
+  var foto_principal = {% if not elemento.foto_principal %}0{% else %}1{% endif %}
+
+  $('.val{{elemento.id}}').keyup(function( event ) {
+    if (!boton_actualizar_pulsado) {
+      $(".boton_upload{{elemento.id}}").show();
+      alargaMenu();
+      var indice = this.id.split("-")[1];
+      $("#etiqueta{{elemento.id}}-"+indice).addClass("editado");
+      $(this).addClass("editado");
+    }
+  });
+
+
+  $( "span.numero{{elemento.id}}" ).each(function() {
+    sustituyeNumero(this);
+  });
+</script>

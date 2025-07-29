@@ -1,0 +1,70 @@
+{% extends "html/base.html" %}
+	{% block titulo %}<title>{{resultados.titulo}} - iRedes</title>{% endblock %}
+	{% block scripts %}
+	<script src="{{url_for('static', filename='/js/verificacion.js')}}" crossorigin=""></script>
+	{% endblock %}
+	{% block scripts2 %}
+	<link rel="stylesheet" href="{{url_for('static', filename='/css/'+resultados.pagina+'.css')}}">
+	{% endblock %}
+	{% block nome_paxina %}<span id="nome_paxina" alt="Verificación">Páxina de verificacións</span>{% endblock %}
+	{% block todo %}
+	<div id="todo" class="grid_container grid_tablas zurdo">
+		<div class="panel">
+			<div class="opciones">
+				<h4>Verificacións</h4>
+				<span id="carga_mas_verificacion" class="material-icons derecha" onclick="cargaMasFilas(0)">more_time</span>
+				<span class="material-icons" onclick="nuevaVerificacion(0)">add_circle_outline</span> Nova
+
+			</div>
+			<table id="tabla_verificaciones">
+				<tr>
+					<th>id</th>
+					<th>Data</th>
+					<th>Parámetro</th>
+					<th>Sonda</th>
+					<th class="escritorio">Borrar</th>
+					<th class="escritorio">Certificado</th>
+				</tr >
+				{% for verificacion in verificaciones %}
+				<tr id="fila_v{{verificacion.id}}" class="clicable {% if not verificacion.fecha_fin %}pendiente{% endif %} verificacion {% if loop.index > 5 %}antigua{% endif %}" onclick="window.open('/verificacion-{{verificacion.id}}{% if verificacion.fecha_fin %}-imprimir{% endif%}', '_self')">
+					<td>{{verificacion.id}}</td>
+					<td>{{verificacion.fecha_inicio}}</td>
+					<td>{% if verificacion.parametro %}{{verificacion.parametro}}{% else %}-{% endif %}</td>
+					<td>{% if verificacion.codigo %}{{verificacion.codigo}}{% else %}-{% endif %}</td>
+					<td onclick="event.cancelBubble=true;" class="escritorio"><span onclick="borrarVerificacion({{verificacion.id}}, 0)" class="material-icons">delete</span></td>
+					<td onclick="event.cancelBubble=true;" class="escritorio">{% if verificacion.parametro %}<a href="/descargar_verificacion-{{verificacion.id}}" class="noDecorado" download="{{verificacion.fecha_fin}}_{{verificacion.id_sonda}}.html"><span class="material-icons negro">download</span></a>{% endif %}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+		<div class="panel">
+			<div class="opciones">
+				<h4>Axustes</h4>
+				<span id="carga_mas_ajuste" class="material-icons derecha" onclick="cargaMasFilas(1)">more_time</span>
+				<span class="material-icons" onclick="nuevaVerificacion(1)">add_circle_outline</span> Novo
+			</div>
+			<table id="tabla_ajustes">
+				<tr>
+					<th>id</th>
+					<th>Data</th>
+					<th>Parámetro</th>
+					<th>Sonda</th>
+					<th class="escritorio">Borrar</th>
+					<th class="escritorio">Certificado</th>
+				</tr >
+				{% for ajuste in ajustes %}
+				<tr id="fila_a{{ajuste.id}}" class="clicable {% if not ajuste.fecha_fin %}pendiente{% endif %} ajuste {% if loop.index > 5 %}antigua{% endif %}" onclick="window.open('/axuste-{{ajuste.id}}{% if ajuste.fecha_fin %}-imprimir{% endif%}', '_self')">
+					<td>{{ajuste.id}}</td>
+					<td>{{ajuste.fecha_inicio}}</td>
+					<td>{% if ajuste.parametro %}{{ajuste.parametro}}{% else %}-{% endif %}</td>
+					<td>{% if ajuste.codigo %}{{ajuste.codigo}}{% else %}-{% endif %}</td>
+					<td onclick="event.cancelBubble=true;" class="escritorio"><span onclick="borrarVerificacion({{ajuste.id}}, 1)" class="material-icons">delete</span></td>
+					<td onclick="event.cancelBubble=true;" class="escritorio">{% if ajuste.parametro %}<a href="/descargar_axuste-{{ajuste.id}}" class="noDecorado" download="{{ajuste.fecha_fin}}_{{ajuste.id_sonda}}.html"><span class="material-icons negro">download</span></a>{% endif %}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+	{% endblock %}
+
+	{% block menuLat %}{% include resultados.menu %}{% endblock %}

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="robots" content="noindex">
+
+	{% block titulo %}{% endblock %}
+	{% block scripts %}{% endblock %}
+
+	<style>
+
+	.material-icons {
+		font-family: 'Material Icons';
+		font-weight: normal;
+		font-style: normal;
+		font-size: 22px;  /* Preferred icon size */
+		display: inline-block;
+		line-height: 1;
+		text-transform: none;
+		letter-spacing: normal;
+		word-wrap: normal;
+		white-space: nowrap;
+		direction: ltr;
+		/* Support for all WebKit browsers. */
+		-webkit-font-smoothing: antialiased;
+		/* Support for Safari and Chrome. */
+		text-rendering: optimizeLegibility;
+		/* Support for Firefox. */
+		/* -moz-osx-font-smoothing: grayscale; */
+		/* Support for IE. */
+		font-feature-settings: 'liga';
+		vertical-align: bottom;
+	}
+
+	@page { margin:0; }
+
+	body {
+		counter-reset: page;
+		font: normal normal normal 90% "etelka_light_proregular", "Etelka Light Pro", "open-sans", Helvetica, Arial, Verdana, sans-serif;
+		word-spacing: normal;
+	}
+	div.saltopagina {
+		page-break-before:always;
+	}
+	.pagina {
+		margin-top: 2.5cm;
+	}
+
+	page {
+		background: white;
+		display: block;
+		margin: 0 auto;
+		margin-bottom: 0.5cm;
+	}
+
+	page[size="A4"] {
+		width: 21cm;
+		height: 297mm;
+	}
+	.encabezado {
+		padding: 10px 0 0 0;
+		height: 2cm;
+		border-bottom: 1px solid #ddd;
+		width: 100%;
+	}
+	#logoCZ {
+		height: 70px;
+		margin-top: -5px;
+	}
+	#logoXunta {
+		width: 150px;
+	}
+
+	.nome_proxecto {
+		margin: 5px 0 0 30px;
+		font-size: 20px;
+		font-family: "etelka_light_proregular", "Etelka Light Pro", Helvetica, Arial, Verdana, sans-serif;
+		float:left;
+		text-align: center;
+		font-weight: bold;
+		max-width: 320px;
+	}
+
+	.cabecera {
+		border-top: 3px solid #067FB6;
+		width: 210mm;
+		position: fixed;
+		top: 0.8cm;
+		margin: 0 1.4cm auto 1.6cm;
+	}
+	.pie_pagina {
+		position: absolute;
+		bottom: 1.0cm;
+		right: 1.6cm;
+	}
+	.pagina {
+		width: 210mm;
+		height: 250mm;
+		position: relative;
+		padding: 1cm 1.4cm 0cm 1.6cm;
+	}
+
+	.etiqueta {
+		font-size: 75%;
+		font-weight: bold;
+	}
+
+	.grande {
+		font-size: 150%;
+	}
+
+	.izquierda {
+		float:left;
+		margin-left: 10px;
+	}
+	.derecha {
+		float:right;
+		margin-right: 10px;
+	}
+
+	.linea {
+		margin: 10px 0 10px 0;
+		border-top: solid 1px #ccc;
+	}
+
+	.grid_container {
+		display: grid;
+		grid-gap: 5px 5px;
+		margin: 0 0 5px 0;
+	}
+
+
+	.grid_columna2 {
+		grid-template-columns: 49% 49%;
+		/* width: 100%; */
+	}
+	.grid_columna3 {
+		grid-template-columns: 33% 33% 33%;
+		/* width: 100%; */
+	}
+	.verde {
+		color: #21a45a;
+	}
+
+	.rojo {
+		color: rgb(200,40,100);
+	}
+	.criterios_ajuste {
+		margin: 0 5cm 0 5cm;
+	}
+
+	</style>
+	{% block scripts2 %}{% endblock %}
+</head>
+<body>
+	<header class="cabecera">
+		<div class="encabezado" style="">
+					<div class="izquierda">
+						{% block logo_izquierda %}{% endblock %}
+					</div>
+					<div class="nome_proxecto">
+						{% block titulo_encabezado %}{% endblock %}
+
+					</div>
+					<div class="derecha">
+							{% block logo_derecha %}{% endblock %}
+					</div>
+
+		</div>
+	</header>
+	{% block todo %}{% endblock %}
+
+	{% block menuLat %}{% endblock %}
+
+	{% block mapa %}{% endblock %}
+</body>

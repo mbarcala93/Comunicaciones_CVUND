@@ -1,0 +1,32 @@
+{% extends "html/base.html" %}
+{% block titulo %}<title>Auditorías EDAR</title>{% endblock %}
+{% block scripts %}
+<script src="static/js/auditorias/auditorias.js" crossorigin=""></script>
+{% endblock %}
+{% block scripts2 %}
+<link rel="stylesheet" href="static/css/auditorias.css">
+{% endblock %}
+{% block nome_paxina %}{% endblock %}
+{% block todo %}
+<div id="todo" class="grid_container zurdo">
+    <div class="panel">
+        Listado de revisións pendentes na EDAR de {{resultados.nombre_EDAR}}.
+         <input id="textoBuscar" class="editar" type="text" placeholder="Buscar" onkeyup="muestraBuscados()"><i class="material-icons noClicable">search</i>
+    </div>
+    {% for revision in revisiones %}
+    <a href="/equipo-{{revision.id_equipo}}" class="noDecorado">
+        <div id="revision{{revision.id}}" class="panel menu texto equipo" style="background-color: #8bd0e3">
+            <div>
+                <b>{{revision.actividad}}</b>
+                <i>{{revision.denominacion}} {{revision.tipo}}</i><br>
+                {{revision.posicion}}
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}
+{% block menuLat %}{% include 'html/auditorias/menu_lateral.html' %}{% endblock %}
+{% block mapa %}
+
+{% endblock %}

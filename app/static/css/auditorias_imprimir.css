@@ -1,0 +1,9 @@
+
+.cabecera {
+    margin: 0;
+    padding-top: 1cm;
+}
+
+.grid_columna3_revision {
+  grid-template-columns: 3fr 1fr 2fr;
+}

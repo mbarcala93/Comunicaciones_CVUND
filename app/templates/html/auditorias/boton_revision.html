@@ -1,0 +1,11 @@
+<div id="revision{{revision.id}}" class="panel menu texto revision revision{{elemento}}{{revision.id_elemento}} revision{{revision.id_auditoria}} {{'invisible' if session.id_auditoria != revision.id_auditoria}} rev_disp{{revision.id_revision_disponible}}" onclick="estadoRevision({{revision.id}}, '{{elemento}}', '{{revision.id_elemento}}')" hayCambio="0" estado="{{revision.estado}}" style="background-color:{% if revision.estado == 0 %}#ffeea0{% elif revision.estado == 1 %}#8cd586{% elif revision.estado == 2 %}#fe93a3{% else %}#cfcfcf{% endif %}">
+                {{revision.actividad}}
+	<div class="datastamp">
+            <div id="revision_inspector{{revision.id}}" class="izquierda">
+                        {% if revision.id_inspector %}{{revision.id_inspector | upper}}{% endif %}
+            </div>
+            <div id="revision_fecha{{revision.id}}" class="derecha">
+            		{% if revision.fecha %}{{revision.fecha}}{% endif %}
+            </div>
+        </div>
+</div>

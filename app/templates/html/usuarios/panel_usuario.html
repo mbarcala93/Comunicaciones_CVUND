@@ -1,0 +1,51 @@
+<div class="panel usuario{{usuario.id}}" id="formulario{{usuario.id}}">
+    <span id="boton_editar{{usuario.id}}" onclick="modoEdicion({{usuario.id}})" class="material-icons derecha">edit</span>
+    <span id="boton_editar{{usuario.id}}" onclick="eliminaUsuario({{usuario.id}})" class="material-icons derecha editar{{usuario.id}} invisible ">delete</span>
+    <span id="etiqueta{{usuario.id}}-1" class="etiqueta etiq{{usuario.id}}">Nome:<br></span>
+    <span id="texto{{usuario.id}}-1" class="editar{{usuario.id}}">{% if usuario.nombre_completo %}{{usuario.nombre_completo}}{% else %}-{% endif %}<br></span>
+    <input id="valor{{usuario.id}}-1" type="text" class="ficha_ val{{usuario.id}} valor editar{{usuario.id}} invisible" onkeyup="editarInput(this, {{usuario.id}})" name="nombre_completo" value="{% if usuario.nombre_completo %}{{usuario.nombre_completo}}{% endif %}">
+    <br class="val{{usuario.id}} valor invisible">
+
+    <span id="etiqueta{{usuario.id}}-2" class="etiqueta etiq{{usuario.id}}">NIF:<br></span>
+    <span id="texto{{usuario.id}}-2" class="editar{{usuario.id}}">{% if usuario.nif %}{{usuario.nif}}{% else %}-{% endif %}<br></span>
+    <input id="valor{{usuario.id}}-2" type="text" class="ficha_ val{{usuario.id}} valor editar{{usuario.id}} invisible" onkeyup="editarInput(this, {{usuario.id}})" name="nif" value="{% if usuario.nif %}{{usuario.nif}}{% endif %}">
+    <br class="val{{usuario.id}} valor invisible">
+
+    <span id="etiqueta{{usuario.id}}-3" class="etiqueta etiq{{usuario.id}}">Teléfono:<br></span>
+    <span id="texto{{usuario.id}}-3" class="editar{{usuario.id}}">{% if usuario.telefono_1 %}{{usuario.telefono_1}}{% else %}-{% endif %}<br></span>
+    <input id="valor{{usuario.id}}-3" type="text" class="ficha_ val{{usuario.id}} valor editar{{usuario.id}} invisible" onkeyup="editarInput(this, {{usuario.id}})" name="telefono_1" value="{% if usuario.telefono_1 %}{{usuario.telefono_1}}{% endif %}">
+    <br class="val{{usuario.id}} valor invisible">
+
+    <span id="etiqueta{{usuario.id}}-4" class="etiqueta etiq{{usuario.id}}">2º Teléfono:<br></span>
+    <span id="texto{{usuario.id}}-4" class="editar{{usuario.id}}">{% if usuario.telefono_2 %}{{usuario.telefono_2}}{% else %}-{% endif %}<br></span>
+    <input id="valor{{usuario.id}}-4" type="text" class="ficha_ val{{usuario.id}} valor editar{{usuario.id}} invisible" onkeyup="editarInput(this, {{usuario.id}})" name="telefono_2" value="{% if usuario.telefono_2 %}{{usuario.telefono_2}}{% endif %}">
+    <br class="val{{usuario.id}} valor invisible">
+
+    <span id="etiqueta{{usuario.id}}-5" class="etiqueta etiq{{usuario.id}}">Correo:<br></span>
+    <span id="texto{{usuario.id}}-5" class="editar{{usuario.id}}">{% if usuario.correo %}{{usuario.correo}}{% else %}-{% endif %}<br></span>
+    <input id="valor{{usuario.id}}-5" type="text" class="ficha_ val{{usuario.id}} valor editar{{usuario.id}} invisible" onkeyup="editarInput(this, {{usuario.id}})" name="correo" value="{% if usuario.correo %}{{usuario.correo}}{% endif %}">
+    <br class="val{{usuario.id}} valor invisible">
+
+    <span id="etiqueta{{usuario.id}}-6" class="etiqueta etiq{{usuario.id}}">Organización:<br></span>
+    <span id="texto{{usuario.id}}-6" class="editar{{usuario.id}}">{% if usuario.organizacion %}{{usuario.organizacion}}{% else %}-{% endif %}<br></span>
+    <input id="valor{{usuario.id}}-6" type="text" class="ficha_ val{{usuario.id}} valor editar{{usuario.id}} invisible" onkeyup="editarInput(this, {{usuario.id}})" name="organizacion" value="{% if usuario.organizacion %}{{usuario.organizacion}}{% endif %}">
+    <br class="val{{usuario.id}} valor invisible">
+
+    <span id="etiqueta{{usuario.id}}-7" class="etiqueta etiq{{usuario.id}}">Cargo:<br></span>
+    <span id="texto{{usuario.id}}-7" class="editar{{usuario.id}}">{% if usuario.cargo %}{{usuario.cargo}}{% else %}-{% endif %}<br></span>
+    <input id="valor{{usuario.id}}-7" type="text" class="ficha_ val{{usuario.id}} valor editar{{usuario.id}} invisible" onkeyup="editarInput(this, {{usuario.id}})" name="cargo" value="{% if usuario.cargo %}{{usuario.cargo}}{% endif %}">
+
+    <br class="check_upload{{usuario.id}} invisible"><br class="check_upload{{usuario.id}} invisible">
+    <span class="check_upload{{usuario.id}} invisible">
+        <span class="material-icons check">check_circle</span> Datos actualizados correctamente
+    </span>
+    <div class="linea invisible confirmar{{usuario.id}}"></div>
+    <span id="boton_confirmar{{usuario.id}}" class="invisible confirmar{{usuario.id}} boton_upload{{usuario.id}} clicable boton panel aceptar" onclick="ConfirmaActualizaUsuario('{{usuario.id}}')">
+        <span class="material-icons">check</span> Confirmar cambios
+    </span>
+    <br class="confirmar{{usuario.id}} invisible">
+    <span class="invisible confirmar{{usuario.id}} boton_upload{{usuario.id}} clicable boton panel cancelar" onclick="cancelaActualizaUsuario('{{usuario.id}}');">
+        <span class="material-icons">cancel</span> Cancelar cambios
+    </span>
+    <br class="confirmar{{usuario.id}} invisible"><br class="confirmar{{usuario.id}} invisible">
+</div>

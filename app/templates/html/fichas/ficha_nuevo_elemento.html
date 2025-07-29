@@ -1,0 +1,127 @@
+<div class="panel ficha ficha{{elemento.id}}">
+  <!-- <span onclick="actualizaElemento('')" class="invisible derecha editado boton_upload clicable boton panel aceptar"><span class="material-icons">arrow_circle_up</span> Subir cambios<br></span>
+  <br class="boton_upload invisible"> -->
+  <span class="invisible confirmar clicable">
+    <h3 class="titulo_ficha t_ficha confirma">Resumo de cambios:</h3>
+  </span>
+
+  <span id="formulario_elemento">
+
+    <span id="etiqueta-3" class="etiqueta etiq">Tipo de elemento<br></span>
+    <input id="valor-3" type="text" class="ficha_ valor val invisible" name="tipo_elemento" value=""><br class="val valor invisible">
+    <div class="grid_container grbot grid_botonera2">
+      <div class="boton panel bot boton-3" onclick="editaInput('Pozo', 3, this, '', 1)">Pozo</div>
+      <div class="boton panel bot boton-3" onclick="editaInput('EBAR', 3, this, '', 1)">EBAR</div>
+      <div class="boton panel bot boton-3" onclick="editaInput('PV medio', 3, this, '', 1)">PV medio</div>
+      <div class="boton panel bot boton-3" onclick="editaInput('PV industria', 3, this, '', 1)">PV industria</div>
+      <div class="boton panel bot boton-3" onclick="editaInput('Acometida', 3, this, '', 1)">Acometida</div>
+    </div>
+
+    <span id="etiqueta-4" class="etiqueta etiq">Altura (m)<br></span>
+    <div class="grid_container grbot grid_botonera3">
+      <div class="boton panel bot boton-4" onclick="editaInput(0.5, 4, this, '', 1); $('.valor-4').hide()">0,5</div>
+      <div class="boton panel bot boton-4" onclick="editaInput(1.0, 4, this, '', 1); $('.valor-4').hide()">1,0</div>
+      <div class="boton panel bot boton-4" onclick="editaInput(1.5, 4, this, '', 1); $('.valor-4').hide()">1,5</div>
+      <div class="boton panel bot boton-4" onclick="editaInput(2.0, 4, this, '', 1); $('.valor-4').hide()">2,0</div>
+      <div class="boton panel bot boton-4" onclick="editaInput(2.5, 4, this, '', 1); $('.valor-4').hide()">2,5</div>
+      <div class="boton panel bot boton-4" onclick="editaInput(3.0, 4, this, '', 1); $('.valor-4').hide()">3,0</div>
+      <div class="boton panel bot boton-4" onclick="editaInput(3.5, 4, this, '', 1); $('.valor-4').hide()">3,5</div>
+      <div class="boton panel bot boton-4" onclick="editaInput(4.0, 4, this, '', 1); $('.valor-4').hide()">4,0</div>
+      <div class="boton panel bot boton-4" onclick="editaInput(4.5, 4, this, '', 1); $('.valor-4').hide()">4,5</div>
+      <div class="boton panel bot boton-4" onclick="$('.valor-4').toggle();"><span class="material-icons">edit</span></div>
+      <div class="boton panel bot boton-4" onclick="editaInput(parseFloat($('.valor-4').show().val()) - 0.5, 4, this, '', 1);">-</div>
+      <div class="boton panel bot boton-4" onclick="editaInput(parseFloat($('.valor-4').show().val()) + 0.5, 4, this, '', 1);">+</div>
+    </div>
+    <input id="valor-4" type="text" class="ficha_ valor val valor-4 invisible" name="altura" value=""><br class="val valor valor-4 invisible">
+
+    <span id="etiqueta-5" class="etiqueta etiq">Cota (m)<br></span>
+    <input id="valor-5" type="text" class="ficha_ valor val" name="cota_z_terreno" value=""><br class="val valor">
+
+    <span id="etiqueta-6" class="etiqueta etiq">Tipo auga residual<br></span>
+    <input id="valor-6" type="text" class="ficha_ valor val invisible" name="tipo_agua_residual" value=""><br class="val valor invisible">
+    <div class="grid_container grbot grid_botonera2">
+      <div class="boton panel bot boton-6" onclick="editaInput(0, 6, this, '', 1)">Fecais</div>
+      <div class="boton panel bot boton-6" onclick="editaInput(1, 6, this, '', 1)">Pluviais</div>
+      <div class="boton panel bot boton-6" onclick="editaInput(2, 6, this, '', 1)">Unitario</div>
+      <div class="boton panel bot boton-6" onclick="editaInput(3, 6, this, '', 1)">Descoñecido</div>
+      <div class="boton panel bot boton-6" onclick="editaInput(4, 6, this, '', 1)">Industrial</div>
+    </div>
+  </span>
+    <div class="linea etiq"></div>
+  <span id="formulario_inspeccion">
+    <span id="etiqueta-7" class="etiqueta etiq">Estado<br></span>
+    <input id="valor-7" type="text" class="ficha_ val valor invisible" name="estado" value=""><br class="val valor invisible">
+    <div class="grid_container grbot{{elemento.id}} grid_botonera3">
+      <div class="boton panel bot boton-7" onclick="editaInput(0, 7, this, '', 0)">Non afectado</div>
+      <div class="boton panel bot boton-7" onclick="editaInput(1, 7, this, '', 0)">Afectado</div>
+      <div class="boton panel bot boton-7" onclick="editaInput(2, 7, this, '', 0)">Crítico</div>
+    </div>
+    <div id="mediciones{{inspeccion.id}}" class="linea etiq">
+    </div>
+    <span class="clicable val" onclick="nuevaMedicion({{inspeccion.id}})"><span class="material-icons" style="">add_circle_outline</span> Nova medición</span>
+    <div class="linea val"></div>
+
+    <span id="etiqueta-9" class="etiqueta etiq">Comentarios<br></span>
+    <textarea id="valor-9" class="ficha_ val valor editar{{elemento.id}}" name="comentarios" value="" rows="8" cols="90"></textarea>
+  </span>
+  <div class="linea etiq"></div>
+
+  <div id="carga_foto{{inspeccion.id}}" class="">
+    <span class="etiqueta etiq etiqueta_fotos">Fotos</span><br class=etiq>
+    <div class="grid_container grbot{{inspeccion.id}} grid_botonera3">
+      <div class="boton panel bot interior{{inspeccion.id}}" onclick="document.getElementById('file64_interior{{inspeccion.id}}').click();">
+        Interior
+        <span id="cargando_interior{{inspeccion.id}}" class="invisible cargando" style="font-size:60%" >Comprimindo...</span>
+      </div>
+      <div class="boton panel bot exterior{{inspeccion.id}}" onclick="document.getElementById('file64_exterior{{inspeccion.id}}').click();">
+        Exterior
+        <span id="cargando_exterior{{inspeccion.id}}" class="invisible cargando" style="font-size:60%">Comprimindo...</span>
+      </div>
+      <div class="boton panel bot auxiliar{{inspeccion.id}}" onclick="document.getElementById('file64_auxiliar{{inspeccion.id}}').click();">
+        Auxiliar
+        <span id="cargando_auxiliar{{inspeccion.id}}" class="invisible cargando" style="font-size:60%">Comprimindo...</span>
+      </div>
+    </div>
+    <input id="file64_interior{{inspeccion.id}}" class="imagenComprimir invisible" onchange="comprimir('interior', {{inspeccion.id}})" name="files64_interior" type="file" value="Archivo" multiple="false" accept="image/*">
+    <input id="string64_interior{{inspeccion.id}}" class="stringFotos" type="text" name="string64_interior" value="" style="display: none;">
+    <input id="valor_interior-{{inspeccion.id}}" class="invisible" value="Interior">
+
+    <input id="file64_exterior{{inspeccion.id}}" class="imagenComprimir invisible" onchange="comprimir('exterior', {{inspeccion.id}})" name="files64_exterior" type="file" value="Archivo" multiple="false" accept="image/*">
+    <input id="string64_exterior{{inspeccion.id}}" class="stringFotos" type="text" name="string64_exterior" value="" style="display: none;">
+    <input id="valor_exterior-{{inspeccion.id}}" class="invisible" value="Exterior">
+
+    <input id="file64_auxiliar{{inspeccion.id}}" class="imagenComprimir invisible" onchange="comprimir('auxiliar', {{inspeccion.id}})" name="files64_auxiliar" type="file" value="Archivo" multiple="false" accept="image/*">
+    <input id="string64_auxiliar{{inspeccion.id}}" class="stringFotos" type="text" name="string64_auxiliar" value="" style="display: none;">
+    <input id="valor_auxiliar-{{inspeccion.id}}" class="invisible" value="Auxiliar">
+  </div>
+
+	<span onclick="actualizaElemento('')" class="invisible izquierda editado boton_upload boton panel aceptar"><span class="material-icons">arrow_circle_up</span> Subir cambios</span>
+
+  <div class="linea invisible confirmar"></div>
+  <br class="confirmar invisible">
+  <span class="confirmar clicable boton panel aceptar invisible" onclick="ConfirmaActualizaNuevoElemento('{{elemento.id}}', '{{inspeccion.id}}')">
+    <span class="material-icons">check</span> Confirmar cambios
+  </span>
+  <br class="confirmar invisible"><br class="confirmar invisible"><br class="confirmar invisible">
+  <span class="confirmar clicable boton panel cancelar invisible" onclick="muestraFichaElemento({{elemento.id}})">
+    <span class="material-icons">cancel</span> Cancelar cambios
+  </span>
+  <br class="confirmar invisible"><br class="confirmar invisible">
+</div>
+
+<script type="text/javascript">
+  var foto_principal = {% if not elemento.foto_principal %}0{% else %}1{% endif %}
+
+  $('.valor').keyup(function( event ) {
+    $(".boton_upload").show();
+    alargaMenu();
+    var indice = this.id.split("-")[1];
+    $("#etiqueta-"+indice).addClass("editado");
+    $(this).addClass("editado");
+  });
+
+  $( "span.numero{{elemento.id}}" ).each(function() {
+    sustituyeNumero(this);
+  });
+
+</script>

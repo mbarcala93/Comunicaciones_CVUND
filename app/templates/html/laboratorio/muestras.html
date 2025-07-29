@@ -1,0 +1,121 @@
+<h2>Valores discrepantes entre BBDD e laboratorio</h2>
+		<div class="grid_container grid_fichas">
+			{% for muestra in diccionario_validado if diccionario_validado[muestra].validado == 3 %}
+			<div class="panel">
+				<span class="material-icons derecha despliega_actualiza" onclick="despliegaFichaMuestraIncorrecta(this)">expand_more</span>
+				<span class="material-icons derecha invisible despliega_actualiza" onclick="despliegaFichaMuestraIncorrecta(this)">expand_less</span>
+				<h4 class="incorrecto clicable" onclick="abreIndustria('{{muestra}}')">{{muestra}}</h4>
+				<div class="grid_container grid_fichas_muestras">
+					{% for etiqueta in diccionario_validado[muestra] if etiqueta not in ("validado", 'id_censo', 'id_inspeccion', 'nueva') %}
+					{% set invisible =  ((diccionario_validado[muestra][etiqueta].valor[0] == diccionario_validado[muestra][etiqueta].valor[1]) or (diccionario_validado[muestra][etiqueta].valor[0] != None and diccionario_validado[muestra][etiqueta].valor[1] == None) or (diccionario_validado[muestra][etiqueta].valor[0] == None)) and (diccionario_validado[muestra][etiqueta].unidades[0] == diccionario_validado[muestra][etiqueta].unidades[1] or (diccionario_validado[muestra][etiqueta].unidades[0] != None and diccionario_validado[muestra][etiqueta].unidades[1] == None)) and (diccionario_validado[muestra][etiqueta].incertidumbre[0] == diccionario_validado[muestra][etiqueta].incertidumbre[1] or diccionario_validado[muestra][etiqueta].incertidumbre[0] != None and diccionario_validado[muestra][etiqueta].incertidumbre[1] == None) %}
+					<span class="{{'invisible correcto_incorrecta' if invisible else 'incorrecto' }}">{{etiqueta}}: 
+					</span>
+
+					{% if diccionario_validado[muestra][etiqueta].valor[0] == diccionario_validado[muestra][etiqueta].valor[1] %}
+					<span class="{{'invisible correcto_incorrecta' if invisible}}">{{diccionario_validado[muestra][etiqueta].valor[0]}}</span>
+					{% elif diccionario_validado[muestra][etiqueta].valor[0] != None and diccionario_validado[muestra][etiqueta].valor[1] == None %}
+					<span class="{{'invisible correcto_incorrecta' if invisible}}">{{diccionario_validado[muestra][etiqueta].valor[0]}}</span>
+					{% elif diccionario_validado[muestra][etiqueta].valor[0] == None %}
+					<span class="editado">{{diccionario_validado[muestra][etiqueta].valor[1]}}</span>
+					{% else %}
+					<span class="incorrecto">{{diccionario_validado[muestra][etiqueta].valor[0]}} - {{diccionario_validado[muestra][etiqueta].valor[1]}}</span>
+					{% endif %}
+					{% if diccionario_validado[muestra][etiqueta].unidades[0] == diccionario_validado[muestra][etiqueta].unidades[1] %}
+					<span class="{{'invisible correcto_incorrecta' if invisible}}">{{diccionario_validado[muestra][etiqueta].unidades[0]}}</span>
+					{% elif diccionario_validado[muestra][etiqueta].unidades[0] != None and diccionario_validado[muestra][etiqueta].unidades[1] == None %}
+					<span class="{{'invisible correcto_incorrecta' if invisible}}">{{diccionario_validado[muestra][etiqueta].unidades[0]}}</span>
+					{% else %}
+					<span class="incorrecto">{{diccionario_validado[muestra][etiqueta].unidades[0]}} - {{diccionario_validado[muestra][etiqueta].unidades[1]}}</span>
+					{% endif %}
+					{% if diccionario_validado[muestra][etiqueta].incertidumbre[0] == diccionario_validado[muestra][etiqueta].incertidumbre[1] %}
+					<span class="{{'invisible correcto_incorrecta' if invisible}}">(
+						{% if diccionario_validado[muestra][etiqueta].incertidumbre[0] != None %}{{'%0.0f' | format(diccionario_validado[muestra][etiqueta].incertidumbre[0]*100)}} %{% endif%}
+						)</span>
+					{% elif diccionario_validado[muestra][etiqueta].incertidumbre[0] != None and diccionario_validado[muestra][etiqueta].incertidumbre[1] == None %}
+					<span class="{{'invisible correcto_incorrecta' if invisible}}">({{'%0.0f' | format(diccionario_validado[muestra][etiqueta].incertidumbre[0]*100)}} %)</span>
+					{% else %}
+					<span class="incorrecto">
+						({% if diccionario_validado[muestra][etiqueta].incertidumbre[0] != None %}{{'%0.0f' | format(diccionario_validado[muestra][etiqueta].incertidumbre[0]*100)}} %{% endif %}
+						-
+						{% if diccionario_validado[muestra][etiqueta].incertidumbre[1] != None %}
+						{{'%0.0f' | format(diccionario_validado[muestra][etiqueta].incertidumbre[1] * 100)}} %{% endif %})
+					</span>
+					{% endif %} 
+					{% endfor %}
+							
+
+				
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+			
+		<h2>Valores que se actualizarán na BBDD</h2>
+		<div class="grid_container grid_fichas">
+			{% for muestra in diccionario_validado if diccionario_validado[muestra].validado == 2 %}
+			<div id="{{muestra}}" class="panel">
+				<span class="material-icons derecha despliega_actualiza" onclick="despliegaFichaMuestraActualiza(this)">expand_more</span>
+				<span class="material-icons derecha invisible despliega_actualiza" onclick="despliegaFichaMuestraActualiza(this)">expand_less</span>
+				<span class="material-icons derecha {{'invisible' if diccionario_validado[muestra].nueva}}" onclick="actualizaMuestra('{{muestra}}')">add_task</span>
+				<h4 class="clicable {{'editado' if diccionario_validado[muestra].nueva}}" onclick="abreIndustria('{{muestra}}')">{{muestra}}</h4>
+				<div class="grid_container grid_fichas_muestras">
+					{% for etiqueta in diccionario_validado[muestra] if etiqueta not in ("validado", 'id_censo', 'id_inspeccion', 'nueva') %}					
+					{% set invisible = (diccionario_validado[muestra][etiqueta].valor[0] != None and diccionario_validado[muestra][etiqueta].valor[1] == None) or diccionario_validado[muestra][etiqueta].valor[0] == diccionario_validado[muestra][etiqueta].valor[1] %}
+					<span class="{{'invisible correcto_actualiza' if invisible}}">{{etiqueta}}: </span>
+
+					{% if invisible %}
+					<span class="{{'invisible correcto_actualiza' if invisible}}">{{diccionario_validado[muestra][etiqueta].valor[0]}}</span>
+					{% elif diccionario_validado[muestra][etiqueta].valor[0] == None %}
+					<span class="editado {{'invisible correcto_actualiza' if invisible}}">{{diccionario_validado[muestra][etiqueta].valor[1]}}</span>
+					{% endif %}
+		
+					<span class="{{'invisible correcto_actualiza' if invisible}} {{'editado' if diccionario_validado[muestra][etiqueta].unidades[0] == None and diccionario_validado[muestra][etiqueta].unidades[1] != None }}">{{diccionario_validado[muestra][etiqueta].unidades[0] or diccionario_validado[muestra][etiqueta].unidades[1]}}</span>
+					<span class="{{'invisible correcto_actualiza' if invisible}} {{'editado' if diccionario_validado[muestra][etiqueta].incertidumbre[0] == None and diccionario_validado[muestra][etiqueta].incertidumbre[1] != None}}">
+					{% if diccionario_validado[muestra][etiqueta].incertidumbre[0] != None %}({{'%0.0f' | format(diccionario_validado[muestra][etiqueta].incertidumbre[0]*100)}} %)
+					{% elif diccionario_validado[muestra][etiqueta].incertidumbre[1] != None %}({{'%0.0f' | format(diccionario_validado[muestra][etiqueta].incertidumbre[1]*100)}} %)
+					{% else %}
+					{% endif %}
+					</span>
+					
+					{% endfor %}
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		<h2>Valores concordantes na BBDD e no laboratorio</h2>
+		<div class="grid_container grid_fichas">
+			
+			{% for muestra in diccionario_validado if diccionario_validado[muestra].validado == 1 %}
+			<div class="panel">
+				<span class="material-icons derecha" onclick="despliegaFichaMuestraCorrecta(this)">expand_more</span>
+				<span class="material-icons derecha invisible" onclick="despliegaFichaMuestraCorrecta(this)">expand_less</span>
+				<h4 class="correcto centrado clicable" onclick="abreIndustria('{{muestra}}')">{{muestra}}</h4>
+				<div class="grid_container grid_fichas_muestras invisible">
+					{% for etiqueta in diccionario_validado[muestra] if etiqueta not in ("validado", 'id_censo', 'id_inspeccion', 'nueva') %}					
+					<span>{{etiqueta}}: </span>
+					{% if diccionario_validado[muestra][etiqueta].valor[0] == diccionario_validado[muestra][etiqueta].valor[1] %}
+					<span class="correcto">{{diccionario_validado[muestra][etiqueta].valor[0]}}</span>
+					{% elif diccionario_validado[muestra][etiqueta].valor[0] != None and diccionario_validado[muestra][etiqueta].valor[1] == None %}
+					<span class="correcto">{{diccionario_validado[muestra][etiqueta].valor[0]}}</span>
+					{% elif diccionario_validado[muestra][etiqueta].valor[0] == None %}
+					<span class="editado">{{diccionario_validado[muestra][etiqueta].valor[1]}}</span>
+					{% else %}
+					<span class="incorrecto">{{diccionario_validado[muestra][etiqueta].valor[0]}} - {{diccionario_validado[muestra][etiqueta].valor[0]}}</span>
+					{% endif %}
+					{% if diccionario_validado[muestra][etiqueta].unidades[0] == diccionario_validado[muestra][etiqueta].unidades[1] %}
+					<span class="correcto">{{diccionario_validado[muestra][etiqueta].unidades[0]}}</span>
+					{% elif diccionario_validado[muestra][etiqueta].unidades[0] != None and diccionario_validado[muestra][etiqueta].unidades[1] == None %}
+					<span class="correcto">{{diccionario_validado[muestra][etiqueta].unidades[0]}}</span>
+					{% endif %}
+					{% if diccionario_validado[muestra][etiqueta].incertidumbre[0] == diccionario_validado[muestra][etiqueta].incertidumbre[1] %}
+					<span class="correcto">({{'%0.0f' | format(diccionario_validado[muestra][etiqueta].incertidumbre[0]*100) if diccionario_validado[muestra][etiqueta].incertidumbre[0]}} %)</span>
+					{% elif diccionario_validado[muestra][etiqueta].incertidumbre[0] != None and diccionario_validado[muestra][etiqueta].incertidumbre[1] == None %}
+					<span class="correcto">({{'%0.0f' | format(diccionario_validado[muestra][etiqueta].incertidumbre[0]*100)}} %)</span>
+					{% else %}
+					<span class="incorrecto">({{'%0.0f' | format(diccionario_validado[muestra][etiqueta].incertidumbre[0]*100)}} % - {{'%0.0f' | format(diccionario_validado[muestra][etiqueta].incertidumbre[1] * 100)}} %)</span>
+					{% endif %} 
+					{% endfor %}
+				</div>
+			</div>
+			{% endfor %}
+		</div>

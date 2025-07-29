@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/style.css') }}">
+</head>
+<body>
+
+    <div id="maincont">
+        <div  class="grid_container grid2" style="font-family:'PathwayGothicOne'; ">
+            <div class="izquierda">
+                <h1>CAUDAIS EN RÉXIME NATURAL</h1>
+                <h2>Reporte de resultados</h2>
+            </div>
+            <div class="nome_proxecto">
+                <div class="derecha">
+                        <img src="{{url_for('static', filename='images/logo_augas_normal.png')}}" height="55px" border="0" alt="">
+                </div>
+            </div>
+        </div>
+    <hr>
+    <h3 class="subtitulo">1. PUNTO DE CAPTACIÓN</h3>
+        <ul>
+            <li>X: {{x}}</li>
+            <li>Y: {{y}}</li>
+        </ul>
+        O punto de captación pertence á masa:
+        {{cuencaMASA | safe}} 
+    
+    <h3 class="subtitulo">2. CÁLCULO DE CAUDAIS EN RÉXIME NATURAL</h3>
+    <p>Para avaliar os recursos existentes no punto de captación, utilízase o modelo SIMPA,
+        desenvolvido e actualizado polo CEDEX para o terceiro <br> ciclo de planificación hidrolóxica
+        (2021-2027):</p>
+        <img src='data:image/png;base64,{{plot}}' style="display:block">
+
+        {% for key, value in resultado.items() %}
+        <p><u>Caudais en réxime natural {{ value["nombre"]}} (m³/s)</u></p>
+        {{ value["simpa"] | safe}}
+        <br>
+        {{ value["resumo"] | safe}}
+        {% endfor %}
+
+    <br>
+    <h3 class="subtitulo">3. CAUDAIS EN RÉXIME NATURAL BAIXO O EFECTO DO CAMBIO CLIMÁTICO</h3>
+    <p>Avalíanse os recursos existentes no punto de captación situado tendo en
+        conta o efecto do cambio climático segundo os escenarios que se recollen no PHGC 2021-2027,<br> no anexo
+        16. A continuación, móstrase o resultado da análise segundo os escenarios RCP 4.5 e 8.5</p>
+        <p><u>Variacións segundo os horizontes RCP 4.5 e RCP 8.5 (%)</u></p>
+        {{cc | safe}} 
+        <img src='data:image/png;base64,{{plot_cc}}' style="display:block">
+
+        {% for key, value in resultado.items() %}
+        <p><u>Caudais en réxime natural, {{ value["nombre"]}} (m3/s) baixo o
+            efecto do cambio climático segundo os horizontes RCP 4.5 e RCP 8.5.</u></p>
+        {{value["simpa_cc"] | safe}} 
+        <br>
+        {% endfor %}
+
+    </div>
+</body>
+</html>

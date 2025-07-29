@@ -1,0 +1,3 @@
+<div id="revDisp{{id_elemento}}{{elemento}}_{{revision.id}}" class="panel boton revDisp{{id_elemento}}{{elemento}} {{'pulsado' if revision.id in revisiones_asignadas}}" onclick="seleccionaRevisionDisponible({{revision.id}}, '{{id_elemento}}{{elemento}}')" revision_id="{{revision.id}}" {% if revision.id not in revisiones_asignadas %}style="background-color: {{revision.color if revision.color else '#0C36623D'}};"{% endif %} color="{{revision.color if revision.color else '#0C36623D'}}">
+	{{revision.actividad}}
+</div>
