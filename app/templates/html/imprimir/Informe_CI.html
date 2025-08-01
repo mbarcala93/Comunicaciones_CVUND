@@ -386,7 +386,7 @@
 				E.- RESULTADO DAS MEDICIÓNS IN SITU E ANÁLISES DE LABORATORIO
 			</div>
             <div class="contenido_bloque grid_columna1">
-                <span class="etiqueta">Resultados dos parámetros medidos in situ polo equipo inspector</span>
+                <span class="subrotulo">Resultados dos parámetros medidos in situ polo equipo inspector</span>
             </div>
             <div class="contenido_bloque grid_columna3">
                 <div class="contenido_sub_bloque grid_columna3">
@@ -395,243 +395,118 @@
                     </div>
                     <div class="contenido_sub_bloque grid_fila2">
                     <div class="columna">
-                        <span class="valor">Medición </span><br class="largo">
+                        <span class="etiqueta">Medición </span><br class="largo">
                     </div>
                     <div class="columna">
                         <span class="etiqueta">Valor obtido</span><br class="largo">
                     </div>
                     </div>
+                    <div class="contenido_sub_bloque grid_fila2">
+                    <div class="columna">
+                        <span class="valor">Si/No </span><br class="largo">
+                    </div>
+                    <div class="columna">
+                        <span class="valor">Número</span><br class="largo">
+                    </div>
+                    </div>
                 </div>
-
                 <div class="contenido_sub_bloque grid_columna3">
                     <div class="columna">
                         <span class="etiqueta">Condutividade a 25ºC (µS/cm)</span><br class="largo">
                     </div>
+                    <div class="contenido_sub_bloque grid_fila2">
                     <div class="columna">
-                        <span class="valor">Medición</span><br class="largo">
+                        <span class="etiqueta">Medición </span><br class="largo">
                     </div>
                     <div class="columna">
                         <span class="etiqueta">Valor obtido</span><br class="largo">
                     </div>
-                </div> 
+                    </div>
+                    <div class="contenido_sub_bloque grid_fila2">
+                    <div class="columna">
+                        <span class="valor">Si/No </span><br class="largo">
+                    </div>
+                    <div class="columna">
+                        <span class="valor">Número</span><br class="largo">
+                    </div>
+                    </div>
+                </div>
                 <div class="contenido_sub_bloque grid_columna3">
                     <div class="columna">
                         <span class="etiqueta">Temperatura (ºC)</span><br class="largo">
                     </div>
+                    <div class="contenido_sub_bloque grid_fila2">
                     <div class="columna">
-                        <span class="valor">Medición</span><br class="largo">
+                        <span class="etiqueta">Medición </span><br class="largo">
                     </div>
                     <div class="columna">
                         <span class="etiqueta">Valor obtido</span><br class="largo">
                     </div>
-                </div>                  
-            </div>         
-            
-            <div class="contenido_bloque grid_columna2">
-                <div class="contenido_sub_bloque grid_columna2">
+                    </div>
+                    <div class="contenido_sub_bloque grid_fila2">
                     <div class="columna">
-                        <span class="etiqueta">Firma (nome, apelidos e DNI):</span><br class="largo">
+                        <span class="valor">Si/No </span><br class="largo">
                     </div>
                     <div class="columna">
-                        <span class="valor"></span><br class="largo">
+                        <span class="valor">Número</span><br class="largo">
                     </div>
-                </div>
-                <div class="contenido_sub_bloque grid_columna2">
-                    <div class="columna">
-                        <span class="etiqueta">Data prevista da inspección:</span><br class="largo">
                     </div>
-                    <div class="columna">
-                        <span class="valor">{% if inspeccion.fecha %}{{inspeccion.fecha | fecha_bonita}}{% else %}'-'{% endif %}</span><br class="largo">
-                    </div>
-                </div>
-                <div class="contenido_sub_bloque grid_columna2">
-                    <div class="columna">
-                        <span class="etiqueta">Hora prevista da mostraxe:</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="valor">{{ inspeccion.hora if inspeccion.hora else '-'}}</span><br class="largo">
-                    </div>
-                </div>
+                </div>                 
             </div>
             <div class="contenido_bloque grid_columna1">
-                <div class="contenido_sub_bloque grid_columna2">
-                    <div class="columna">
-                        <span class="etiqueta">Xustificación da data e hora da mostraxe:</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="valor">{{ inspeccion.justificacion_muestras if inspeccion.justificacion_muestras else '-'}}</span><br class="largo">
-                    </div>
-                </div>
-                <div class="contenido_sub_bloque grid_columna2">
-                    <div class="columna">
-                        <span class="etiqueta">Localización / descripción do punto de vertido:</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="valor">{{ inspeccion.localizacion_pv if inspeccion.localizacion_pv else '-'}}</span><br class="largo">
-                    </div>
-                </div>
-                <div class="contenido_sub_bloque grid_columna2">
-                    <div class="columna">
-                        <span class="etiqueta">Coordenadas UTM do punto de vertido (ETRS89 fuso 29):</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="valor">X: {{ '%0.0f'| format(coord_x_PV) if coord_x_PV else '-'}} &nbsp;&nbsp;&nbsp;&nbsp; Y: {{ '%0.0f'| format(coord_y_PV) if coord_y_PV else '-'}}</span><br class="largo">
-                    </div>
-                </div>
+                <span class="subrotulo">Resultados de análise en laboratorio subcontratado</span>
             </div>
             <div class="contenido_bloque grid_columna2">
                 <div class="contenido_sub_bloque grid_columna2">
                     <div class="columna">
-                        <span class="etiqueta">Natureza do vertido:</span><br class="largo">
+                        <span class="etiqueta">Nome do laboratorio</span><br class="largo">
                     </div>
                     <div class="columna">
-                        <span class="valor">{% if inspeccion.naturaleza_vertido == 0 %}Indutrial{% elif inspeccion.naturaleza_vertido == 1 %}Augas Brancas{% elif inspeccion.naturaleza_vertido == 2 %}Auga salobre{% elif inspeccion.naturaleza_vertido == 3 %}Outro{% else %}-{% endif %}</span><br class="largo">
+                        <span class="valor">Indrops</span><br class="largo">
                     </div>
                 </div>
                 <div class="contenido_sub_bloque grid_columna2">
                     <div class="columna">
-                        <span class="etiqueta">Existencia de arqueta de rexistro:</span><br class="largo">
+                        <span class="etiqueta">Nº de Acreditación</span><br class="largo">
                     </div>
                     <div class="columna">
-                        <span class="valor">{% if inspeccion.arqueta_registro == 0 %}Sí{% elif inspeccion.arqueta_registro == 1 %}Non{% elif inspeccion.arqueta_registro == 2 %}Descoñecese{% else %}-{% endif %}</span><br class="largo">
-                    </div>
-                </div>
-            </div>
-            <div class="contenido_bloque grid_columna1">
-                <div class="contenido_sub_bloque grid_columna2">
-                    <div class="columna">
-                        <span class="etiqueta">Identificación dos DN sobre os que se declara conformidade:</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        {% for doc_norm in doc_normativos %}
-                        <span class="valor">· {{ doc_norm.titulo if doc_norm.titulo else '-'}}</span><br class="largo">
-                        {% endfor %}
+                        <span class="valor">658/LE1987</span><br class="largo">
                     </div>
                 </div>
             </div>
-            <div class="contenido_bloque grid_columna1">
-                <div class="contenido_sub_bloque grid_columna2">
-                    <div class="columna">
-                        <span class="etiqueta">Comprobación LDN:</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="valor">{% if inspeccion.ldn == 0 %}Sí{% elif inspeccion.ldn == 1 %}Non{% else %}-{% endif %}</span><br class="largo">
-                    </div>
-                </div>
-            </div>
-            <div class="columna centrada">
-                <h4>Parámetros medido <i>in situ</i></h4>
-            </div>
-            <div class="contenido_bloque grid_columna3">
-                {% for parametro in parametros if parametro.in_situ == 1 %}
-                <div class="contenido_sub_bloque grid_columna2">
-                    <div class="columna">
-                        <span class="etiqueta">Parametro:</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="valor">{{ parametro.etiqueta if parametro.etiqueta else '-' }}</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="etiqueta">Sonda:</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="valor">{{ parametro.codigo if parametro.codigo else '-' }}</span><br class="largo">
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="columna centrada">
-                <h4>Parámetros e valores limite do Documento Normativo (DN) sobre o que se declara conformidade</h4>
-            </div>
-            <div class="contenido_bloque grid_columna2">
-                <div class="contenido_sub_bloque grid_columna2">
-                    <div class="columna">
-                        <span class="etiqueta">Tipo de mostra:</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="valor">{% if inspeccion.tipo_muestra == 0 %}Puntual{% elif inspeccion.tipo_muestra == 1%}Composta{% else %}-{% endif %}</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="etiqueta">Refrixerado:</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="valor">{% if inspeccion.refrigerado == 0 %}Si{% elif inspeccion.refrigerado == 1%}Non{% else %}-{% endif %}</span><br class="largo">
-                    </div> 
-                </div>
-                <div class="contenido_sub_bloque grid_columna2">
-                    <div class="columna">
-                        <span class="etiqueta">Motivo da elección do tipo de mostra:</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="valor">{{ inspeccion.motivo_elec_muestra if inspeccion.motivo_elec_muestra else '-' }}</span><br class="largo">
-                    </div>
-                </div>
-                <div class="contenido_sub_bloque grid_columna2">
-                    <div class="columna">
-                        <span class="etiqueta">Envases:</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="valor">
-                            {% for envase in envases %}
-                            {{envase.num_envases}} {{envase.material}} {{envase.volumen}}L<br>
-                            {% endfor %}
+			<div class="tabla_resultados valor">
+				<table class="celda_ancha">
+					{% for fila in tabla_laboratorio %}                    
+					<tr>
+						{% for celda in fila %}
+						<td class="{{celda[1]}}">{{celda[0] | numero_bonito}}</td>
+						{% endfor %}
+					</tr>
+					{% endfor %}
+				</table>
 
-                        </span><br class="largo">
-                    </div>
-                </div>
-                <div class="contenido_sub_bloque grid_columna2">
-                    <div class="columna">
-                        <span class="etiqueta">Código da(s) mostra(s):</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="valor">
-                            {% for muestra in muestras %}
-                            {{muestra.cod_muestra}}<br>
-                            {% endfor %}
-                        </span><br class="largo">
-                    </div>
-                </div>
-            </div>
-            <div class="columna centrada">
-                <h4>Parámetros a analizar</h4>
-            </div>
-            <div class="contenido_bloque grid_columna5">
-                {% for parametro in parametros if (not parametro.in_situ or parametro.in_situ ==0) %}
-                <span class="valor">
-                    {{parametro.etiqueta}}
-                </span>
-                {% endfor %}
-            </div>
-            <div class="contenido_bloque grid_columna2">
-                <div class="columna">
-                    <span class="etiqueta">Motivo a elección dos parametros a analizar:</span><br class="largo">
-                </div>
-                <div class="columna">
-                    <span class="valor">
-                        {{ inspeccion.motivo_elec_param if inspeccion.motivo_elec_param else '-' }}
-                    </span><br class="largo">
-                </div>
-            </div>
-            <div class="columna centrada">
-                <h4>Brancos</h4>
-            </div>
-            <div class="contenido_bloque grid_columna2">
-                <div class="contenido_sub_bloque grid_columna2">
-                    <div class="columna">
-                        <span class="valor">Blancos:</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="etiqueta">{% if blancos| length > 0 %}Sí{% else %}Non{% endif %}</span><br class="largo">
-                    </div>
-                </div>
-                <div class="contenido_sub_bloque grid_columna1">
-                    <span class="valor">
-                        {% for parametro in parametros_b %}
-                        {{parametro.etiqueta}} | 
-                        {% endfor %}
-                    </span><br class="largo">
-                </div>
-            </div>
+			</div>
+
+            <div class="rotulo">
+				F.- RESULTADO DA INSPECCIÓN
+			</div>
+			<div class="tabla_resultados valor">
+				<table class="celda_ancha">
+					{% for fila in tabla_conformidade %}                    
+					<tr>
+						{% for celda in fila %}
+						<td class="{{celda[1]}}">{{celda[0] | numero_bonito}}</td>
+						{% endfor %}
+					</tr>
+					{% endfor %}
+				</table>
+
+			</div>
+
+
+
+            
+            
         </div>
     </div>
 
