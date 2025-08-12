@@ -2112,6 +2112,14 @@ def _informe_inspeccion(usuario, id_insp):
         WHERE id_muestra in ({id_muestras})
         AND etiqueta in ({etiquetas_DN})""")
     analiticas = sqliteRow2list_dict(cur.fetchall())
+
+    cur.execute(f"""
+        SELECT *
+        FROM analiticas
+        WHERE id_muestra in ({id_muestras})
+        """)
+    analit_labo = sqliteRow2list_dict(cur.fetchall())
+
     for analitica in analiticas:
         if analitica['valor'] and isinstance(analitica['valor'], str):
             valor = float(analitica['valor'].replace("<", "").replace(">", ""))
@@ -2132,7 +2140,7 @@ def _informe_inspeccion(usuario, id_insp):
     css.close()
 
     cumplimiento = evalua_cumplimiento(analiticas, doc_normativos_parametros)
-    tabla_laboratorio = genera_tabla_laboratorio(inspecciones, muestras, analiticas, cumplimiento)
+    tabla_laboratorio = genera_tabla_laboratorio(analit_labo)
     tabla_conformidade = genera_tabla_conformidade(inspecciones, muestras, analiticas, cumplimiento)
 
     return render_template(
@@ -2157,48 +2165,28 @@ def _informe_inspeccion(usuario, id_insp):
         tabla_conformidade=tabla_conformidade,
         fecha=hoy.strftime("%d/%m/%Y"))
 
-def genera_tabla_laboratorio(inspecciones, muestras, analiticas, cumplimiento):
-    """Dados las analíticas y cumplimiento, ordena los datos para generar una
+def genera_tabla_laboratorio(analiticas):
+    """Dados las analíticas ordena los datos para generar una
     tabla en HTML.
     El resultado será una lista de listas (filas y celda de esa fila)
     Rizando el rizo: lista de listas de listas (filas, valor celda, clase celda)
     """
+    #print (analiticas)
 
-    resultado = [[["Parámetro", 'encabezado_tabla']],
-                 [["Valor", 'encabezado_tabla']],
-                 [["Unidade", 'encabezado_tabla']],
-                 [["Incerteza", 'encabezado_tabla']]]
-
-    parametros_unidades = []
-    fechas_valores = {}
-    cumple_nocumple = {"CONFORME": "-", "NON CONFORME": "-", "INCERTEZA": "-", "-": "-"}
-    if cumplimiento.get('local'):
-        doc_normativo = 'local'
-    else:
-        doc_normativo = 'decreto'
+    resultado = [[["Parámetro", 'encabezado_colum_tabla gris_azul']],
+                 [["Valor", 'encabezado_colum_tabla gris_azul']],
+                 [["Unidade", 'encabezado_colum_tabla gris_azul']],
+                 [["Incerteza", 'encabezado_colum_tabla gris_azul']]]    
     
-    for parametro in cumplimiento[doc_normativo].keys():
-        if parametro == 'titulo':
-            continue
-        resultado[0].append([parametro, 'encabezado_tabla gris'])           
-        for analitica in analiticas:
-            if analitica['etiqueta'] == parametro and parametro not in parametros_unidades:
-                resultado[1].append([analitica['valor'], ''])
-                resultado[2].append([analitica['unidades'], ''])
-                resultado[3].append([analitica['incertidumbre'], ''])
-                parametros_unidades.append(parametro)
-        contador_fecha = 4
-        for fecha in fechas_valores:
-            hay_parametro = 0
-            for parametro_valor in fechas_valores[fecha]:
-                if parametro_valor == parametro and not hay_parametro:
-                    hay_parametro = 1
-                    resultado[contador_fecha].append([fechas_valores[fecha][parametro][0], fechas_valores[fecha][parametro][1]])
-                    contador_fecha += 1
-            if not hay_parametro:
-                resultado[contador_fecha].append(["-", ""])
-                contador_fecha += 1
-    #print (resultado)
+    for analitica in analiticas:
+        if analitica['id_param'] not in (6, 7, 13):        
+            resultado[0].append([analitica['etiqueta'], 'encabezado_tabla gris'])  
+            resultado[1].append([analitica['valor'], ''])
+            resultado[2].append([analitica['unidades'], ''])
+            resultado[3].append([analitica['incertidumbre'], ''])
+    
+    
+    #print(resultado)
     resultado=transponer_resultado(resultado)
     #print (resultado)
     return resultado
@@ -2210,9 +2198,10 @@ def genera_tabla_conformidade(inspecciones, muestras, analiticas, cumplimiento):
     Rizando el rizo: lista de listas de listas (filas, valor celda, clase celda)
     """
 
-    resultado = [[["Parámetro", 'encabezado_tabla']],
-                 [["Valor límite", 'encabezado_tabla']],
-                 [["Unidade", 'encabezado_tabla']]]
+    resultado = [[["Parámetro", 'encabezado_colum_tabla gris_azul']],
+                [["Valor", 'encabezado_colum_tabla gris_azul']],
+                [["Valor límite", 'encabezado_colum_tabla gris_azul']],
+                [["Unidade", 'encabezado_colum_tabla gris_azul']]]
 
     parametros_unidades = []
     fechas_valores = {}
@@ -2228,38 +2217,37 @@ def genera_tabla_conformidade(inspecciones, muestras, analiticas, cumplimiento):
                 if fecha in fechas_valores:
                     fecha += "_d"
                 fechas_valores[fecha] = {}
-                resultado.append([[fecha, 'encabezado_tabla']])
                 for analitica in analiticas:
+                    print(cumplimiento)
                     if analitica['id_muestra'] == muestra['id']:
                         for parametro_cumplimiento in cumplimiento[doc_normativo]:
+                            print(parametro_cumplimiento)
                             if parametro_cumplimiento == analitica['etiqueta']:
                                 for muestra_cumplimiento in cumplimiento[doc_normativo][parametro_cumplimiento]:
                                     if muestra_cumplimiento == analitica['id_muestra']:
                                         cumple = cumple_nocumple[cumplimiento[doc_normativo][parametro_cumplimiento][muestra_cumplimiento][0]]
                                         fechas_valores[fecha][analitica['etiqueta']] = [analitica['valor'], cumple]
                                         break
+    print(fechas_valores)
     for parametro in cumplimiento[doc_normativo].keys():
         if parametro == 'titulo':
             continue
         resultado[0].append([parametro, 'encabezado_tabla gris'])
         for muestra in cumplimiento[doc_normativo][parametro]:
-            resultado[1].append([cumplimiento[doc_normativo][parametro][muestra][1], 'cursiva'])
+            resultado[2].append([cumplimiento[doc_normativo][parametro][muestra][1], 'cursiva'])
             break
         for analitica in analiticas:
             if analitica['etiqueta'] == parametro and parametro not in parametros_unidades:
-                resultado[2].append([analitica['unidades'], ''])
-                parametros_unidades.append(parametro)
-        contador_fecha = 3
+                resultado[3].append([analitica['unidades'], ''])
+                parametros_unidades.append(parametro)        
         for fecha in fechas_valores:
             hay_parametro = 0
             for parametro_valor in fechas_valores[fecha]:
                 if parametro_valor == parametro and not hay_parametro:
                     hay_parametro = 1
-                    resultado[contador_fecha].append([fechas_valores[fecha][parametro][0], fechas_valores[fecha][parametro][1]])
-                    contador_fecha += 1
+                    resultado[1].append([fechas_valores[fecha][parametro][0], fechas_valores[fecha][parametro][1]])                    
             if not hay_parametro:
-                resultado[contador_fecha].append(["-", ""])
-                contador_fecha += 1
+                resultado[1].append(["-", ""])                
     resultado=transponer_resultado(resultado)
     return resultado
 

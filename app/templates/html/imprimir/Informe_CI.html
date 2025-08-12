@@ -210,7 +210,7 @@
             </div>
             <div class="contenido_bloque grid_columna">
 
-                <div class="contenido_sub_bloque grid_columna2">
+                <div class="contenido_sub_bloque grid_columna2" style="display: grid; grid-template-columns: 20% 80%;">
                     <div class="columna">
                         <span class="etiqueta">Descrición:</span><br class="largo">
                     </div>
@@ -352,10 +352,10 @@
                 border-collapse: collapse; /* Elimina bordes dobles */
                 width: 100%;
                 margin: 0px auto;
-                border: 1px solid #000; /* Borde externo de la tabla */
+                border: 1px solid #B0BCCC; /* Borde externo de la tabla */
                 }
                 td {
-                border: 1px solid #000; /* Borde interno de celdas */
+                border: 1px solid #B0BCCC; /* Borde interno de celdas */
                 padding: 10px 10px;
                 }
                 td:nth-child(1) {
@@ -406,7 +406,7 @@
                         <span class="valor">Si/No </span><br class="largo">
                     </div>
                     <div class="columna">
-                        <span class="valor">Número</span><br class="largo">
+                        <span class="valor">{{parametros.id_param}}</span><br class="largo">
                     </div>
                     </div>
                 </div>
@@ -474,7 +474,7 @@
                     </div>
                 </div>
             </div>
-			<div class="tabla_resultados valor">
+			<div class="tabla_muestras valor">
 				<table class="celda_ancha">
 					{% for fila in tabla_laboratorio %}                    
 					<tr>
@@ -490,7 +490,7 @@
             <div class="rotulo">
 				F.- RESULTADO DA INSPECCIÓN
 			</div>
-			<div class="tabla_resultados valor">
+			<div class="tabla_muestras valor">
 				<table class="celda_ancha">
 					{% for fila in tabla_conformidade %}                    
 					<tr>

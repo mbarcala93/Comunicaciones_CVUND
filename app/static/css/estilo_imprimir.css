@@ -288,6 +288,12 @@ br.largo {
   color: #cfcfcf;
 }
 
+.gris_azul {
+  background-color: #C7D0DB;
+  
+
+}
+
 td.verde {
   background-color: #21a45a45;
   color: #497746;
@@ -347,6 +353,16 @@ td.cursiva {
 .encabezado_tabla {
   text-align: left;
   font-weight: bold;
+}
+
+.encabezado_colum_tabla {
+  text-align: center;
+  font-weight: bold;
+}
+
+.tabla_muestras > table {
+  text-align: center;
+  table-layout: auto;
 }
 
 .tabla_evaluacion > table {
