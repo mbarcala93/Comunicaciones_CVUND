@@ -58,9 +58,7 @@
                 </g>
                 </svg>
             </div>
-            <div class="info_pag derecha">
-                <br>
-                <br>
+            <div class="info_pag derecha"><br><br>
                 <span class="valor">Código da inspección {{inspeccion.cod_inspeccion}}</span>
             </div>
         </div>
@@ -403,10 +401,10 @@
                     </div>
                     <div class="contenido_sub_bloque grid_fila2">
                     <div class="columna">
-                        <span class="valor">Si/No </span><br class="largo">
+                        <span class="valor">{% if pH.valor %} Si {%else%} No {%endif%}</span><br class="largo">
                     </div>
                     <div class="columna">
-                        <span class="valor">{{parametros.id_param}}</span><br class="largo">
+                        <span class="valor">{% if pH.valor %} {{pH.valor}} {%else%} - {%endif%}</span><br class="largo">
                     </div>
                     </div>
                 </div>
@@ -424,10 +422,10 @@
                     </div>
                     <div class="contenido_sub_bloque grid_fila2">
                     <div class="columna">
-                        <span class="valor">Si/No </span><br class="largo">
+                        <span class="valor">{% if condutividade.valor %} Si {%else%} No {%endif%} </span><br class="largo">
                     </div>
                     <div class="columna">
-                        <span class="valor">Número</span><br class="largo">
+                        <span class="valor">{% if condutividade.valor %} {{condutividade.valor}} {%else%} - {%endif%}</span><br class="largo">
                     </div>
                     </div>
                 </div>
@@ -445,10 +443,10 @@
                     </div>
                     <div class="contenido_sub_bloque grid_fila2">
                     <div class="columna">
-                        <span class="valor">Si/No </span><br class="largo">
+                        <span class="valor">{% if temperatura.valor %} Si {%else%} No {%endif%} </span><br class="largo">
                     </div>
                     <div class="columna">
-                        <span class="valor">Número</span><br class="largo">
+                        <span class="valor">{% if temperatura.valor %} {{temperatura.valor}} {%else%} - {%endif%}</span><br class="largo">
                     </div>
                     </div>
                 </div>                 
@@ -490,9 +488,23 @@
             <div class="rotulo">
 				F.- RESULTADO DA INSPECCIÓN
 			</div>
+            {% for doc in DN_conf %}
+            <div class="contenido_bloque grid_columna2">
+                <div class="contenido_sub_bloque grid_columna">
+                    <div class="columna">
+                        <span class="etiqueta">Documento Normativo sobre o que se declara conformidade</span><br class="largo">
+                    </div>
+                </div>
+                <div class="contenido_sub_bloque grid_columna">
+                    <div class="columna">
+                        <span class="valor">{{doc.titulo}}.</span><br class="largo">
+                    </div>
+                </div>
+            </div>
+
 			<div class="tabla_muestras valor">
 				<table class="celda_ancha">
-					{% for fila in tabla_conformidade %}                    
+					{% for fila in tabla_conformidade %}
 					<tr>
 						{% for celda in fila %}
 						<td class="{{celda[1]}}">{{celda[0] | numero_bonito}}</td>
@@ -502,6 +514,24 @@
 				</table>
 
 			</div>
+            <div class="subrotulo">
+                <h4>Regra de decisión</h4>
+            </div>
+            <div class="valor">
+                Para declarar conformidade, todos os parámetros máis a incerteza deben estar baixo o límite indicado no DN. Para declarar non conformidade, ao menos algún parámetro menos a incerteza debe superar o indicado no DN. No restos dos casos, non será posible declarar conformidade.
+            </div>
+            <div class="subrotulo">
+                <h4>Declaración de conformidade</h4>
+            </div>
+            <div class="valor">
+                {%if contador_conformes == 0 %} <span class='conforme'>O vertido é CONFORME</span>{%endif%}
+                {% if contador_conformes >0 and  contador_conformes== contador_amarillos%} <span class='sen_conformidade'>NON É POSIBLE AVALIAR A CONFORMIDADE do vertido</span>
+                {%elif contador_conformes>0%}
+                <span class='non_conforme'>O vertido é NON CONFORME</span>
+                {%endif%}
+                respecto dos límites establecidos no {{ doc.titulo}}.
+            </div>
+            {%endfor%}
 
 
 
@@ -517,7 +547,8 @@
 
             let spanNumPagina = document.createElement("span");
             spanNumPagina.innerHTML = `Páxina ${index + 1} de ${listaHeadersInfo.length}`;
-            spanNumPagina.classList.add('derecha');
+            spanNumPagina.classList.add('derecha', 'valor');            
+            spanNumPagina.style.display = 'inline';  // evita salto de línea
 
             listaHeadersInfo[index].prepend(spanNumPagina);
         }

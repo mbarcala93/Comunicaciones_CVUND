@@ -299,12 +299,28 @@ td.verde {
   color: #497746;
 }
 
+.conforme{
+  background-color: #21a45a45;
+  color: #497746;
+}
+
 td.rojo {
   background-color: rgb(200,40,100,0.2);
   color: #9b4e5a;
 }
 
+.non_conforme {
+  background-color: rgb(200,40,100,0.2);
+  color: #9b4e5a;
+}
+
+
 td.amarillo {
+  background-color: rgb(200,150,40, 0.2);
+  color: #9d8100;
+}
+
+.sen_conformidade {
   background-color: rgb(200,150,40, 0.2);
   color: #9d8100;
 }
