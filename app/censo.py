@@ -1814,7 +1814,7 @@ def _eliminar_envase(usuario):
 @app.route('/planificacion-<id_insp>')
 @logeado
 @verificaPermiso("galicia", 0)
-def _informe_planificacion(usuario):
+def _informe_planificacion(id_insp, usuario):
 
     #id_insp = request.form["id_insp"]
 
@@ -1973,9 +1973,7 @@ def _informe_planificacion(usuario):
 @app.route('/conformidade-<id_insp>')
 @logeado
 @verificaPermiso("galicia", 0)
-def _informe_inspeccion(usuario, id_insp):
-
-    #id_insp = request.form["id_insp"]
+def informe_inspeccion(usuario, id_insp):
 
     db = get_db()
     cur = db.cursor()
@@ -2015,20 +2013,6 @@ def _informe_inspeccion(usuario, id_insp):
                 WHERE id=?""", (inspeccion['id_organismo_sol'],))
     organizacion_sol = cur.fetchone()
 
-    try:
-        coord_utm = utm.from_latlon(censo['latitud_PV'], censo['longitud_PV'])
-        coord_x_PV = coord_utm[0]
-        coord_y_PV = coord_utm[1]
-    except:
-        coord_x_PV = None
-        coord_y_PV = None
-
-    cur.execute("""
-                SELECT *
-                FROM usuarios u
-                WHERE u.id=?""", (inspeccion['id_interlocutor'],))
-    representante = cur.fetchone()
-
     cur.execute("""
                 SELECT *
                 FROM muestras m
@@ -2048,10 +2032,6 @@ def _informe_inspeccion(usuario, id_insp):
 
     cur.execute("SELECT * FROM inspecciones_ind WHERE id_industria = ? ORDER BY fecha", (inspeccion['id_industria'],))
     inspecciones = cur.fetchall()
-
-    cur = db.cursor()
-    cur.execute("SELECT c.*, f.ruta as ruta_foto FROM censo c LEFT JOIN fotos f on 'ind'||c.foto_principal = f.tabla||f.id WHERE c.id = ?", (inspeccion['id_industria'],))
-    industria = cur.fetchone()
 
     cur = db.cursor()
     cur.execute(f"SELECT * FROM analiticas WHERE id_param=6 AND id_muestra IN ({ids_muestras})")
@@ -2122,13 +2102,11 @@ def _informe_inspeccion(usuario, id_insp):
                  + f"static/css/estilo_imprimir.css", mode="r", encoding="utf-8")
     css_val = css.read()
     css.close()
-
-    cumplimiento = evalua_cumplimiento(analiticas, doc_normativos_parametros)
+    
     conformidade = evalua_conformidade(analiticas, doc_normativos_parametros)
     tabla_laboratorio = genera_tabla_laboratorio(analit_labo)
     # Para decreto
     tabla_decreto, no_verdes_decreto, amarillos_decreto = genera_tabla_conformidade(inspecciones, muestras, analiticas, {'decreto': conformidade['decreto']})
-
     # Para local
     print('Diccionario de DN local:', conformidade['local'])
     if conformidade['local']:
@@ -2144,9 +2122,9 @@ def _informe_inspeccion(usuario, id_insp):
     return render_template(
         plantilla,
         censo=censo,
-        coord_x_PV=coord_x_PV,
-        coord_y_PV=coord_y_PV,
-        representante=representante,
+        #coord_x_PV=coord_x_PV,
+        #coord_y_PV=coord_y_PV,
+        #representante=representante,
         organizacion_sol=organizacion_sol,
         inspeccion=inspeccion,
         doc_normativos=doc_normativos,
@@ -2156,7 +2134,7 @@ def _informe_inspeccion(usuario, id_insp):
         muestras=muestras,
         parametros=parametros,
         css_val=css_val,
-        industria=industria,
+        #industria=industria,
         tabla_laboratorio=tabla_laboratorio,
         DN_conf=DN_conf,
         tabla_decreto=tabla_decreto,
@@ -2285,7 +2263,10 @@ def evalua_conformidade(analiticas, doc_normativos_parametros):
     """Dados un listado de diccionario de analíticas y un listado de
     parámetros de diferentes documentos normativos, devuelve un diccionario de
     la forma: {"decreto": {etiqueta_parametro_1: {id_muestra: ['Conforme/No Conforme', valor_limite], id_muestra_2: ['Conforme/No Conforme', valor_limite]...}
-                "local: ... "}}
+                "local: ... "}}"""
+    
+    """CAMBIOS CON RESPECTO A evalua_cumlimiento: En esta función se comprueba explícitamente None y "", para que los valores de 0.0 en las analíticas no salgan como AMARILLOS por incertidumbre.
+    De esta manera, se asegura que el valor de 0 se trate como válido.
     """
     cumplimiento = {"decreto": {}, "local": {}}
     analiticas = sqliteRow2list_dict(analiticas)
@@ -2339,190 +2320,5 @@ def evalua_conformidade(analiticas, doc_normativos_parametros):
                             
     print(cumplimiento)
     return cumplimiento
-
-def genera_tabla_conformidade_simple(inspecciones, muestras, analiticas, cumplimiento):
-    """Genera una tabla de conformidade en HTML para un único doc_normativo"""
-    resultado = [[["Parámetro", 'encabezado_colum_tabla gris_azul']],
-                [["Valor", 'encabezado_colum_tabla gris_azul']],
-                [["Valor límite", 'encabezado_colum_tabla gris_azul']],
-                [["Unidade", 'encabezado_colum_tabla gris_azul']]]
-
-    parametros_unidades = []
-    fechas_valores = {}
-    cumple_nocumple = {"CONFORME": "verde", "NON CONFORME": "rojo", "INCERTEZA": "amarillo", "-": "amarillo"}
-    cumplimiento = cumplimiento or {"decreto": {}, "local": {}}
-
-    if cumplimiento.get('local'):
-        doc_normativo = 'local'
-    else:
-        doc_normativo = 'decreto'
-
-    for inspeccion in inspecciones:
-        fecha = inspeccion['fecha'][-2:] + "/" + inspeccion['fecha'][4:6] + "/" + inspeccion['fecha'][:4]
-        for muestra in muestras:
-            if muestra['id_inspecciones_ind'] == inspeccion['id']:
-                if fecha in fechas_valores:
-                    fecha += "_d"
-                fechas_valores[fecha] = {}
-                for analitica in analiticas:
-                    if analitica['id_muestra'] == muestra['id']:
-                        for parametro_cumplimiento in cumplimiento[doc_normativo]:
-                            if parametro_cumplimiento == analitica['etiqueta']:
-                                for muestra_cumplimiento in cumplimiento[doc_normativo][parametro_cumplimiento]:
-                                    if muestra_cumplimiento == analitica['id_muestra']:
-                                        cumple = cumple_nocumple[cumplimiento[doc_normativo][parametro_cumplimiento][muestra_cumplimiento][0]]
-                                        fechas_valores[fecha][analitica['etiqueta']] = [analitica['valor'], cumple]
-                                        break
-
-    for parametro in cumplimiento[doc_normativo].keys():
-        if parametro == 'titulo':
-            continue
-        resultado[0].append([parametro, 'encabezado_tabla gris'])
-        for muestra in cumplimiento[doc_normativo][parametro]:
-            resultado[2].append([cumplimiento[doc_normativo][parametro][muestra][1], 'cursiva'])
-            break
-        for analitica in analiticas:
-            if analitica['etiqueta'] == parametro and parametro not in parametros_unidades:
-                if analitica['unidades']:
-                    resultado[3].append([analitica['unidades'], ''])
-                    parametros_unidades.append(parametro)   
-                else:   
-                    resultado[3].append('-')
-                    parametros_unidades.append(parametro)        
-        for fecha in fechas_valores:
-            hay_parametro = 0
-            for parametro_valor in fechas_valores[fecha]:
-                if parametro_valor == parametro and not hay_parametro:
-                    hay_parametro = 1
-                    resultado[1].append([fechas_valores[fecha][parametro][0], fechas_valores[fecha][parametro][1]])                    
-            if not hay_parametro:
-                resultado[1].append(["-", ""])                
-
-    no_verdes=0
-    for fecha in fechas_valores:
-        for parametro, (valor, color) in fechas_valores[fecha].items():
-            if color != "verde":
-                no_verdes +=1
-
-    amarillos=0
-    for fecha in fechas_valores:
-        for parametro, (valor, color) in fechas_valores[fecha].items():
-            if color == "amarillo":
-                amarillos +=1
-
-    resultado=transponer_resultado(resultado)
-    return resultado, no_verdes, amarillos
-
-
-def genera_tabla_conformidade_multi(inspecciones, muestras, analiticas, DN_conf, cur):
-    """
-    Genera múltiples tablas de conformidade, una por cada documento normativo en DN_conf.
-    """
-    tablas = []
-
-    for dn in DN_conf:
-        # Traer parámetros de este DN
-        cur.execute("""
-            SELECT *
-            FROM doc_normativos DN
-            INNER JOIN parametros_DN p ON p.id_DN = DN.id
-            WHERE DN.id = ?
-        """, (dn['id'],))
-        doc_normativos_parametros = cur.fetchall()
-
-        # Evaluar cumplimiento y conformidade para este DN
-        cumplimiento = evalua_cumplimiento(analiticas, doc_normativos_parametros)
-
-        # Generar tabla con la función simple
-        tabla, no_verdes, amarillos = genera_tabla_conformidade_simple(
-            inspecciones, muestras, analiticas, cumplimiento
-        )
-
-        tablas.append({
-            "dn": dn,
-            "tabla": tabla,
-            "no_verdes": no_verdes,
-            "amarillos": amarillos
-        })
-
-    return tablas
-
-
 def transponer_resultado(resultado):
     return [list(fila) for fila in zip(*resultado)]
-
-
-def evalua_conformidade2(analiticas, doc_normativos_parametros):
-    """
-    Evalúa el cumplimiento de las analíticas frente a los parámetros de UN documento normativo.
-    Retorna un diccionario cumplimiento con estructura { 'decreto': {}, 'local': {} }
-    """
-    cumplimiento = {"decreto": {}, "local": {}}
-
-    # obtener etiquetas de los parámetros de este DN
-    etiquetas_validas = {p['etiqueta']: p for p in doc_normativos_parametros}
-
-    # filtrar analíticas que tengan etiqueta en este DN
-    analiticas_filtradas = [a for a in analiticas if a['etiqueta'] in etiquetas_validas]
-
-    for analitica in analiticas_filtradas:
-        if analitica['valor'] and isinstance(analitica['valor'], str):
-            analitica['valor'] = float(
-                analitica['valor'].replace("<", "").replace(">", "")
-            )
-
-        parametroDN = etiquetas_validas[analitica['etiqueta']]
-
-        DN = "local"
-        if parametroDN['id_DN'] == 1:
-            DN = "decreto"
-
-        if not cumplimiento[DN].get('titulo'):
-            cumplimiento[DN]['titulo'] = parametroDN['titulo']
-
-        if not cumplimiento[DN].get(analitica['etiqueta']):
-            cumplimiento[DN][analitica['etiqueta']] = {}
-
-        parametroDN_max_min = parametroDN['valor_limite'].split('-')
-
-        if len(parametroDN_max_min) > 1:
-            # Rango [min, max]
-            if not analitica['valor'] or not analitica['incertidumbre']:
-                cumplimiento[DN][analitica['etiqueta']][analitica['id_muestra']] = ["-", parametroDN['valor_limite']]
-            elif (analitica['valor'] - analitica['incertidumbre']) > float(max(parametroDN_max_min)) \
-                 or (analitica['valor'] + analitica['incertidumbre']) < float(min(parametroDN_max_min)):
-                cumplimiento[DN][analitica['etiqueta']][analitica['id_muestra']] = ["NON CONFORME", parametroDN['valor_limite']]
-            elif (analitica['valor'] + analitica['incertidumbre']) < float(max(parametroDN_max_min)) \
-                 and (analitica['valor'] - analitica['incertidumbre']) > float(min(parametroDN_max_min)):
-                cumplimiento[DN][analitica['etiqueta']][analitica['id_muestra']] = ["CONFORME", parametroDN['valor_limite']]
-            else:
-                cumplimiento[DN][analitica['etiqueta']][analitica['id_muestra']] = ["INCERTEZA", parametroDN['valor_limite']]
-        elif parametroDN['etiqueta'] != "Temperatura":
-            try:
-                if not analitica['valor'] or not analitica['incertidumbre']:
-                    cumplimiento[DN][analitica['etiqueta']][analitica['id_muestra']] = ["-", parametroDN['valor_limite']]
-                elif (analitica['valor'] * (1 - analitica['incertidumbre'])) > float(parametroDN['valor_limite']):
-                    cumplimiento[DN][analitica['etiqueta']][analitica['id_muestra']] = ["NON CONFORME", parametroDN['valor_limite']]
-                elif (analitica['valor'] * (1 + analitica['incertidumbre'])) < float(parametroDN['valor_limite']):
-                    cumplimiento[DN][analitica['etiqueta']][analitica['id_muestra']] = ["CONFORME", parametroDN['valor_limite']]
-                else:
-                    cumplimiento[DN][analitica['etiqueta']][analitica['id_muestra']] = ["INCERTEZA", parametroDN['valor_limite']]
-            except:
-                cumplimiento[DN][analitica['etiqueta']][analitica['id_muestra']] = ["-", parametroDN['valor_limite']]
-        elif parametroDN['etiqueta'] == "Temperatura":
-            try:
-                if not analitica['valor'] or not analitica['incertidumbre']:
-                    cumplimiento[DN][analitica['etiqueta']][analitica['id_muestra']] = ["-", parametroDN['valor_limite']]
-                elif (analitica['valor'] - analitica['incertidumbre']) > float(parametroDN['valor_limite']):
-                    cumplimiento[DN][analitica['etiqueta']][analitica['id_muestra']] = ["NON CONFORME", parametroDN['valor_limite']]
-                elif (analitica['valor'] + analitica['incertidumbre']) < float(parametroDN['valor_limite']):
-                    cumplimiento[DN][analitica['etiqueta']][analitica['id_muestra']] = ["CONFORME", parametroDN['valor_limite']]
-                else:
-                    cumplimiento[DN][analitica['etiqueta']][analitica['id_muestra']] = ["INCERTEZA", parametroDN['valor_limite']]
-            except:
-                cumplimiento[DN][analitica['etiqueta']][analitica['id_muestra']] = ["-", parametroDN['valor_limite']]
-
-    return cumplimiento
-
-
-
