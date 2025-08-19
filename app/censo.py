@@ -2069,8 +2069,8 @@ def _informe_inspeccion(usuario, id_insp):
     cur.execute("select * from doc_normativos DN inner join inspecciones_doc_normativos idn ON idn.id_doc_normativo = DN.id  where id_inspeccion = ?", (id_insp,))
     #INNER JOIN parametros_DN p ON p.id_DN = DN.id
     DN_conf = cur.fetchall()
-    for doc in DN_conf:
-        print(doc['titulo'], doc['id_doc_normativo'])
+    #for doc in DN_conf:
+    #    print(doc['titulo'], doc['id_doc_normativo'])
 
     cur.execute("""
         SELECT *
@@ -2082,8 +2082,8 @@ def _informe_inspeccion(usuario, id_insp):
         #OR DN.id = 1
         #""", (industria['concello_PV'],))
     doc_normativos_parametros = cur.fetchall()
-    for doc in doc_normativos_parametros:
-        print(doc['titulo'], doc['cod_concello'], doc['etiqueta'], doc['unidades'])
+    #for doc in doc_normativos_parametros:
+        #print(doc['titulo'], doc['cod_concello'], doc['etiqueta'], doc['unidades'])
     etiquetas_DN = lista_id(doc_normativos_parametros, 'etiqueta')
 
     cur.execute(f"SELECT * FROM muestras WHERE id_inspecciones_ind in ({id_insp})")
@@ -2130,7 +2130,13 @@ def _informe_inspeccion(usuario, id_insp):
     tabla_decreto, no_verdes_decreto, amarillos_decreto = genera_tabla_conformidade(inspecciones, muestras, analiticas, {'decreto': conformidade['decreto']})
 
     # Para local
-    tabla_local, no_verdes_local, amarillos_local = genera_tabla_conformidade(inspecciones, muestras, analiticas, {'local': conformidade['local']})
+    print('Diccionario de DN local:', conformidade['local'])
+    if conformidade['local']:
+        print('está LLENO')
+        tabla_local, no_verdes_local, amarillos_local = genera_tabla_conformidade(inspecciones, muestras, analiticas, {'local': conformidade['local']})
+    else:
+        print('está VACIO')
+        tabla_local, no_verdes_local, amarillos_local = genera_tabla_conformidade(inspecciones, muestras, analiticas, {})
     #tabla_conformidade, contador_conformes, contador_amarillos = genera_tabla_conformidade(inspecciones, muestras, analiticas, conformidade)
     #tablas_conformidade = genera_tabla_conformidade_multi(inspecciones, muestras, analiticas, DN_conf, cur)
 
@@ -2233,14 +2239,9 @@ def genera_tabla_conformidade(inspecciones, muestras, analiticas, cumplimiento):
                                         cumple = cumple_nocumple[cumplimiento[doc_normativo][parametro_cumplimiento][muestra_cumplimiento][0]]
                                         fechas_valores[fecha][analitica['etiqueta']] = [analitica['valor'], cumple]
                                         break
-    #print(fechas_valores)
-    parametros = cumplimiento.get(doc_normativo, {})
-    for parametro in parametros.keys():
+    for parametro in cumplimiento[doc_normativo].keys():
         if parametro == 'titulo':
             continue
-    #for parametro in cumplimiento[doc_normativo].keys():        
-     #   if parametro == 'titulo':
-      #      continue
         resultado[0].append([parametro, 'encabezado_tabla gris'])
         for muestra in cumplimiento[doc_normativo][parametro]:
             resultado[2].append([cumplimiento[doc_normativo][parametro][muestra][1], 'cursiva'])
