@@ -220,37 +220,33 @@
 
             <div class="rotulo">
 				B.- DESCRICIÓN DO TRABALLO DE INSPECCIÓN SOLICITADO
-			</div>  
-
-                <div class="contenido_sub_bloque grid_columna">
-                    <div class="columna">
-                        <span class="valor">Augas de Galicia solicita inspección do vertido á rede de saneamento de industrias potencialmente contaminadoras da auga no caso de EDAR con recepción histórica de vertidos de orixe industrial. A EDAR de {{censo.nome_EDAR}} ({{censo.sistema}}) ten un histórico de analíticas e incidencias de explotación que a sitúan en prioridade alta. Entre outras, {{censo.razon_social}} figura como empresa que verte á rede que remata na EDAR de {{censo.sistema}} e é potencialmente xeradora dun efluente de elevada carga. Decídese analizar os parámetros que son analizados no vertido da EDAR, agás os parámetros microbiolóxicos e exclúense outros parámetros, como graxas e aceites, por non ter constancia de que causen problemas nin na EDAR nin nos bombeos da rede de saneamento. {{inspeccion.justificacion_muestras}}</span><br class="largo">
-                    </div>
-                </div> 
-
-                <div class="contenido_sub_bloque grid_columna2">
-                    <div class="columna">
-                        <span class="etiqueta">Tipo de inspección:</span><br class="largo">
-                    </div>
-                    <div class="columna centrada">
-                        <span class="valor">Regulamentaria</span><br class="largo">
-                    </div>
+			</div>
+            <div class="contenido_sub_bloque grid_columna">
+                <div class="columna">
+                    <span class="valor">Augas de Galicia solicita inspección do vertido á rede de saneamento de industrias potencialmente contaminadoras da auga no caso de EDAR con recepción histórica de vertidos de orixe industrial. A EDAR de {{censo.nome_EDAR}} ({{censo.sistema}}) ten un histórico de analíticas e incidencias de explotación que a sitúan en prioridade alta. Entre outras, {{censo.razon_social}} figura como empresa que verte á rede que remata na EDAR de {{censo.sistema}} e é potencialmente xeradora dun efluente de elevada carga. Decídese analizar os parámetros que son analizados no vertido da EDAR, agás os parámetros microbiolóxicos e exclúense outros parámetros, como graxas e aceites, por non ter constancia de que causen problemas nin na EDAR nin nos bombeos da rede de saneamento. {{inspeccion.justificacion_muestras}}</span><br class="largo">
                 </div>
-
-                <div class="contenido_sub_bloque grid_columna2">
-                    <div class="columna">
-                        <span class="etiqueta">Procedementos internos de inspección:</span><br class="largo">
-                    </div>
-                    <div class="columna">
-                        <span class="valor">PE14 Inspección, ITI01 Inspección de augas residuais, ITM01 Deseño plans de mostraxe, ITM02 Toma de mostras, ITM03 Acondicionamento e transporte de mostras, ITE01 Ensaio de pH, ITE02 Ensaio de condutividade</span><br class="largo">
-                    </div>
+            </div>
+            <div class="contenido_sub_bloque grid_columna2">
+                <div class="columna">
+                    <span class="etiqueta">Tipo de inspección:</span><br class="largo">
                 </div>
+                <div class="columna centrada">
+                    <span class="valor">Regulamentaria</span><br class="largo">
+                </div>
+            </div>
+            <div class="contenido_sub_bloque grid_columna2">
+                <div class="columna">
+                    <span class="etiqueta">Procedementos internos de inspección:</span><br class="largo">
+                </div>
+                <div class="columna">
+                    <span class="valor">PE14 Inspección, ITI01 Inspección de augas residuais, ITM01 Deseño plans de mostraxe, ITM02 Toma de mostras, ITM03 Acondicionamento e transporte de mostras, ITE01 Ensaio de pH, ITE02 Ensaio de condutividade</span><br class="largo">
+                </div>
+            </div>
             </div>
             <div class="rotulo">
 				C.- BREVE DESCRICIÓN DO DESENVOLVEMENTO DA INSPECCIÓN
 			</div>
-
-                <div class="contenido_sub_bloque grid_columna">
+            <div class="contenido_sub_bloque grid_columna">
                     <div class="columna">
                         <span class="valor">{{inspeccion.observado_inspector}}. O vertido presenta un aspecto {% if inspeccion.turbidez %}
 											{% if inspeccion.turbidez == 0 %}
@@ -264,7 +260,7 @@
 											{% endif %}							
 											{% else %}-{% endif %} e {{inspeccion.otros}}. </span><br class="largo">
                     </div>
-                </div> 
+            </div> 
             <div class="contenido_bloque grid_columna2">
                 <div class="contenido_sub_bloque grid_columna2">
                     <div class="columna">
@@ -488,7 +484,7 @@
             <div class="rotulo">
 				F.- RESULTADO DA INSPECCIÓN
 			</div>
-            {% for doc in DN_conf %}
+            {% for doc in DN_conf %}            
             <div class="contenido_bloque grid_columna2">
                 <div class="contenido_sub_bloque grid_columna">
                     <div class="columna">
@@ -501,10 +497,10 @@
                     </div>
                 </div>
             </div>
-
+            {% if doc['id_doc_normativo'] == 1 %}
 			<div class="tabla_muestras valor">
-				<table class="celda_ancha">
-					{% for fila in tabla_conformidade %}
+				<table class="celda_ancha">                    
+					{% for fila in tabla_decreto %}
 					<tr>
 						{% for celda in fila %}
 						<td class="{{celda[1]}}">{{celda[0] | numero_bonito}}</td>
@@ -512,8 +508,20 @@
 					</tr>
 					{% endfor %}
 				</table>
-
 			</div>
+            {%else%}
+			<div class="tabla_muestras valor">
+				<table class="celda_ancha">                    
+					{% for fila in tabla_local %}
+					<tr>
+						{% for celda in fila %}
+						<td class="{{celda[1]}}">{{celda[0] | numero_bonito}}</td>
+						{% endfor %}
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+            {%endif%}
             <div class="subrotulo">
                 <h4>Regra de decisión</h4>
             </div>
@@ -524,14 +532,32 @@
                 <h4>Declaración de conformidade</h4>
             </div>
             <div class="valor">
-                {%if contador_conformes == 0 %} <span class='conforme'>O vertido é CONFORME</span>{%endif%}
-                {% if contador_conformes >0 and  contador_conformes== contador_amarillos%} <span class='sen_conformidade'>NON É POSIBLE AVALIAR A CONFORMIDADE do vertido</span>
-                {%elif contador_conformes>0%}
+                {% if doc['id_doc_normativo'] == 1 %}
+                {%if no_verdes_decreto == 0 %} <span class='conforme'>O vertido é CONFORME</span>{%endif%}
+                {% if no_verdes_decreto > 0 and  no_verdes_decreto== amarillos_decreto %} <span class='sen_conformidade'>NON É POSIBLE AVALIAR A CONFORMIDADE do vertido</span>
+                {%elif no_verdes_decreto > 0%}
                 <span class='non_conforme'>O vertido é NON CONFORME</span>
                 {%endif%}
                 respecto dos límites establecidos no {{ doc.titulo}}.
+                {%else%}
+                {%if no_verdes_local == 0 %} <span class='conforme'>O vertido é CONFORME</span>{%endif%}
+                {% if no_verdes_local > 0 and  no_verdes_local == amarillos_local%} <span class='sen_conformidade'>NON É POSIBLE AVALIAR A CONFORMIDADE do vertido</span>
+                {%elif no_verdes_local > 0%}
+                <span class='non_conforme'>O vertido é NON CONFORME</span>
+                {%endif%}
+                respecto dos límites establecidos no {{ doc.titulo}}.
+
+                {%endif%}
             </div>
             {%endfor%}
+            <!--{% for bloque in tablas_conf %}
+            {% set doc = bloque.dn %}
+            {% set tabla_conformidade = bloque.tabla %}
+            {% set contador_conformes = bloque.no_verdes %}
+            {% set contador_amarillos = bloque.amarillos %}
+
+
+            {% endfor %}-->
 
 
 

@@ -2046,35 +2046,8 @@ def _informe_inspeccion(usuario, id_insp):
                 WHERE a.id_muestra IN ({ids_muestras})""")
     parametros = cur.fetchall()
 
-    cur.execute(f"""
-                SELECT material,
-                volumen AS volumen,
-                num_envases AS num_envases
-                FROM envases e
-                WHERE e.id_muestra IN ({ids_muestras})
-                AND material IS NOT NULL
-                AND volumen IS NOT NULL
-                AND num_envases IS NOT NULL""")
-    envases = cur.fetchall()
-
-    cur.execute("""
-                SELECT *
-                FROM muestras m
-                WHERE m.id_inspecciones_ind =?
-                AND cod_muestra NOT LIKE '%_M%'""", (inspeccion['id'],))
-    blancos = cur.fetchall()
-
     cur.execute("SELECT * FROM inspecciones_ind WHERE id_industria = ? ORDER BY fecha", (inspeccion['id_industria'],))
     inspecciones = cur.fetchall()
-
-    ids_blancos= lista_id(blancos)
-
-    cur.execute(f"""
-                SELECT DISTINCT p.etiqueta
-                FROM analiticas a
-                INNER JOIN parametros p ON p.id = a.id_param
-                WHERE a.id_muestra IN ({ids_blancos})""")
-    parametros_b = cur.fetchall()
 
     cur = db.cursor()
     cur.execute("SELECT c.*, f.ruta as ruta_foto FROM censo c LEFT JOIN fotos f on 'ind'||c.foto_principal = f.tabla||f.id WHERE c.id = ?", (inspeccion['id_industria'],))
@@ -2093,20 +2066,25 @@ def _informe_inspeccion(usuario, id_insp):
     insituTra = cur.fetchone()
 
     cur = db.cursor()
-    cur.execute("select idn.id_inspeccion , dn.* from doc_normativos dn inner join inspecciones_doc_normativos idn ON idn.id_doc_normativo = dn.id where id_inspeccion = ?", (id_insp,))
+    cur.execute("select * from doc_normativos DN inner join inspecciones_doc_normativos idn ON idn.id_doc_normativo = DN.id  where id_inspeccion = ?", (id_insp,))
+    #INNER JOIN parametros_DN p ON p.id_DN = DN.id
     DN_conf = cur.fetchall()
+    for doc in DN_conf:
+        print(doc['titulo'], doc['id_doc_normativo'])
 
     cur.execute("""
         SELECT *
         FROM doc_normativos DN
         INNER JOIN parametros_DN p ON p.id_DN = DN.id
-        WHERE cod_concello = ?
-        OR DN.id = 1
-        """, (industria['concello_PV'],))
+        INNER JOIN inspecciones_doc_normativos idn ON idn.id_doc_normativo = DN.id
+        where id_inspeccion = ?""", (id_insp,))        
+        #WHERE cod_concello = ?
+        #OR DN.id = 1
+        #""", (industria['concello_PV'],))
     doc_normativos_parametros = cur.fetchall()
+    for doc in doc_normativos_parametros:
+        print(doc['titulo'], doc['cod_concello'], doc['etiqueta'], doc['unidades'])
     etiquetas_DN = lista_id(doc_normativos_parametros, 'etiqueta')
-    parametros_DN = lista_id(doc_normativos_parametros, 'valor_limite')
-    print(etiquetas_DN, parametros_DN)
 
     cur.execute(f"SELECT * FROM muestras WHERE id_inspecciones_ind in ({id_insp})")
     muestras = cur.fetchall()
@@ -2148,7 +2126,12 @@ def _informe_inspeccion(usuario, id_insp):
     cumplimiento = evalua_cumplimiento(analiticas, doc_normativos_parametros)
     conformidade = evalua_conformidade(analiticas, doc_normativos_parametros)
     tabla_laboratorio = genera_tabla_laboratorio(analit_labo)
-    tabla_conformidade, contador_conformes, contador_amarillos = genera_tabla_conformidade(inspecciones, muestras, analiticas, conformidade)
+    # Para decreto
+    tabla_decreto, no_verdes_decreto, amarillos_decreto = genera_tabla_conformidade(inspecciones, muestras, analiticas, {'decreto': conformidade['decreto']})
+
+    # Para local
+    tabla_local, no_verdes_local, amarillos_local = genera_tabla_conformidade(inspecciones, muestras, analiticas, {'local': conformidade['local']})
+    #tabla_conformidade, contador_conformes, contador_amarillos = genera_tabla_conformidade(inspecciones, muestras, analiticas, conformidade)
     #tablas_conformidade = genera_tabla_conformidade_multi(inspecciones, muestras, analiticas, DN_conf, cur)
 
 
@@ -2165,18 +2148,21 @@ def _informe_inspeccion(usuario, id_insp):
         condutividade=insituCdtv,
         temperatura=insituTra,
         muestras=muestras,
-        envases=envases,
         parametros=parametros,
-        blancos=blancos,
-        parametros_b=parametros_b,
         css_val=css_val,
         industria=industria,
         tabla_laboratorio=tabla_laboratorio,
-        #tablas_conformidade=tablas_conformidade,
-        tabla_conformidade=tabla_conformidade,
-        contador_conformes=contador_conformes,
-        contador_amarillos=contador_amarillos,
         DN_conf=DN_conf,
+        tabla_decreto=tabla_decreto,
+        no_verdes_decreto=no_verdes_decreto,
+        amarillos_decreto=amarillos_decreto,
+        tabla_local=tabla_local,
+        no_verdes_local=no_verdes_local,
+        amarillos_local=amarillos_local,
+        #tablas_conformidade=tablas_conformidade,
+        #tabla_conformidade=tabla_conformidade,
+        #contador_conformes=contador_conformes,
+        #contador_amarillos=contador_amarillos,
         fecha=hoy.strftime("%d/%m/%Y"))
 
 def genera_tabla_laboratorio(analiticas):
@@ -2248,9 +2234,13 @@ def genera_tabla_conformidade(inspecciones, muestras, analiticas, cumplimiento):
                                         fechas_valores[fecha][analitica['etiqueta']] = [analitica['valor'], cumple]
                                         break
     #print(fechas_valores)
-    for parametro in cumplimiento[doc_normativo].keys():
+    parametros = cumplimiento.get(doc_normativo, {})
+    for parametro in parametros.keys():
         if parametro == 'titulo':
             continue
+    #for parametro in cumplimiento[doc_normativo].keys():        
+     #   if parametro == 'titulo':
+      #      continue
         resultado[0].append([parametro, 'encabezado_tabla gris'])
         for muestra in cumplimiento[doc_normativo][parametro]:
             resultado[2].append([cumplimiento[doc_normativo][parametro][muestra][1], 'cursiva'])
@@ -2290,7 +2280,7 @@ def transponer_resultado(resultado):
     return [list(fila) for fila in zip(*resultado)]
 
 
-def evalua_conformidade2(analiticas, doc_normativos_parametros):
+def evalua_conformidade(analiticas, doc_normativos_parametros):
     """Dados un listado de diccionario de analíticas y un listado de
     parámetros de diferentes documentos normativos, devuelve un diccionario de
     la forma: {"decreto": {etiqueta_parametro_1: {id_muestra: ['Conforme/No Conforme', valor_limite], id_muestra_2: ['Conforme/No Conforme', valor_limite]...}
@@ -2346,6 +2336,7 @@ def evalua_conformidade2(analiticas, doc_normativos_parametros):
                     except:
                         cumplimiento[DN][analitica['etiqueta']].update({analitica['id_muestra']: ["-", parametroDN['valor_limite']]})
                             
+    print(cumplimiento)
     return cumplimiento
 
 def genera_tabla_conformidade_simple(inspecciones, muestras, analiticas, cumplimiento):
@@ -2460,7 +2451,7 @@ def transponer_resultado(resultado):
     return [list(fila) for fila in zip(*resultado)]
 
 
-def evalua_conformidade(analiticas, doc_normativos_parametros):
+def evalua_conformidade2(analiticas, doc_normativos_parametros):
     """
     Evalúa el cumplimiento de las analíticas frente a los parámetros de UN documento normativo.
     Retorna un diccionario cumplimiento con estructura { 'decreto': {}, 'local': {} }
