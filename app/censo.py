@@ -1192,11 +1192,19 @@ def _nueva_inspeccion_ind(usuario):
         cod_muestra = f'{cod_inspeccion}_{muestra}'
         _nueva_muestra_inspeccion(id_inspeccion = ultimo_id, cod_muestra = cod_muestra)
 
+    import sqlite3
+    db = sqlite3.connect("redes.sqlite")
+    db.row_factory = sqlite3.Row   # 👈 convierte los resultados en "dict-like"
+    cur = db.cursor()
     cur.execute("""
                 SELECT * FROM inspecciones_ind
                 WHERE id = ?""",
                 (ultimo_id, ))
     inspeccion = cur.fetchone()
+    print(inspeccion["id_industria"])
+    print(inspeccion["id"]) 
+    print(inspeccion["localizacion_pv"]) 
+
 
     resultados={}
 
@@ -2322,3 +2330,164 @@ def evalua_conformidade(analiticas, doc_normativos_parametros):
     return cumplimiento
 def transponer_resultado(resultado):
     return [list(fila) for fila in zip(*resultado)]
+
+
+#@app.route('/_acta_inspeccion', methods=['POST'])
+@app.route('/acta_inspeccion-<id_insp>')
+@logeado
+@verificaPermiso("galicia", 0)
+def _acta_inspeccion(id_insp, usuario):
+
+    #id_insp = request.form["id_insp"]
+
+    db = get_db()
+    cur = db.cursor()
+
+    cur.execute("""
+                UPDATE inspecciones_ind
+                SET estado_insp = 1
+                WHERE id=?""", (id_insp,))
+    db.commit()
+
+    cur.execute("""
+                SELECT ii.*
+                FROM inspecciones_ind ii
+                WHERE ii.id=?""", (id_insp,))
+    inspeccion = cur.fetchone()
+
+    cur.execute(f"""
+                SELECT *
+                FROM doc_normativos dn
+                INNER JOIN inspecciones_doc_normativos idn ON dn.id = idn.id_doc_normativo
+                WHERE idn.id_inspeccion = ?
+                """, (id_insp,))
+    doc_normativos = cur.fetchall()
+
+    cur.execute("""
+                SELECT *
+                FROM usuarios u
+                WHERE u.usuario=?""", (inspeccion['inspector'],))
+    inspector = cur.fetchone()
+
+    cur.execute("""
+                SELECT *
+                FROM usuarios u
+                WHERE u.usuario=?""", (inspeccion['supervisor'],))
+    supervisor = cur.fetchone()
+
+    cur.execute("""
+                SELECT c.*, p.nombre AS 'provincia'
+                FROM censo c
+                LEFT JOIN concellos co ON co.cod_ine = c.cod_concello
+                LEFT JOIN provincias p ON p.id = co.id_provincia
+                WHERE c.id=?""", (inspeccion['id_industria'],))
+    censo = cur.fetchone()
+
+    cur.execute("""
+                SELECT *
+                FROM organismos
+                WHERE id=?""", (inspeccion['id_organismo_sol'],))
+    organizacion_sol = cur.fetchone()
+
+    try:
+        coord_utm = utm.from_latlon(censo['latitud_PV'], censo['longitud_PV'])
+        coord_x_PV = coord_utm[0]
+        coord_y_PV = coord_utm[1]
+    except:
+        coord_x_PV = None
+        coord_y_PV = None
+
+    cur.execute("""
+                SELECT *
+                FROM usuarios u
+                WHERE u.id=?""", (inspeccion['id_interlocutor'],))
+    representante = cur.fetchone()
+
+    cur.execute("""
+                SELECT *
+                FROM muestras m
+                WHERE m.id_inspecciones_ind =?
+                AND cod_muestra LIKE '%_M%'""", (inspeccion['id'],))
+    muestras = cur.fetchall()
+
+    ids_muestras = lista_id(muestras)
+
+    cur.execute(f"""
+                SELECT DISTINCT p.etiqueta, a.in_situ, s.codigo
+                FROM analiticas a
+                INNER JOIN parametros p ON p.id = a.id_param
+                LEFT JOIN sondas s ON a.id_sonda = s.id
+                WHERE a.id_muestra IN ({ids_muestras})""")
+    parametros = cur.fetchall()
+
+    cur.execute(f"""
+                SELECT material,
+                volumen AS volumen,
+                num_envases AS num_envases
+                FROM envases e
+                WHERE e.id_muestra IN ({ids_muestras})
+                AND material IS NOT NULL
+                AND volumen IS NOT NULL
+                AND num_envases IS NOT NULL""")
+    envases = cur.fetchall()
+
+    cur.execute("""
+                SELECT *
+                FROM muestras m
+                WHERE m.id_inspecciones_ind =?
+                AND cod_muestra NOT LIKE '%_M%'""", (inspeccion['id'],))
+    blancos = cur.fetchall()
+
+    ids_blancos= lista_id(blancos)
+
+    cur.execute(f"""
+                SELECT DISTINCT p.etiqueta
+                FROM analiticas a
+                INNER JOIN parametros p ON p.id = a.id_param
+                WHERE a.id_muestra IN ({ids_blancos})""")
+    parametros_b = cur.fetchall()
+
+    plantilla = "html/imprimir/informe_planificacion.html"
+    hoy = datetime.now()
+
+    css = open(Configuracion.ruta_app
+                 + f"static/css/estilo_imprimir.css", mode="r", encoding="utf-8")
+    css_val = css.read()
+    css.close()
+
+    html = render_template(
+        plantilla,
+        censo=censo,
+        coord_x_PV=coord_x_PV,
+        coord_y_PV=coord_y_PV,
+        representante=representante,
+        organizacion_sol=organizacion_sol,
+        inspeccion=inspeccion,
+        doc_normativos=doc_normativos,
+        inspector=inspector,
+        supervisor=supervisor,
+        muestras=muestras,
+        envases=envases,
+        parametros=parametros,
+        blancos=blancos,
+        parametros_b=parametros_b,
+        css_val=css_val,
+        fecha=hoy.strftime("%d/%m/%Y"))
+
+    nombre_doc = f"informe_planificacion_{censo['sistema']}_{censo['cod_industria']}_{inspeccion['fecha']}.html"
+    if not path.exists(Configuracion.ruta_app
+                       + f'static_p/informes/planificacion/'):
+        makedirs(Configuracion.ruta_app
+                 + f'static_p/informes/planificacion/')
+
+    f = open(Configuracion.ruta_app
+                 + f'static_p/informes/planificacion/{nombre_doc}', "w")
+    f.write(html)
+    f.close()
+
+    logCambios(usuario, "Informe Planificacion",
+               f'{id_insp}', "generar", "", "")
+
+    return html
+
+

@@ -58,14 +58,14 @@
         <span id="etiquetaActual{{elemento.id}}-39" class="etiqueta etiq{{elemento.id}}">Organismo solicitante<br></span>
         <span id="textoActual{{elemento.id}}-39" class="texto editar{{elemento.id}}">{{ elemento.organismo_sol if elemento.organismo_sol else '-' }}</span>
         <input id="valorActual{{elemento.id}}-39vinculado" type="text" class="val{{elemento.id}} valor inspeccion invisible" onkeyup="" name="id_organismo_sol" value="{{elemento.id_organismo_sol if elemento.id_organismo_sol}}">
-        <input id="seleccionActual{{elemento.id}}-39" type="text" class="val{{elemento.id}} valor vinculado editar{{elemento.id}} invisible" oninput="editaInputLista(this)" value="{{ elemento.organismo_sol if elemento.organismo_sol }}" placeholder="Organismo Solicitante" list="organismos"/>
+        <input id="seleccionActual{{elemento.id}}-39" type="text" class="val{{elemento.id}} valor vinculado editar{{elemento.id}} invisible" oninput="editaInputLista(this)" value="Augas de Galicia" value="Augas de Galicia" list="organismos"/>
       </span>
   
       <span>
         <span id="etiquetaActual{{elemento.id}}-6" class="etiqueta etiq{{elemento.id}}">Interlocutor<br></span>
         <span id="textoActual{{elemento.id}}-6" class="texto editar{{elemento.id}}">{% if elemento.interlocutor %}{{ elemento.dni_interlocutor }} - {{ elemento.interlocutor }}{% else %}-{% endif %}</span>
         <input id="valorActual{{elemento.id}}-6vinculado" type="text" class="val{{elemento.id}} valor inspeccion invisible" onkeyup="" name="id_interlocutor" value="{{elemento.id_interlocutor if elemento.id_interlocutor}}">
-        <input id="seleccionActual{{elemento.id}}-6" type="text" class="val{{elemento.id}} valor vinculado editar{{elemento.id}} invisible" oninput="editaInputLista(this)" value="{% if elemento.interlocutor %}{{ elemento.dni_interlocutor }} - {{ elemento.interlocutor }}{% else %}-{% endif %}" placeholder="Interlocutor" list="usuarios"/>
+        <input id="seleccionActual{{elemento.id}}-6" type="text" class="val{{elemento.id}} valor vinculado editar{{elemento.id}} invisible" oninput="editaInputLista(this)" value="Marcos López García" placeholder="Interlocutor" list="usuarios"/>
   
         <span id="etiqueta{{elemento.id}}-50" class="etiqueta etiq{{elemento.id}}">Descripción<br></span>
         <span class="editar{{elemento.id}}">{% if elemento.descripcion %}{{elemento.descripcion}}{% else %}-{% endif %}<br></span>
@@ -74,12 +74,12 @@
   
         <span id="etiqueta{{elemento.id}}-40" class="etiqueta etiq{{elemento.id}}">Xustifucación mostras<br></span>
         <span class="editar{{elemento.id}}">{% if elemento.justificacion_muestras %}{{elemento.justificacion_muestras}}{% else %}-{% endif %}<br></span>
-        <textarea id="valor{{elemento.id}}-40" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="justificacion_muestras" value="" rows="8" cols="90">{% if elemento.justificacion_muestras %}{{elemento.justificacion_muestras}}{% endif %}</textarea>
+        <textarea id="valor{{elemento.id}}-40" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="justificacion_muestras" value="Búscase un día entre semana, en quenda de mañá, supoñendo que a produción estará en réxime." rows="8" cols="90">{% if elemento.justificacion_muestras %}{{elemento.justificacion_muestras}}{% endif %}</textarea>
         <br class="val{{elemento.id}} valor invisible">
   
         <span id="etiqueta{{elemento.id}}-41" class="etiqueta etiq{{elemento.id}}">Localización / Descripción punto de vertido<br></span>
         <span class="editar{{elemento.id}}">{% if elemento.localizacion_pv %}{{elemento.localizacion_pv}}{% else %}-{% endif %}<br></span>
-        <textarea id="valor{{elemento.id}}-41" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="localizacion_pv" value="" rows="8" cols="90">{% if elemento.localizacion_pv %}{{elemento.localizacion_pv}}{% endif %}</textarea>
+        <textarea id="valor{{elemento.id}}-41" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="localizacion_pv" value="" rows="8" cols="90">{% if elemento["localizacion_pv"] %}{{elemento["localizacion_pv"]}}{% endif %}</textarea>
         <br class="val{{elemento.id}} valor invisible">
   
         <span id="etiqueta{{elemento.id}}-42" class="etiqueta etiq{{elemento.id}}">Natureza vertido<br></span>
