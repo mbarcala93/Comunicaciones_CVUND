@@ -421,4 +421,15 @@ table.celda_ancha > tbody > tr > td {
     /* grid-template-rows: ; /* Alturas específicas */
     gap: 10px;
   }
+
+  .canvas {
+      border: 1px solid #000;
+      border-radius: 5px;
+      display: block;
+      margin-top: 10px;
+    }
+  .button {
+      margin-top: 10px;
+      padding: 8px 15px;
+    }
   

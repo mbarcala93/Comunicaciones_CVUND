@@ -190,11 +190,12 @@ def _muestra_ficha_industria(usuario):
 def _muestra_ficha_inspeccion_industria(usuario):
     todas = request.args.get("todas")
     id = request.args.get("id")
+    #id_industria = request.form["id_industria"]
     db = get_db()
     cur = db.cursor()
     lista_ids = {"0": "i.id", "1": "i.id_industria"}
     cur.execute("""
-                SELECT i.*, c.sistema, c.cod_industria,
+                SELECT i.*, c.id AS id_ind, c.sistema, c.cod_industria,
                 o.denominacion AS 'organismo_sol',
                 u.usuario AS 'inspector_rel',
                 u3.usuario AS 'supervisor',
@@ -213,7 +214,8 @@ def _muestra_ficha_inspeccion_industria(usuario):
                 LEFT JOIN usuarios u3 ON u3.usuario= i.supervisor
                 WHERE {} = ? ORDER BY i.id DESC""".format(lista_ids[todas]),
                 (id,))
-    inspecciones = cur.fetchall()
+    inspecciones = cur.fetchall()  
+
 
     ids_inspecciones = lista_id(inspecciones)
 
@@ -285,8 +287,15 @@ def _muestra_ficha_inspeccion_industria(usuario):
         if inspeccion['estado_insp'] == 0:
             plantilla = "html/fichas/ficha_planificacion_industria.html"
         else:
-            plantilla = "html/fichas/ficha_inspeccion_industria.html"
-        rendered += render_template(plantilla, elemento=inspeccion, doc_normativos=doc_normativos, doc_normativos_ind=doc_normativos_ind, resultados=resultados, muestras=muestras, analiticas=analiticas, envases=envases)
+            plantilla = "html/fichas/ficha_inspeccion_industria.html"         
+
+        cur.execute("""
+                select c.*, ii.justificacion_muestras, ii.localizacion_pv, ii.id AS id_insp from censo c
+                inner join inspecciones_ind ii  ON c.id=ii.id_industria 
+                where c.id = ? order by ii.fecha DESC limit 1 offset 1""", (inspeccion['id_ind'],)) #OFFSET 1 salta el primero (más reciente) y devuelve el siguiente
+        industria=cur.fetchone()
+        print(' Muestra inspeccion:', industria['id_insp'])    
+        rendered += render_template(plantilla, elemento=inspeccion, industria=industria, doc_normativos=doc_normativos, doc_normativos_ind=doc_normativos_ind, resultados=resultados, muestras=muestras, analiticas=analiticas, envases=envases)
     return jsonify({"valor": rendered})
 
 
@@ -1197,13 +1206,27 @@ def _nueva_inspeccion_ind(usuario):
     db.row_factory = sqlite3.Row   # 👈 convierte los resultados en "dict-like"
     cur = db.cursor()
     cur.execute("""
-                SELECT * FROM inspecciones_ind
+                SELECT * FROM inspecciones_ind 
                 WHERE id = ?""",
                 (ultimo_id, ))
     inspeccion = cur.fetchone()
-    print(inspeccion["id_industria"])
-    print(inspeccion["id"]) 
-    print(inspeccion["localizacion_pv"]) 
+    print(inspeccion['fecha'])
+    #CAST(CAST(fecha AS INTEGER) + 1 AS TEXT) AS fecha_insp
+    #print(inspeccion['fecha_insp'])
+
+    cur.execute("""
+                select c.*, ii.justificacion_muestras, ii.localizacion_pv, ii.id AS id_insp from censo c
+                inner join inspecciones_ind ii  ON c.id=ii.id_industria 
+                where c.id = ? order by ii.fecha DESC limit 1""", (id_industria,))
+    industria=cur.fetchone()
+    print('antigua inspeccion:', industria["id_insp"])    
+
+    cur.execute("""
+                select c.*, ii.justificacion_muestras, ii.localizacion_pv, ii.id AS id_insp from censo c
+                inner join inspecciones_ind ii  ON c.id=ii.id_industria 
+                where c.id = ? order by ii.fecha DESC limit 1""", (id_industria,))
+    industriaN=cur.fetchone()
+    print('actual inspeccion:', industriaN["id_insp"])
 
 
     resultados={}
@@ -1234,6 +1257,7 @@ def _nueva_inspeccion_ind(usuario):
                            resultados=resultados,
                            muestras=muestras,
                            analiticas=analiticas,
+                           industria=industria,
                            creacion = 1)
     return jsonify({"id_inspeccion": ultimo_id,
                     "fecha": fecha })

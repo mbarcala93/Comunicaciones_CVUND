@@ -1,6 +1,7 @@
 <div id="ficha{{elemento.id}}" class="panel ficha inspeccion ficha{{elemento.id}}">
 
     <div class="datos_principales">
+
   
   
       <span onclick="ocultaFicha('inspecciones', {{elemento.id}})" class="material-icons derecha">visibility_off</span>
@@ -58,7 +59,7 @@
         <span id="etiquetaActual{{elemento.id}}-39" class="etiqueta etiq{{elemento.id}}">Organismo solicitante<br></span>
         <span id="textoActual{{elemento.id}}-39" class="texto editar{{elemento.id}}">{{ elemento.organismo_sol if elemento.organismo_sol else '-' }}</span>
         <input id="valorActual{{elemento.id}}-39vinculado" type="text" class="val{{elemento.id}} valor inspeccion invisible" onkeyup="" name="id_organismo_sol" value="{{elemento.id_organismo_sol if elemento.id_organismo_sol}}">
-        <input id="seleccionActual{{elemento.id}}-39" type="text" class="val{{elemento.id}} valor vinculado editar{{elemento.id}} invisible" oninput="editaInputLista(this)" value="Augas de Galicia" value="Augas de Galicia" list="organismos"/>
+        <input id="seleccionActual{{elemento.id}}-39" type="text" class="val{{elemento.id}} valor vinculado editar{{elemento.id}} invisible" oninput="editaInputLista(this)" value="Augas de Galicia" list="organismos"/>
       </span>
   
       <span>
@@ -67,19 +68,19 @@
         <input id="valorActual{{elemento.id}}-6vinculado" type="text" class="val{{elemento.id}} valor inspeccion invisible" onkeyup="" name="id_interlocutor" value="{{elemento.id_interlocutor if elemento.id_interlocutor}}">
         <input id="seleccionActual{{elemento.id}}-6" type="text" class="val{{elemento.id}} valor vinculado editar{{elemento.id}} invisible" oninput="editaInputLista(this)" value="Marcos López García" placeholder="Interlocutor" list="usuarios"/>
   
-        <span id="etiqueta{{elemento.id}}-50" class="etiqueta etiq{{elemento.id}}">Descripción<br></span>
+        <!--<span id="etiqueta{{elemento.id}}-50" class="etiqueta etiq{{elemento.id}}">Descripción<br></span>
         <span class="editar{{elemento.id}}">{% if elemento.descripcion %}{{elemento.descripcion}}{% else %}-{% endif %}<br></span>
         <textarea id="valor{{elemento.id}}-50" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="descripcion" value="" rows="8" cols="90" placeholder="Información adicional a recompilar e observacións a ter en conta durante a inspección">{% if elemento.descripcion %}{{elemento.descripcion}}{% endif %}</textarea>
-        <br class="val{{elemento.id}} valor invisible">
+        <br class="val{{elemento.id}} valor invisible">-->
   
         <span id="etiqueta{{elemento.id}}-40" class="etiqueta etiq{{elemento.id}}">Xustifucación mostras<br></span>
-        <span class="editar{{elemento.id}}">{% if elemento.justificacion_muestras %}{{elemento.justificacion_muestras}}{% else %}-{% endif %}<br></span>
-        <textarea id="valor{{elemento.id}}-40" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="justificacion_muestras" value="Búscase un día entre semana, en quenda de mañá, supoñendo que a produción estará en réxime." rows="8" cols="90">{% if elemento.justificacion_muestras %}{{elemento.justificacion_muestras}}{% endif %}</textarea>
+        <span class="editar{{elemento.id}}">{% if industria.justificacion_muestras %}{{industria.justificacion_muestras}}{% else %}-{% endif %}<br></span>
+        <span><textarea id="valor{{elemento.id}}-40" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="justificacion_muestras" rows="8" cols="90">{% if industria.justificacion_muestras %}{{industria.justificacion_muestras}}{% else %}Búscase un día entre semana, en quenda de mañá, supoñendo que a produción estará en réxime.{% endif %}</textarea></span>
         <br class="val{{elemento.id}} valor invisible">
   
         <span id="etiqueta{{elemento.id}}-41" class="etiqueta etiq{{elemento.id}}">Localización / Descripción punto de vertido<br></span>
-        <span class="editar{{elemento.id}}">{% if elemento.localizacion_pv %}{{elemento.localizacion_pv}}{% else %}-{% endif %}<br></span>
-        <textarea id="valor{{elemento.id}}-41" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="localizacion_pv" value="" rows="8" cols="90">{% if elemento["localizacion_pv"] %}{{elemento["localizacion_pv"]}}{% endif %}</textarea>
+        <span class="editar{{elemento.id}}">{% if industria.localizacion_pv %}{{industria.localizacion_pv}}{% else %}-{% endif %}<br></span>
+        <span><textarea id="valor{{elemento.id}}-41" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="localizacion_pv" rows="8" cols="90">{% if industria.localizacion_pv %}{{industria.localizacion_pv}}{%else%}Arqueta de rexistro{% endif %}</textarea></span>
         <br class="val{{elemento.id}} valor invisible">
   
         <span id="etiqueta{{elemento.id}}-42" class="etiqueta etiq{{elemento.id}}">Natureza vertido<br></span>
@@ -165,6 +166,17 @@
         <span class="clicable invisible editar{{elemento.id}} val{{elemento.id}}" onclick="nuevaMuestra({{elemento.id}})"><span class="material-icons" style="">add_circle_outline</span> Nova mostra</span>
        <div class="boton bot panel editar{{elemento.id}}" onclick="cerrarPlanificacion({{elemento.id}})">Cerrar planificicación</div>
       <br>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.valor').forEach(campo => {
+          if (campo.value.trim() !== "") {
+              campo.classList.add('editado');
+          }
+      });
+    });
+  </script>
+
       <span id="" onclick="actualizaElemento({{elemento.id}})" class="invisible izquierda boton_upload{{elemento.id}} boton panel aceptar"><span class="material-icons">arrow_circle_up</span> Subir cambios</span>
     <span class="check_upload{{elemento.id}} invisible">
       <span class="material-icons check" style="">check_circle</span> Datos actualizados correctamente
@@ -187,4 +199,6 @@
       sustituyeNumero(this);
     });
   </script>
+
+
   
