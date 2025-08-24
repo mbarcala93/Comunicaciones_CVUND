@@ -4,7 +4,7 @@ from flask import render_template, redirect, request, session, jsonify, send_fil
 from app import app
 from os import path, remove, makedirs, getcwd
 from base64 import b64decode
-from datetime import datetime
+from datetime import datetime, timedelta
 from urllib.parse import unquote_plus
 import json
 import utm
@@ -1153,9 +1153,23 @@ def _nueva_inspeccion_ind(usuario):
         return jsonify({"codigo":-1, "error": "Non dispón dos permisos oportunos para crear unha inspección. "}), 403
 
     ahora = datetime.now()
-    fecha_iso = ahora.strftime("%Y%m%d")
-    fecha = ahora.strftime("%d/%m/%Y")
-    hora = ahora.strftime("%H:%M")
+
+    # Calcular próximo día laborable
+    if ahora.weekday() == 4:   # Viernes
+        proximo = ahora + timedelta(days=3)  # lunes
+    elif ahora.weekday() == 5: # Sábado
+        proximo = ahora + timedelta(days=2)  # lunes
+    else:
+        proximo = ahora + timedelta(days=1)  # día siguiente (lunes a jueves → viernes)
+
+    # Formatos
+    fecha_iso = proximo.strftime("%Y%m%d")
+    fecha = proximo.strftime("%d/%m/%Y")
+    hora = ahora.strftime("%H:%M")  # la hora sigue siendo la actual
+
+    #fecha_iso = ahora.strftime("%Y%m%d")
+    #fecha = ahora.strftime("%d/%m/%Y")
+    #hora = ahora.strftime("%H:%M")
 
     db = get_db()
     cur = db.cursor()
@@ -1206,16 +1220,12 @@ def _nueva_inspeccion_ind(usuario):
     db.row_factory = sqlite3.Row   # 👈 convierte los resultados en "dict-like"
     cur = db.cursor()
     cur.execute("""
-                SELECT * FROM inspecciones_ind 
-                WHERE id = ?""",
+                SELECT *FROM inspecciones_ind WHERE id = ?""",
                 (ultimo_id, ))
     inspeccion = cur.fetchone()
-    print(inspeccion['fecha'])
-    #CAST(CAST(fecha AS INTEGER) + 1 AS TEXT) AS fecha_insp
-    #print(inspeccion['fecha_insp'])
 
     cur.execute("""
-                select c.*, ii.justificacion_muestras, ii.localizacion_pv, ii.id AS id_insp from censo c
+                select c.*, ii.justificacion_muestras, ii.localizacion_pv, ii.id AS id_insp, ii.motivo_elec_muestra, ii.motivo_elec_param from censo c
                 inner join inspecciones_ind ii  ON c.id=ii.id_industria 
                 where c.id = ? order by ii.fecha DESC limit 1""", (id_industria,))
     industria=cur.fetchone()

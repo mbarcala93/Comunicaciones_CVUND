@@ -146,13 +146,13 @@
         </div>
   
         <span id="etiqueta{{elemento.id}}-48" class="etiqueta etiq{{elemento.id}}">Motivo de elección do tipo de mostra<br></span>
-        <span class="editar{{elemento.id}}">{% if elemento.motivo_elec_muestra %}{{elemento.motivo_elec_muestra}}{% else %}-{% endif %}<br></span>
-        <textarea id="valor{{elemento.id}}-48" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="motivo_elec_muestra" value="" rows="8" cols="90">{% if elemento.motivo_elec_muestra %}{{elemento.motivo_elec_muestra}}{% endif %}</textarea>
+        <span class="editar{{elemento.id}}">{% if industria.motivo_elec_muestra %}{{industria.motivo_elec_muestra}}{% else %}Mostraxe sen aviso previo segundo o establecido no Decreto 141/2012, polo que se realiza mostraxe puntual para evitar posibles alteraicóns no proceso.{% endif %}<br></span>
+        <textarea id="valor{{elemento.id}}-48" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="motivo_elec_muestra" value="" rows="8" cols="90">{% if industria.motivo_elec_muestra %}{{industria.motivo_elec_muestra}}{% else %}Mostraxe sen aviso previo segundo o establecido no Decreto 141/2012, polo que se realiza mostraxe puntual para evitar posibles alteraicóns no proceso.{% endif %}</textarea>
         <br class="val{{elemento.id}} valor invisible">
   
         <span id="etiqueta{{elemento.id}}-49" class="etiqueta etiq{{elemento.id}}">Motivo de elección dos parametros a analizar<br></span>
-        <span class="editar{{elemento.id}}">{% if elemento.motivo_elec_param %}{{elemento.motivo_elec_param}}{% else %}-{% endif %}<br></span>
-        <textarea id="valor{{elemento.id}}-49" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="motivo_elec_param" value="" rows="8" cols="90">{% if elemento.motivo_elec_param %}{{elemento.motivo_elec_param}}{% endif %}</textarea>
+        <span class="editar{{elemento.id}}">{% if industria.motivo_elec_param %}{{industria.motivo_elec_param}}{% else %}Solicitados por Augas de Galicia.{% endif %}<br></span>
+        <textarea id="valor{{elemento.id}}-49" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="motivo_elec_param" value="" rows="8" cols="90">{% if elemento.motivo_elec_param %}{{elemento.motivo_elec_param}}{% else %}Solicitados por Augas de Galicia.{% endif %}</textarea>
         <br class="val{{elemento.id}} valor invisible">
       </span>
       <span id="parametros{{elemento.id}}" class="apartado_ficha apartado_muestras">
