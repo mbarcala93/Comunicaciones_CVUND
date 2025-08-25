@@ -289,13 +289,13 @@ def _muestra_ficha_inspeccion_industria(usuario):
         else:
             plantilla = "html/fichas/ficha_inspeccion_industria.html"         
 
-        cur.execute("""
-                select c.*, ii.justificacion_muestras, ii.localizacion_pv, ii.id AS id_insp from censo c
-                inner join inspecciones_ind ii  ON c.id=ii.id_industria 
-                where c.id = ? order by ii.fecha DESC limit 1 offset 1""", (inspeccion['id_ind'],)) #OFFSET 1 salta el primero (más reciente) y devuelve el siguiente
-        industria=cur.fetchone()
-        print(' Muestra inspeccion:', industria['id_insp'])    
-        rendered += render_template(plantilla, elemento=inspeccion, industria=industria, doc_normativos=doc_normativos, doc_normativos_ind=doc_normativos_ind, resultados=resultados, muestras=muestras, analiticas=analiticas, envases=envases)
+        # cur.execute("""
+        #         select c.*, ii.justificacion_muestras, ii.localizacion_pv, ii.id AS id_insp from censo c
+        #         inner join inspecciones_ind ii  ON c.id=ii.id_industria 
+        #         where c.id = ? order by ii.fecha DESC limit 1 offset 1""", (inspeccion['id_ind'],)) #OFFSET 1 salta el primero (más reciente) y devuelve el siguiente
+        # industria=cur.fetchone()
+        # print(' Muestra inspeccion:', industria['id_insp'])    
+        rendered += render_template(plantilla, elemento=inspeccion, doc_normativos=doc_normativos, doc_normativos_ind=doc_normativos_ind, resultados=resultados, muestras=muestras, analiticas=analiticas, envases=envases)
     return jsonify({"valor": rendered})
 
 
@@ -1187,19 +1187,34 @@ def _nueva_inspeccion_ind(usuario):
     (latitud, longitud, sistema, cod_industria, ubicacion,
     sistema_dep, mezcla_corrientes, aguas, agua_residual,
     puntos_vertido, pluviales, num_trabajadores) = cur.fetchone()
+    cur.execute("""
+                SELECT ii.justificacion_muestras, ii.localizacion_pv, ii.motivo_elec_muestra, ii.motivo_elec_param, ii.id_organismo_sol, ii.id_interlocutor
+                from inspecciones_ind ii 
+                where id_industria = ? order by ii.fecha DESC limit 1""", (id_industria,))
+    (justificacion_muestras, localizacion_pv, motivo_elec_muestra, motivo_elec_param, id_organismo_sol, id_interlocutor)=cur.fetchone()
+    print(motivo_elec_param)
     cod_inspeccion = fecha_iso + "_" + sistema + "_" + cod_industria
     cur.execute("""
                 INSERT INTO inspecciones_ind (id_industria, inspector, fecha,
                 hora, cod_inspeccion, ubicacion, sistema_dep,
                 mezcla_corrientes, aguas, agua_residual, puntos_vertido,
                 pluviales, num_trabajadores, estado_insp,
-                ruta_PV, ruta_AAI) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)""",
+                ruta_PV, ruta_AAI, justificacion_muestras, localizacion_pv, motivo_elec_muestra, motivo_elec_param, id_organismo_sol, id_interlocutor) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?, ?)""",
                 (id_industria, usuario, fecha_iso, hora, cod_inspeccion,
                  ubicacion, sistema_dep, mezcla_corrientes, aguas,
                  agua_residual, puntos_vertido, pluviales, num_trabajadores,
-                 censo['ruta_PV'],censo['ruta_AAI']))
+                 censo['ruta_PV'],censo['ruta_AAI'], justificacion_muestras, localizacion_pv, motivo_elec_muestra, motivo_elec_param, id_organismo_sol, id_interlocutor))
     ultimo_id = cur.lastrowid
+
+    # cur.execute("""
+    #             SELECT ii.justificacion_muestras, ii.localizacion_pv, ii.motivo_elec_muestra, ii.motivo_elec_param
+    #             from inspecciones_ind ii 
+    #             where id_industria = ? order by ii.fecha DESC limit 1""", (id_industria,))
+    # (justificacion_muestras, localizacion_pv, motivo_elec_muestra, motivo_elec_param)=cur.fetchone()
+    # cur.execute("""
+    #             INSERT INTO inspecciones_ind (justificacion_muestras, localizacion_pv, motivo_elec_muestra, motivo_elec_param)
+    #             VALUES (?, ?, ?, ?)""", (justificacion_muestras, localizacion_pv, motivo_elec_muestra, motivo_elec_param))
 
     cur.execute("""
                 INSERT INTO inspecciones_doc_normativos (id_inspeccion, id_doc_normativo) 
@@ -1219,12 +1234,12 @@ def _nueva_inspeccion_ind(usuario):
                 (ultimo_id, ))
     inspeccion = cur.fetchone()
 
-    cur.execute("""
-                select c.*, ii.justificacion_muestras, ii.localizacion_pv, ii.id AS id_insp, ii.motivo_elec_muestra, ii.motivo_elec_param from censo c
-                inner join inspecciones_ind ii  ON c.id=ii.id_industria 
-                where c.id = ? order by ii.fecha DESC limit 1""", (id_industria,))
-    industria=cur.fetchone()
-    print('antigua inspeccion:', industria["id_insp"])
+    # cur.execute("""
+    #             select c.*, ii.justificacion_muestras, ii.localizacion_pv, ii.id AS id_insp, ii.motivo_elec_muestra, ii.motivo_elec_param from censo c
+    #             inner join inspecciones_ind ii  ON c.id=ii.id_industria 
+    #             where c.id = ? order by ii.fecha DESC limit 1""", (id_industria,))
+    # industria=cur.fetchone()
+    # print('antigua inspeccion:', industria["id_insp"])
 
     resultados={}
 
@@ -1254,7 +1269,7 @@ def _nueva_inspeccion_ind(usuario):
                            resultados=resultados,
                            muestras=muestras,
                            analiticas=analiticas,
-                           industria=industria,
+                           #industria=industria,
                            creacion = 1)
     return jsonify({"id_inspeccion": ultimo_id,
                     "fecha": fecha })
@@ -2052,9 +2067,9 @@ def informe_inspeccion(usuario, id_insp):
     ids_muestras = lista_id(muestras)
 
     cur.execute(f"""
-                SELECT DISTINCT p.etiqueta, a.in_situ, s.codigo
+                SELECT DISTINCT IFNULL(p.etiqueta, a.etiqueta) AS etiqueta, a.in_situ, s.codigo
                 FROM analiticas a
-                INNER JOIN parametros p ON p.id = a.id_param
+                LEFT JOIN parametros p ON p.id = a.id_param
                 LEFT JOIN sondas s ON a.id_sonda = s.id
                 WHERE a.id_muestra IN ({ids_muestras})""")
     parametros = cur.fetchall()
@@ -2100,10 +2115,11 @@ def informe_inspeccion(usuario, id_insp):
     id_muestras = lista_id(muestras)
 
     cur.execute(f"""
-        SELECT *
-        FROM analiticas
-        WHERE id_muestra in ({id_muestras})
-        AND etiqueta in ({etiquetas_DN})""")
+        SELECT IFNULL(p.etiqueta, a.etiqueta) AS etiqueta, a.*
+        FROM analiticas a
+        LEFT JOIN parametros p ON p.id=a.id_param
+        WHERE a.id_muestra in ({id_muestras})
+        AND (a.etiqueta in ({etiquetas_DN}) OR p.etiqueta in ({etiquetas_DN}))""")
     analiticas = sqliteRow2list_dict(cur.fetchall())
 
     cur.execute(f"""
