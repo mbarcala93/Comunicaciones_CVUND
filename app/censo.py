@@ -195,7 +195,7 @@ def _muestra_ficha_inspeccion_industria(usuario):
     cur = db.cursor()
     lista_ids = {"0": "i.id", "1": "i.id_industria"}
     cur.execute("""
-                SELECT i.*, c.id AS id_ind, c.sistema, c.cod_industria,
+                SELECT i.*, c.sistema, c.cod_industria,
                 o.denominacion AS 'organismo_sol',
                 u.usuario AS 'inspector_rel',
                 u3.usuario AS 'supervisor',
@@ -215,7 +215,6 @@ def _muestra_ficha_inspeccion_industria(usuario):
                 WHERE {} = ? ORDER BY i.id DESC""".format(lista_ids[todas]),
                 (id,))
     inspecciones = cur.fetchall()  
-
 
     ids_inspecciones = lista_id(inspecciones)
 
@@ -287,14 +286,7 @@ def _muestra_ficha_inspeccion_industria(usuario):
         if inspeccion['estado_insp'] == 0:
             plantilla = "html/fichas/ficha_planificacion_industria.html"
         else:
-            plantilla = "html/fichas/ficha_inspeccion_industria.html"         
-
-        # cur.execute("""
-        #         select c.*, ii.justificacion_muestras, ii.localizacion_pv, ii.id AS id_insp from censo c
-        #         inner join inspecciones_ind ii  ON c.id=ii.id_industria 
-        #         where c.id = ? order by ii.fecha DESC limit 1 offset 1""", (inspeccion['id_ind'],)) #OFFSET 1 salta el primero (más reciente) y devuelve el siguiente
-        # industria=cur.fetchone()
-        # print(' Muestra inspeccion:', industria['id_insp'])    
+            plantilla = "html/fichas/ficha_inspeccion_industria.html"
         rendered += render_template(plantilla, elemento=inspeccion, doc_normativos=doc_normativos, doc_normativos_ind=doc_normativos_ind, resultados=resultados, muestras=muestras, analiticas=analiticas, envases=envases)
     return jsonify({"valor": rendered})
 
@@ -1154,7 +1146,7 @@ def _nueva_inspeccion_ind(usuario):
 
     ahora = datetime.now()
 
-    # Calcular próximo día laborable
+    # Calcular próximo día laborable, para que directamente se ponga la fecha del día de la inspección (la planificación se hace el día anterior)
     if ahora.weekday() == 4:   # Viernes
         proximo = ahora + timedelta(days=3)  # lunes
     else:
@@ -1164,10 +1156,6 @@ def _nueva_inspeccion_ind(usuario):
     fecha_iso = proximo.strftime("%Y%m%d")
     fecha = proximo.strftime("%d/%m/%Y")
     hora = ahora.strftime("%H:%M")  # la hora sigue siendo la actual
-
-    #fecha_iso = ahora.strftime("%Y%m%d")
-    #fecha = ahora.strftime("%d/%m/%Y")
-    #hora = ahora.strftime("%H:%M")
 
     db = get_db()
     cur = db.cursor()
@@ -1192,7 +1180,6 @@ def _nueva_inspeccion_ind(usuario):
                 from inspecciones_ind ii 
                 where id_industria = ? order by ii.fecha DESC limit 1""", (id_industria,))
     (justificacion_muestras, localizacion_pv, motivo_elec_muestra, motivo_elec_param, id_organismo_sol, id_interlocutor)=cur.fetchone()
-    print(motivo_elec_param)
     cod_inspeccion = fecha_iso + "_" + sistema + "_" + cod_industria
     cur.execute("""
                 INSERT INTO inspecciones_ind (id_industria, inspector, fecha,
@@ -1206,15 +1193,6 @@ def _nueva_inspeccion_ind(usuario):
                  agua_residual, puntos_vertido, pluviales, num_trabajadores,
                  censo['ruta_PV'],censo['ruta_AAI'], justificacion_muestras, localizacion_pv, motivo_elec_muestra, motivo_elec_param, id_organismo_sol, id_interlocutor))
     ultimo_id = cur.lastrowid
-
-    # cur.execute("""
-    #             SELECT ii.justificacion_muestras, ii.localizacion_pv, ii.motivo_elec_muestra, ii.motivo_elec_param
-    #             from inspecciones_ind ii 
-    #             where id_industria = ? order by ii.fecha DESC limit 1""", (id_industria,))
-    # (justificacion_muestras, localizacion_pv, motivo_elec_muestra, motivo_elec_param)=cur.fetchone()
-    # cur.execute("""
-    #             INSERT INTO inspecciones_ind (justificacion_muestras, localizacion_pv, motivo_elec_muestra, motivo_elec_param)
-    #             VALUES (?, ?, ?, ?)""", (justificacion_muestras, localizacion_pv, motivo_elec_muestra, motivo_elec_param))
 
     cur.execute("""
                 INSERT INTO inspecciones_doc_normativos (id_inspeccion, id_doc_normativo) 
@@ -1233,13 +1211,6 @@ def _nueva_inspeccion_ind(usuario):
                 WHERE id = ?""",
                 (ultimo_id, ))
     inspeccion = cur.fetchone()
-
-    # cur.execute("""
-    #             select c.*, ii.justificacion_muestras, ii.localizacion_pv, ii.id AS id_insp, ii.motivo_elec_muestra, ii.motivo_elec_param from censo c
-    #             inner join inspecciones_ind ii  ON c.id=ii.id_industria 
-    #             where c.id = ? order by ii.fecha DESC limit 1""", (id_industria,))
-    # industria=cur.fetchone()
-    # print('antigua inspeccion:', industria["id_insp"])
 
     resultados={}
 
@@ -1269,7 +1240,6 @@ def _nueva_inspeccion_ind(usuario):
                            resultados=resultados,
                            muestras=muestras,
                            analiticas=analiticas,
-                           #industria=industria,
                            creacion = 1)
     return jsonify({"id_inspeccion": ultimo_id,
                     "fecha": fecha })

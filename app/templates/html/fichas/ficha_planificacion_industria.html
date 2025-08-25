@@ -75,7 +75,7 @@
   
         <span id="etiqueta{{elemento.id}}-40" class="etiqueta etiq{{elemento.id}}">Xustifucación mostras<br></span>
         <span class="editar{{elemento.id}}">{% if elemento.justificacion_muestras %}{{elemento.justificacion_muestras}}{% else %}-{% endif %}<br></span>
-        <span><textarea id="valor{{elemento.id}}-40" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="justificacion_muestras" rows="8" cols="90">{% if elemento.justificacion_muestras %}{{elemento.justificacion_muestras}}{{%else%}}Búscase un día entre semana, en quenda de mañá, supoñendo que a produción está en réxime.{% endif %}</textarea></span>
+        <span><textarea id="valor{{elemento.id}}-40" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="justificacion_muestras" rows="8" cols="90">{% if elemento.justificacion_muestras %}{{elemento.justificacion_muestras}}{%else%}Búscase un día entre semana, en quenda de mañá, supoñendo que a produción está en réxime.{% endif %}</textarea></span>
         <br class="val{{elemento.id}} valor invisible">
   
         <span id="etiqueta{{elemento.id}}-41" class="etiqueta etiq{{elemento.id}}">Localización / Descripción punto de vertido<br></span>
@@ -147,12 +147,12 @@
   
         <span id="etiqueta{{elemento.id}}-48" class="etiqueta etiq{{elemento.id}}">Motivo de elección do tipo de mostra<br></span>
         <span class="editar{{elemento.id}}">{% if elemento.motivo_elec_muestra %}{{elemento.motivo_elec_muestra}}{% else %}-{% endif %}<br></span>
-        <textarea id="valor{{elemento.id}}-48" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="motivo_elec_muestra" value="" rows="8" cols="90">{% if elemento.motivo_elec_muestra %}{{elemento.motivo_elec_muestra}}{{%else%}}Mostraxe sen aviso previo segundo o establecido no Decreto 141/2012, polo que se realiza mostra puntual para evitar posibles alteracións no proceso.{% endif %}</textarea>
+        <textarea id="valor{{elemento.id}}-48" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="motivo_elec_muestra" value="" rows="8" cols="90">{% if elemento.motivo_elec_muestra %}{{elemento.motivo_elec_muestra}}{%else%}Mostraxe sen aviso previo segundo o establecido no Decreto 141/2012, polo que se realiza mostra puntual para evitar posibles alteracións no proceso.{% endif %}</textarea>
         <br class="val{{elemento.id}} valor invisible">
   
         <span id="etiqueta{{elemento.id}}-49" class="etiqueta etiq{{elemento.id}}">Motivo de elección dos parametros a analizar<br></span>
         <span class="editar{{elemento.id}}">{% if elemento.motivo_elec_param %}{{elemento.motivo_elec_param}}{% else %}-{% endif %}<br></span>
-        <textarea id="valor{{elemento.id}}-49" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="motivo_elec_param" value="" rows="8" cols="90">{% if elemento.motivo_elec_param %}{{elemento.motivo_elec_param}}{{%else%}}Solicitados por Augas de Galicia.{% endif %}</textarea>
+        <textarea id="valor{{elemento.id}}-49" class="ficha_ val{{elemento.id}} valor inspeccion editar{{elemento.id}} invisible" onkeyup="editarInput(this, {{elemento.id}})" name="motivo_elec_param" value="" rows="8" cols="90">{% if elemento.motivo_elec_param %}{{elemento.motivo_elec_param}}{%else%}Solicitados por Augas de Galicia.{% endif %}</textarea>
         <br class="val{{elemento.id}} valor invisible">
       </span>
       <span id="parametros{{elemento.id}}" class="apartado_ficha apartado_muestras">
