@@ -1157,8 +1157,6 @@ def _nueva_inspeccion_ind(usuario):
     # Calcular próximo día laborable
     if ahora.weekday() == 4:   # Viernes
         proximo = ahora + timedelta(days=3)  # lunes
-    elif ahora.weekday() == 5: # Sábado
-        proximo = ahora + timedelta(days=2)  # lunes
     else:
         proximo = ahora + timedelta(days=1)  # día siguiente (lunes a jueves → viernes)
 
@@ -1215,12 +1213,9 @@ def _nueva_inspeccion_ind(usuario):
         cod_muestra = f'{cod_inspeccion}_{muestra}'
         _nueva_muestra_inspeccion(id_inspeccion = ultimo_id, cod_muestra = cod_muestra)
 
-    import sqlite3
-    db = sqlite3.connect("redes.sqlite")
-    db.row_factory = sqlite3.Row   # 👈 convierte los resultados en "dict-like"
-    cur = db.cursor()
     cur.execute("""
-                SELECT *FROM inspecciones_ind WHERE id = ?""",
+                SELECT * FROM inspecciones_ind
+                WHERE id = ?""",
                 (ultimo_id, ))
     inspeccion = cur.fetchone()
 
@@ -1229,15 +1224,7 @@ def _nueva_inspeccion_ind(usuario):
                 inner join inspecciones_ind ii  ON c.id=ii.id_industria 
                 where c.id = ? order by ii.fecha DESC limit 1""", (id_industria,))
     industria=cur.fetchone()
-    print('antigua inspeccion:', industria["id_insp"])    
-
-    cur.execute("""
-                select c.*, ii.justificacion_muestras, ii.localizacion_pv, ii.id AS id_insp from censo c
-                inner join inspecciones_ind ii  ON c.id=ii.id_industria 
-                where c.id = ? order by ii.fecha DESC limit 1""", (id_industria,))
-    industriaN=cur.fetchone()
-    print('actual inspeccion:', industriaN["id_insp"])
-
+    print('antigua inspeccion:', industria["id_insp"])
 
     resultados={}
 
