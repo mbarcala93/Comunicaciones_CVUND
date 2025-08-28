@@ -199,7 +199,8 @@
                         <span class="etiqueta">Telefono:</span><br class="largo">
                     </div>
                     <div class="columna">
-                        <span class="valor">{{ censo.telefono_1 if censo.telefono_1 else '-'}} / {{ censo.telefono_2 if censo.telefono_2 else '-'}}</span><br class="largo">
+                        <span class="valor">{{ censo.telefono_1 if censo.telefono_1 else '-'}} 
+                        {% if censo.telefono_2 != "" %} / {{ censo.telefono_2 if censo.telefono_2 else '-'}}{%endif%}</span><br class="largo">
                     </div>
                 </div>
             </div>
