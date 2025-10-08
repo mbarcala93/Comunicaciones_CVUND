@@ -53,7 +53,7 @@ def censo(usuario, cod_edar=None, globo_abierto=None, capa_base='OpenStreetMap',
     docs_norm = cur.fetchall()
     cur.execute("SELECT * from parametros")
     parametros = cur.fetchall()
-    cur.execute("SELECT * from sondas")
+    cur.execute("SELECT * from sondas where en_uso=1")
     sondas = cur.fetchall()
     resultados = {"mapa": 'censo',
                   "cod_edar": cod_edar,
